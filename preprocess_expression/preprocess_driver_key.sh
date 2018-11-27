@@ -1,15 +1,12 @@
-#!/bin/bash
-#SBATCH --time=06:00:00 --mem=12G
-
 ################################################################################################################################################################
 ################################################################################################################################################################
 #INPUT FILES
 ################################################################################################################################################################
 #################################################################################################################################################################
 
-#  Directory containing fastq files from sequencing round 1
+#  Directory containing fastq files from 1st round of sequencing
 fastq_round_1_input_dir="/project2/gilad/reem/heartproject/heart/fastq/"
-#  Directory containing fastq files from sequencing round 2
+#  Directory containing fastq files from 2nd round of sequencing
 fastq_round_2_input_dir="/project2/gilad/reem/heartproject/heart2/fastq/"
 #  Directory containing fastq files from sequencing of 4 additional samples (round 3)
 fastq_round_3_input_dir="/project2/gilad/reem/heartproject/heart_4newlines/fastq/"
@@ -20,11 +17,13 @@ fastq_round_5_input_dir="/project2/gilad/reem/heartproject/heart_finalbatch/fast
 # Directory containing fastq files from those same 5 additional samples (round 6)
 fastq_round_6_input_dir="/project2/gilad/reem/heartproject/heart_finalbatch_reseq/fastq/"
 
-# File used to map sequencing core names to (cell line, time step) names for the first round of sequencing. Produced by Katie and Reem
+
+# The following three lane design files can be found here: https://github.com/relorbany/heart-pilot
+# File used to map sequencing core names to (cell line, time step) names for the first round of sequencing. Produced by Katie Rhodes and Reem Elorbany
 lane_design_round_1_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/LaneDesign2forR.csv"  
-# File used to map sequencing core names to (cell line, time step) names for the second round of sequencing. Produced by Katie and Reem
+# File used to map sequencing core names to (cell line, time step) names for the second round of sequencing. Produced by Katie Rhodes and Reem Elorbany
 lane_design_round_2_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/LaneDesignResequencing2forR.csv"
-# File used to map sequencing core names to (cell line, time step) names for the third round of sequencing. Produced by Katie and Reem
+# File used to map sequencing core names to (cell line, time step) names for the third round of sequencing. Produced by Katie Rhodes and Reem Elorbany
 # This is also used as reference for fastq_round_4
 lane_design_round_3_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/LaneDesign_NewSamples.csv"
 
@@ -39,15 +38,15 @@ genotype_input="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preproces
 #  Bryce Van de Geijn sent me these files
 heterozygous_site_input_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/heterozygous_probability_genotypes/"
 
-#  Metadata/covariates compiled by Katie/Reem
+#  Metadata/covariates compiled by Katie Rhodes and Reem Elorbany
 metadata_input_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/metadataUPDATED_04_11_2018.csv"
 
 #  Gencode hg19 gene annotation file
 #  Downloaded from "https://www.gencodegenes.org/releases/19.html" on September 13, 2017
 gencode_gene_annotation_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/gencode.v19.annotation.gtf.gz"
 
-#  Directory containing files created by Nick/Bryce 
-#  Data initially found on PPS at /data/internal/genotypes/hg19/YRI/
+#  Directory containing files created by Nick Banovich and Bryce Van de Geijn
+#  Data initially found on PPS cluster at /data/internal/genotypes/hg19/YRI/
 impute2_genotype_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/impute2_genotypes/"
 
 # Downloaded from http://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/chromInfo.txt.gz on 10/20/17
