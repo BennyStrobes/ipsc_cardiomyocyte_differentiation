@@ -39,6 +39,7 @@ genotype_input="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preproces
 heterozygous_site_input_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/heterozygous_probability_genotypes/"
 
 #  Metadata/covariates compiled by Katie Rhodes and Reem Elorbany
+# Can be downloaded from https://github.com/BennyStrobes/ipsc_cardiomyocyte_differentiation/tree/master/data/metadataUPDATED_04_11_2018.csv
 metadata_input_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/metadataUPDATED_04_11_2018.csv"
 
 #  Gencode hg19 gene annotation file
@@ -57,9 +58,11 @@ chrom_info_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preproce
 # Specifically, there are two important functions in this directory:
 ### 1. 'fasta2h5'
 ### 2. 'snp2h5'
+# See https://github.com/bmvdgeijn/WASP/tree/master/snp2h5 for compiling these two functions
 snp2h5_dir="/home/bstrober/ipsc_differentiation/preprocess/WASP/snp2h5/"
 
 # Directory where tabix is installed
+# Downloaded from https://sourceforge.net/projects/samtools/files/tabix/
 tabix_directory="/project2/gilad/bstrober/tools/tabix-0.2.6/"
 
 # Directory containing two files:
@@ -68,9 +71,6 @@ tabix_directory="/project2/gilad/bstrober/tools/tabix-0.2.6/"
 ### 3. 'mixsvgp_K2_L20_0_29526888_fmean'
 ### 4. 'flow_results.txt'
 mixture_hmm_cell_line_grouping_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/mixture_hmm_cell_line_groupings/"
-
-# Directory containing gsea data
-gsea_data_dir="/project2/gilad/bstrober/tools/tools/gsea/data/"
 
 
 
@@ -81,47 +81,44 @@ gsea_data_dir="/project2/gilad/bstrober/tools/tools/gsea/data/"
 ################################################################################################################################################################
 ################################################################################################################################################################
 
+# Output root for `preprocess_driver_key.sh`. All following directories are subdirectories of this.
+preprocess_data_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/"
+
 #  Directory containing merged (across sequencing rounds) fastq files for each sample
-fastq_input_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/fastq/"
+fastq_input_dir=$preprocess_data_dir"fastq/"
 
 #  Directory containing fastqc results. One output file for every fastq input file
-fastqc_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/fastqc_data/"
+fastqc_dir=$preprocess_data_dir"fastqc_data/"
 
 #  Directory containing reference genome (GRCh37)
-genome_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/genome/"
+genome_dir=$preprocess_data_dir"genome/"
 
 #  Directory containing bams. One bam file for each sample.
-bam_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/bam/"
-
+bam_dir=$preprocess_data_dir"bam/"
 
 #  Directory containing processed counts, quantile normalized expression data
-preprocess_total_expression_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/processed_total_expression/"
+preprocess_total_expression_dir=$preprocess_data_dir"processed_total_expression/"
 
 #  Directory containing covariate information (covariates, PCs)
-covariate_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/covariates/"
+covariate_dir=$preprocess_data_dir"covariates/"
 
 #  Directory containing plots/figures related to exploratory analysis of the total expression data (preprocess_total_expression_dir)
-visualize_total_expression_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/visualize_total_expression/"
+visualize_total_expression_dir=$preprocess_data_dir"visualize_total_expression/"
 
 #  Directory containing various changes to $genotype_input so that it is ammendable to the software pipelines used to process allelic counts (ie WASP and GATK ASEReader)
-genotype_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/genotype/"
+genotype_dir=$preprocess_data_dir"genotype/"
 
 #  Directory to contain various intermediate files developed by the WASP pipeline (many derivatives of the initial bams..)
-wasp_intermediate_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/wasp_intermediate_files/"
+wasp_intermediate_dir=$preprocess_data_dir"wasp_intermediate_files/"
 
 #  Directory containing raw allelic counts
-raw_allelic_counts_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/raw_allelic_counts/"
+raw_allelic_counts_dir=$preprocess_data_dir"raw_allelic_counts/"
 
 #  Directory containing processed allelic counts
-processed_allelic_counts_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/processed_allelic_counts/"
+processed_allelic_counts_dir=$preprocess_data_dir"processed_allelic_counts/"
 
 #  Directory containing plots/figures related to exploratory analysis of the total expression data (preprocess_total_expression_dir)
-visualize_allelic_counts_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/visualize_allelic_counts/"
-
-
-
-
-
+visualize_allelic_counts_dir=$preprocess_data_dir"visualize_allelic_counts/"
 
 
 
@@ -139,13 +136,13 @@ visualize_allelic_counts_dir="/project2/gilad/bstrober/ipsc_differentiation_19_l
 # Run the following 4 steps in series.
 ##########################################
 ##PART 1
-# Concatenate all fastq files for each sample into one "merged" fastq file. Samples have more than one fastq file initially because there are multiple sequencing rounds (to increase read depth)
+# Concatenate all fastq files for each sample into one "merged" fastq file per sample. Samples have more than one fastq file initially because there are multiple sequencing rounds (to increase read depth)
 # Also, create file called "$fastq_dir/fastq_mapping.txt" that contains mapping from merged fastq file to all of the corresponding replicate fastq file names. First column is merged fastq file name, second column is ','-seperated list of original files.
 # Both merged fastq files and fastq_mapping.txt will be saved in output directory, $fastq_dir
 # Note: This code really isn't the best b/c it very manually parses the fastq files based on the lane_design files. So caution should be taken in applying merge_fastq_replicates to new situations.
 # Takes about 20 minutes to run
 if false; then
-sh merge_fastq_replicates.sh $fastq_round_1_input_dir $fastq_round_2_input_dir $fastq_round_3_input_dir $fastq_round_4_input_dir $fastq_round_5_input_dir $fastq_round_6_input_dir $lane_design_round_1_file $lane_design_round_2_file $lane_design_round_3_file $fastq_input_dir
+sbatch merge_fastq_replicates.sh $fastq_round_1_input_dir $fastq_round_2_input_dir $fastq_round_3_input_dir $fastq_round_4_input_dir $fastq_round_5_input_dir $fastq_round_6_input_dir $lane_design_round_1_file $lane_design_round_2_file $lane_design_round_3_file $fastq_input_dir
 fi
 
 
@@ -172,12 +169,14 @@ fi
 # This script:
 #    1. Processes the aligned read counts and creates quantile normalized expression data (preprocess_total_expression.R). 
 #       # 1. also includes filters for genes. Genes need to have at least 10 samples such that RPKM >= .1 and raw counts >= 6
-#    2. Prepares covariate files (prepare_covariate_files.R)
-#    3. Also does some exploratory visualization analysis of the expression data  (visualize_processed_total_expression.R)
+#    2. Re-order expression data into a matrix of dimension num_cell_lines X (genes*time_steps). This will be used for cell line PCA analysis (preprocess_total_expression_by_cell_lines.py)
+#    3. Prepares covariate files (prepare_covariate_files.R)
+#    4. Also does some exploratory visualization analysis of the expression data  (visualize_processed_total_expression.R)
 #  Takes about 4 hours to run
 exon_file=$genome_dir"exons.saf"
-sh preprocess_total_expression.sh $preprocess_total_expression_dir $exon_file $bam_dir $visualize_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir $mixture_hmm_cell_line_grouping_dir
-
+if false; then
+sbatch preprocess_total_expression.sh $preprocess_total_expression_dir $exon_file $bam_dir $visualize_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir $mixture_hmm_cell_line_grouping_dir
+fi
 
 
 

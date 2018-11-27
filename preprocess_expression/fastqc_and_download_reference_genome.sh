@@ -11,11 +11,10 @@ date
 # Script provided by John Blischak (https://github.com/jdblischak/midway-subread-pipeline)
 Rscript download-exons.R $genome_dir
 
-date
 
 module load fastqc/0.11.5
 
-# Requires fastqc,
+# Run fastqc
 fastqc $fastq_input_dir*fastq.gz -o $fastqc_dir
 date
 

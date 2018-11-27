@@ -2351,6 +2351,12 @@ make_figure_1_alt_e <- function(sample_info, quant_expr, mixutre_hmm_cell_line_g
 
 
 
+
+
+
+
+
+
 #####################################################################################################
 # Load Data
 #####################################################################################################
@@ -2362,37 +2368,40 @@ covariate_dir = args[3]  # Input dir with covariate information
 mixutre_hmm_cell_line_grouping_dir = args[4]  # Directory containing files assigning cell lines to groupings
 
 #  Get sample information 
-#sample_info_file <- paste0(preprocess_total_expression_dir, "sample_info.txt")
-#sample_info <- read.table(sample_info_file, header=TRUE)
+sample_info_file <- paste0(preprocess_total_expression_dir, "sample_info.txt")
+sample_info <- read.table(sample_info_file, header=TRUE)
 
 #  Get quantile normalized expression data
-#quantile_normalized_exp_file <- paste0(preprocess_total_expression_dir, "quantile_normalized.txt")
-#quant_expr <- read.csv(quantile_normalized_exp_file, header=TRUE, sep=" ")
+quantile_normalized_exp_file <- paste0(preprocess_total_expression_dir, "quantile_normalized.txt")
+quant_expr <- read.csv(quantile_normalized_exp_file, header=TRUE, sep=" ")
 
+
+
+##### USED to save time if already run
 #saveRDS(sample_info, paste0(preprocess_total_expression_dir,"sample_info.rds"))
 #saveRDS(quant_expr, paste0(preprocess_total_expression_dir,"quant_expr.rds"))
 
-sample_info <- readRDS(paste0(preprocess_total_expression_dir,"sample_info.rds"))
-quant_expr <- readRDS(paste0(preprocess_total_expression_dir,"quant_expr.rds"))
+#sample_info <- readRDS(paste0(preprocess_total_expression_dir,"sample_info.rds"))
+#quant_expr <- readRDS(paste0(preprocess_total_expression_dir,"quant_expr.rds"))
 
 
 #  Get quantile normalized expression (done seperately for each time point) data
-#quantile_normalized_time_independent_expression_file <- paste0(preprocess_total_expression_dir, "time_step_independent_quantile_normalized.txt")
-#time_step_independent_quant_expr <- read.csv(quantile_normalized_time_independent_expression_file, header=TRUE, sep=" ")
+quantile_normalized_time_independent_expression_file <- paste0(preprocess_total_expression_dir, "time_step_independent_quantile_normalized.txt")
+time_step_independent_quant_expr <- read.csv(quantile_normalized_time_independent_expression_file, header=TRUE, sep=" ")
 
 #  Get rpkm expression_data
-#rpkm_exp_file <- paste0(preprocess_total_expression_dir, "rpkm.txt")
-#rpkm_expr <- read.csv(rpkm_exp_file, header=TRUE, sep=" ")
+rpkm_exp_file <- paste0(preprocess_total_expression_dir, "rpkm.txt")
+rpkm_expr <- read.csv(rpkm_exp_file, header=TRUE, sep=" ")
 
 #  Get covariate file
 covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
-#covariates <- read.table(covariate_file,header=TRUE)
+covariates <- read.table(covariate_file,header=TRUE)
 
 # Get standardized cell line specific expression
-#cell_line_expression_ignore_missing_file <- paste0(preprocess_total_expression_dir,"cell_line_expression_ignore_missing.txt")
-#cell_line_expression_ignore_missing <- read.csv(cell_line_expression_ignore_missing_file, header=TRUE, sep="\t")
-#cell_line_expression_ignore_missing <- cell_line_expression_ignore_missing[,2:(dim(cell_line_expression_ignore_missing)[2])]
-#colnames(cell_line_expression_ignore_missing) <- substr(colnames(cell_line_expression_ignore_missing), 2, 1000)
+cell_line_expression_ignore_missing_file <- paste0(preprocess_total_expression_dir,"cell_line_expression_ignore_missing.txt")
+cell_line_expression_ignore_missing <- read.csv(cell_line_expression_ignore_missing_file, header=TRUE, sep="\t")
+cell_line_expression_ignore_missing <- cell_line_expression_ignore_missing[,2:(dim(cell_line_expression_ignore_missing)[2])]
+colnames(cell_line_expression_ignore_missing) <- substr(colnames(cell_line_expression_ignore_missing), 2, 1000)
 
 
 #####################################################################################################
@@ -2411,59 +2420,13 @@ make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, outpu
 
 
 ####################################################################
-# Plot EDF on Nanog and troponin time courses
+# Plot EDF showing Nanog and troponin time courses for each cell line
 ####################################################################
 output_file <- paste0(visualize_total_expression_dir, "edf_troponin_nanog_time_course.png")
-#make_edf_troponin_nanog_time_course(sample_info, quant_expr, output_file)
+make_edf_troponin_nanog_time_course(sample_info, quant_expr, output_file)
 
 
 
-####################################################################
-# Make plot showing average expression in each cell line cluster
-####################################################################
-cell_line_cluster <- "1"
-cell_line_cluster_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster", cell_line_cluster, "_average_expression.txt")
-output_file <- paste0(visualize_total_expression_dir, "cell_line_cluster", cell_line_cluster,"_heatmap.png")
-#heatmap_cluster1 <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_average_expression_file, cell_line_cluster)
-# ggsave(heatmap_cluster1, file=output_file, width=7.2, height=1.5,units="in")
-
-cell_line_cluster <- "2"
-cell_line_cluster_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster", cell_line_cluster, "_average_expression.txt")
-output_file <- paste0(visualize_total_expression_dir, "cell_line_cluster", cell_line_cluster,"_heatmap.png")
-#heatmap_cluster1 <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_average_expression_file, cell_line_cluster)
-#ggsave(heatmap_cluster1, file=output_file, width=7.2, height=5.5,units="in")
-
-
-
-####################################################################
-# Plot Figure 1_alt
-####################################################################
-cell_line_cluster_1_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster1_average_expression.txt")
-cell_line_cluster_2_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster2_average_expression.txt")
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_a.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_a(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_b.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_b(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_a.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_a(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_c.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_c(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_e.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_e(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
 
 ####################################################################
 # Plot library size
@@ -2471,24 +2434,24 @@ fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/prep
 ################
 # Make barplot showing library sizes of each sample
 library_size_output_file <- paste0(visualize_total_expression_dir, "library_size.pdf")
-#plot_library_size(sample_info, library_size_output_file)
+plot_library_size(sample_info, library_size_output_file)
 
 
 
 ####################################################################
-# PCA plots with samples labeled by various covariates
+# PCA plots with samples labeled/colored by various covariates
 ####################################################################
 
 ##################
 #  Perform PCA. Plot first 2 pcs as a function of time step 
 pca_plot_time_step_output_file <- paste0(visualize_total_expression_dir, "pca_plot_1_2_time_step.png")
-#plot_pca_time_step(sample_info, quant_expr, pca_plot_time_step_output_file)
+plot_pca_time_step(sample_info, quant_expr, pca_plot_time_step_output_file)
 
 
 
 
 #################
-# Perform PCA. Plot specified PCs as a function of gene expression of:
+# Perform PCA. Plot specified PCs with samples colored/labeled by their gene expression of:
 # a. Troponin (gene expressed in cardiomyocytes)
 # b. sox2 (gene expressed in ipscs)
 # c. nanog (gene expressed in ipscs)
@@ -2497,7 +2460,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 pc_num1 <- 1
@@ -2505,7 +2468,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000181449"
 gene_name <- "sox2"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 pc_num1 <- 1
@@ -2513,12 +2476,12 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000111704"
 gene_name <- "nanog"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 
 #################
-# Perform PCA. Plot specified PCs as a function of gene expression of:
+# Perform Cell line pca PCA. Plot specified PCs as a function of gene expression of:
 # a. Troponin (gene expressed in cardiomyocytes)
 # b. sox2 (gene expressed in ipscs)
 pc_num1 <- 1
@@ -2527,7 +2490,7 @@ time_step <- 15
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 cell_line_pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "cell_line_ignore_missing_pca_plot_",pc_num1,"_",pc_num2,"_time_",time_step,"_",gene_name,"_gene_filled.png")
-#plot_cell_line_pca_real_valued_gene_filled(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,cell_line_pca_plot_gene_filled_output_file, time_step)
+plot_cell_line_pca_real_valued_gene_filled(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,cell_line_pca_plot_gene_filled_output_file, time_step)
 
 
 
@@ -2543,56 +2506,49 @@ pc_num1 <- 1
 pc_num2 <- 2
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_cell_line.png")
-#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(paste0("NA",sample_info$cell_line)), "Cell Line", pc_num1,pc_num2)
+plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(paste0("NA",sample_info$cell_line)), "Cell Line", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_rna_extraction_persion.png")
-#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_person), "rna_extraction_person", pc_num1,pc_num2)
+plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_person), "rna_extraction_person", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_rna_extraction_round.png")
-#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_round), "rna_extraction_round", pc_num1,pc_num2)
+plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_round), "rna_extraction_round", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_differentiation_batch.png")
-#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$differentiation_batch), "differentiation_batch", pc_num1,pc_num2)
+plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$differentiation_batch), "differentiation_batch", pc_num1,pc_num2)
 
 
-#################
-# Perform PCA. Make seperate plot for each cell line:
-
-pc_num1<-1
-pc_num2<-2
-pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_seperate_cell_lines.pdf")
-#plot_pca_seperate_cell_lines(sample_info, quant_expr, pca_plot_cell_line_output_file,pc_num1,pc_num2)
 
 
 ###############################
 # Plot eigenvectors
 ################################
 eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_eigenvector_viz.pdf")
-#plot_pca_eigenvectors(sample_info, quant_expr, eigenvectors_output_file)
+plot_pca_eigenvectors(sample_info, quant_expr, eigenvectors_output_file)
 
 eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_eigenvector_viz_by_line.pdf")
-#plot_pca_eigenvectors_by_line(sample_info, quant_expr, eigenvectors_output_file)
+plot_pca_eigenvectors_by_line(sample_info, quant_expr, eigenvectors_output_file)
 
 
 ####################################################################
 # Variance explained line plots
 ####################################################################
 
-
+# Variance explained of first 7 pcs from cell PCA
 n <- 7
 cell_line_pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "cell_line_ignore_missing_pca_plot_variance_explained", n, ".png")
-#cell_line_pc_pve <- plot_pca_variance_explained(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, n, cell_line_pca_plot_variance_explained_output_file, "Cell line collapsed PC number")
+cell_line_pc_pve <- plot_pca_variance_explained(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, n, cell_line_pca_plot_variance_explained_output_file, "Cell line collapsed PC number")
 
 
 #################
 # Perform PCA on full quantile normalized matrix. Plot variance explained of the first n PCs:
 n <- 20
 pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "pca_plot_variance_explained", n, ".png")
-#plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file)
+plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file)
 
 n <- 10
 pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "pca_plot_variance_explained", n, ".png")
-#pc_pve <- plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file, "PC number")
+pc_pve <- plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file, "PC number")
 
 
 
@@ -2604,18 +2560,18 @@ pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 ensamble_id <- "ENSG00000181449"
 gene_name <- "sox2"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 
 ensamble_id <- "ENSG00000111704"
 gene_name <- "nanog"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 
 
@@ -2626,15 +2582,14 @@ line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course
 
 
 # Make heatmap showing PVE between pcs and covariates
-
 pc_file <- paste0(covariate_dir,"principal_components_10.txt")
 covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
 output_file <- paste0(visualize_total_expression_dir, "pc_covariate_pve_heatmap.png")
-#heatmap <- covariate_pc_pve_heatmap(pc_file, covariate_file,output_file, "PCA")
+heatmap <- covariate_pc_pve_heatmap(pc_file, covariate_file,output_file, "PCA")
 
 combined_output_file <- paste0(visualize_total_expression_dir, "pc_covariate_pve_heatmap_joint.png")
-#combined <- plot_grid(pc_pve, heatmap, labels = c("A", "B"), ncol=1,rel_heights = c(.7, 1.2))
-#ggsave(combined, file=combined_output_file, width=7.2, height=5.5,units="in")
+combined <- plot_grid(pc_pve, heatmap, labels = c("A", "B"), ncol=1,rel_heights = c(.7, 1.2))
+ggsave(combined, file=combined_output_file, width=7.2, height=5.5,units="in")
 
 
 
@@ -2663,23 +2618,23 @@ flow_file <- paste0(mixutre_hmm_cell_line_grouping_dir, "flow_results.txt")
 
 # avg10-15 troponin expression
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_troponin_expression.png")
-#cell_line_pc_colored_by_avg_troponin(cell_pc_file, covariates, output_file)
+cell_line_pc_colored_by_avg_troponin(cell_pc_file, covariates, output_file)
 
 # bi-clustering model
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_gp_mixture_model.png")
-#cell_line_pc_scatter_model_xx <- cell_line_pc_colored_by_state_model(cell_pc_file, bi_clustering_state_file, output_file)
+cell_line_pc_scatter_model_xx <- cell_line_pc_colored_by_state_model(cell_pc_file, bi_clustering_state_file, output_file)
 
 # FLow results
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_flow_results.png")
-#cell_line_pc_scatter_flow <- cell_line_pc_colored_by_state_model_real_valued(cell_pc_file, flow_file, output_file)
+cell_line_pc_scatter_flow <- cell_line_pc_colored_by_state_model_real_valued(cell_pc_file, flow_file, output_file)
 
 
 
 # Make cowplot combined plot of cell_line_pc_scatter_model_xx and cell_line_pc_scatter_flow
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_model_xx_and_flow_and_pve_joint.png")
-#combined <- plot_grid(cell_line_pc_scatter_flow+ theme(legend.position='bottom'), cell_line_pc_scatter_model_xx+ theme(legend.position='bottom'), labels = c("B", "C"), align = "h")
-#combined2 <- plot_grid(cell_line_pc_pve, combined, labels=c("A", ""), ncol=1, rel_heights = c(.9, 1.2))
-#ggsave(combined2, file=output_file, width=7.2, height=5.5,units="in")
+combined <- plot_grid(cell_line_pc_scatter_flow+ theme(legend.position='bottom'), cell_line_pc_scatter_model_xx+ theme(legend.position='bottom'), labels = c("B", "C"), align = "h")
+combined2 <- plot_grid(cell_line_pc_pve, combined, labels=c("A", ""), ncol=1, rel_heights = c(.9, 1.2))
+ggsave(combined2, file=output_file, width=7.2, height=5.5,units="in")
 
 
 
@@ -2687,11 +2642,11 @@ output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_model_xx_
 # Correlate flow results with PC results, as well as avg troponin
 ####################################################################
 output_file <- paste0(visualize_total_expression_dir, "flow_avg_10_15_troponin_scatter.png")
-#scatter_of_avg_troponin_and_flow(flow_file, covariates, output_file)
+scatter_of_avg_troponin_and_flow(flow_file, covariates, output_file)
 
 pc_num <- 2
 output_file <- paste0(visualize_total_expression_dir, "flow_pc",pc_num,"_troponin_scatter.png")
-#scatter_of_pc_and_flow(flow_file, cell_pc_file, pc_num, output_file)
+scatter_of_pc_and_flow(flow_file, cell_pc_file, pc_num, output_file)
 
 
 
@@ -2762,9 +2717,75 @@ ggsave(combined, file=output_file,width=7.2,height=5.5,units="in")
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #####################################
 # Retired scripts
 #####################################
+
+#################
+# Perform PCA. Make seperate plot for each cell line:
+pc_num1<-1
+pc_num2<-2
+pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_seperate_cell_lines.pdf")
+#plot_pca_seperate_cell_lines(sample_info, quant_expr, pca_plot_cell_line_output_file,pc_num1,pc_num2)
+
+
+
+####################################################################
+# Make plot showing average expression in each cell line cluster
+####################################################################
+cell_line_cluster <- "1"
+cell_line_cluster_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster", cell_line_cluster, "_average_expression.txt")
+output_file <- paste0(visualize_total_expression_dir, "cell_line_cluster", cell_line_cluster,"_heatmap.png")
+#heatmap_cluster1 <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_average_expression_file, cell_line_cluster)
+# ggsave(heatmap_cluster1, file=output_file, width=7.2, height=1.5,units="in")
+
+cell_line_cluster <- "2"
+cell_line_cluster_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster", cell_line_cluster, "_average_expression.txt")
+output_file <- paste0(visualize_total_expression_dir, "cell_line_cluster", cell_line_cluster,"_heatmap.png")
+#heatmap_cluster1 <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_average_expression_file, cell_line_cluster)
+#ggsave(heatmap_cluster1, file=output_file, width=7.2, height=5.5,units="in")
+
+
+
 
 ####################################################################
 # Correlation heatmap between time step independent latent factors and global latent factors
@@ -2946,6 +2967,36 @@ line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course
 
 
 
+
+####################################################################
+# Plot Figure 1_alt
+####################################################################
+cell_line_cluster_1_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster1_average_expression.txt")
+cell_line_cluster_2_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster2_average_expression.txt")
+
+
+output_file <- paste0(visualize_total_expression_dir, "figure1_alt_a.png")
+fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
+#make_figure_1_alt_a(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
+
+
+output_file <- paste0(visualize_total_expression_dir, "figure1_alt_b.png")
+fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
+#make_figure_1_alt_b(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
+
+output_file <- paste0(visualize_total_expression_dir, "figure1_alt_a.png")
+fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
+#make_figure_1_alt_a(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
+
+
+output_file <- paste0(visualize_total_expression_dir, "figure1_alt_c.png")
+fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
+#make_figure_1_alt_c(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
+
+
+output_file <- paste0(visualize_total_expression_dir, "figure1_alt_e.png")
+fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
+#make_figure_1_alt_e(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
 
 
 

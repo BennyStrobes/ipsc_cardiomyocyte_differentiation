@@ -10,7 +10,6 @@ covariate_dir="$6"
 fastqc_dir="$7"
 mixutre_hmm_cell_line_grouping_dir="$8"
 
-if false; then
 Rscript preprocess_total_expression.R $preprocess_total_expression_dir $exon_file $bam_dir
 date
 
@@ -23,10 +22,37 @@ Rscript prepare_covariate_files.R $preprocess_total_expression_dir $metadata_inp
 date
 
 
-python get_mean_expression_matrix_for_each_cell_line_cluster.py $preprocess_total_expression_dir $mixutre_hmm_cell_line_grouping_dir
-fi
 
 Rscript visualize_processed_total_expression.R $preprocess_total_expression_dir $visualize_total_expression_dir $covariate_dir $mixutre_hmm_cell_line_grouping_dir
 
 date
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################
+# OLD SCRIPT. NOT CURRENTLY USED
+####################################
+
+
+if false; then
+
+python get_mean_expression_matrix_for_each_cell_line_cluster.py $preprocess_total_expression_dir $mixutre_hmm_cell_line_grouping_dir
+
+fi
