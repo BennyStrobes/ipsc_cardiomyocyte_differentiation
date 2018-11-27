@@ -18,7 +18,7 @@ PART 4: Quantify and normalize bam files, prepares covariate files, and visualiz
 
 PART 5: Part 1 of WASP Mapping pipeline (for allele specific expression; https://github.com/bmvdgeijn/WASP)
 
-Part 6: Part 2 of WASP Mapping pipeline
+PART 6: Part 2 of WASP Mapping pipeline
 
 
 ## Computer cluster

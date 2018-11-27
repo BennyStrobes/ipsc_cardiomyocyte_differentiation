@@ -3,8 +3,8 @@
 # TIME STEP INDEPENDENT WASP ANALYSIS
 ######################################
 
-# This scripts assumes you have run the ipsc_preproccess_pipeline first (https://github.com/BennyStrobes/ipsc_preprocess_pipeline)
-# And have save the results here:
+# This scripts assumes you have run the ipsc_preproccess_pipeline first (https://github.com/BennyStrobes/ipsc_cardiomyocyte_differentiation/tree/master/preprocess_expression)
+# And have save the results at the root directory here:
 preprocess_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/"
 
 
@@ -12,10 +12,12 @@ preprocess_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preproces
 ##########################################################################
 # Input Files
 ##########################################################################
-# Gencode hg19 gene annotation file
+
+#  Gencode hg19 gene annotation file
+#  Downloaded from "https://www.gencodegenes.org/releases/19.html" on September 13, 2017
 gencode_gene_annotation_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/gencode.v19.annotation.gtf.gz"
 
-# Genotype directory created in preprocess pipeline (contains genotype data in h5 format)
+# Genotype directory created in preprocess pipeline that contains genotype data in h5 format
 genotype_dir=$preprocess_dir"genotype/"
 
 # Directory created in preprocess pipeline that contains allelic count data in h5 format
@@ -27,6 +29,7 @@ chrom_info_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preproce
 
 
 # Dosage genotype for all cell lines in our analysis
+# Created in preprocess pipeline
 dosage_genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"
 
 
@@ -34,11 +37,11 @@ dosage_genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"
 # This is the quantile normalized expression data
 quantile_normalized_expression=$preprocess_dir"processed_total_expression/quantile_normalized.txt"
 
-# CM eqtl file
+# iPSC-CM eqtl file created by Nick Banovich et al (https://genome.cshlp.org/content/early/2017/12/05/gr.224436.117)
 # Downloaded here http://eqtl.uchicago.edu/yri_ipsc/eQTL_WASP_CM.txt
 cm_eqtl_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/eQTL_WASP_CM_thresh_1.0.txt"
 
-# ipsc eqtl file
+# iPSC eqtl file created by Nick Banovich et al (https://genome.cshlp.org/content/early/2017/12/05/gr.224436.117)
 # Downloaded here http://eqtl.uchicago.edu/yri_ipsc/iPSC-eQTL-summary.txt
 ipsc_eqtl_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/ipsc_eqtl_all/ipsc_eqtl_all_associations.txt"
 
@@ -67,7 +70,7 @@ cht_visualization_dir=$wasp_qtl_root"cht_visualization/"
 
 
 ##########################################################################
-# Model Parameters
+# WASP-CHT Model Parameters
 ##########################################################################
 # Max distance between gene TSS and variant
 cis_distance=50000
@@ -84,7 +87,7 @@ min_as_read_count=25
 # Must be $min_het_count heterozygous variant in exon of gene of interest
 min_het_count=5
 
-# Keep track of model parameters
+# String keeping track of model parameters to be used in all output files
 parameter_string="cis_distance_"$cis_distance"_maf_cutoff_0"$maf_cutoff"_min_reads_"$min_read_count"_min_as_reads_"$min_as_read_count"_min_het_counts_"$min_het_count
 
 
@@ -111,7 +114,7 @@ parameter_string="cis_distance_"$cis_distance"_maf_cutoff_0"$maf_cutoff"_min_rea
 ######## D. The number of reads overlapping heterozygous variants (summed across cell lines) must be >= $min_read_count
 ######## E. The number of reads overlapping heterozygous variants that map to less popular allele (min transformation) (summed across cell lines) must be >= $min_as_read_count
 ### Takes about 7 hours to run per time step
-### This code was initially get_target_regions.py (in WASP repo), but I made some minor edits to it
+### This code was initially get_target_regions.py (in https://github.com/bmvdgeijn/WASP), but I made some minor edits to it in order to apply the above filters
 if false; then
 for time_step in $(seq 0 15); do
     sbatch get_wasp_target_regions.sh $time_step $target_regions_dir $quantile_normalized_expression $genotype_dir $raw_allelic_counts_dir $chrom_info_file $dosage_genotype_file $cis_distance $maf_cutoff $min_read_count $min_as_read_count $min_het_count $gencode_gene_annotation_file
@@ -135,10 +138,7 @@ fi
 ###################################################################
 ### Step 3: wasp_haplotype_shell.sh (run in parrallel for each sample)
 ### This script makes a CHT input file for each sample
-### This script calls extract_haplotype_read_counts.py (WASP script)
-### We run this script twice per sample:
-###### 1. Once to create input file for WASP (homozygous test variants have no allelic read counts)
-###### 2. Once to create input file for EAGLE2 (homozygous test variant do have allelic read counts)
+### This script calls extract_haplotype_read_counts.py (https://github.com/bmvdgeijn/WASP)
 ### Takes about 8 hours per sample
 if false; then
 for time_step in $(seq 0 15); do
@@ -150,7 +150,7 @@ done
 fi
 
 ##################################################################
-# Step 4: Update total read depth (directly from WASP)
+# Step 4: Update total read depth (directly from https://github.com/bmvdgeijn/WASP)
 # This script updates the expected read depths of the input files for the Combined Haplotype Test. GC content biases and peakiness o
 # of the data (potentially caused by differences in ChIP efficiency 
 # or the expression of a few highly expressed genes) can vary greatly 
@@ -171,6 +171,7 @@ fi
 #### A. fit_as_coefficients.py: Estimate overdispersion parameters for allele-specific test (beta binomial)
 #### B. fit_bnb_coefficients.py: Estimate overdispersion parameters for association test (beta-negative binomial)
 #### C. get_PCs.R: Extract PCs based on haplotype read count data (make matrix num_samples by num_PCs where num_PCs == num_samples. Do it using quantile normalized expression)
+# ALL CREATED IN https://github.com/bmvdgeijn/WASP
 # Takes about 3 hours per time step
 if false; then
 for time_step in $(seq 0 15); do
@@ -190,7 +191,7 @@ fi
 ### Run Combined Haplotype Test (CHT) / WASP
 ##################################################################
 
-# Run the following 4 steps in series
+# Run the following 3 steps in series
 ##################################################################
 
 ###################################################################
@@ -232,8 +233,9 @@ fi
 ##### 3. 'run_matrix_factorization.py': Run spare non-negative matrix factorization on the matrix of summary statisics (num_eGenesXnum_time_steps) for a range of number of latent factors and sparsity parameters
 ### It then runs `cht_visualization.R`: Make visualizations of WASP eqtl results
 fdr=".05"
-sh run_downstream_analysis_on_wasp_results.sh $parameter_string $cht_output_dir $fdr $target_regions_dir $matrix_factorization_dir $cm_eqtl_file $ipsc_eqtl_file $cht_visualization_dir
-
+if false; then
+sbatch run_downstream_analysis_on_wasp_results.sh $parameter_string $cht_output_dir $fdr $target_regions_dir $matrix_factorization_dir $cm_eqtl_file $ipsc_eqtl_file $cht_visualization_dir
+fi
 
 
 

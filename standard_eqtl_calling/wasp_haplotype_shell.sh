@@ -39,6 +39,33 @@ python extract_haplotype_read_counts.py \
     | gzip > $cht_input_file_dir"haplotype_read_counts_"$parameter_string"."$INDIVIDUAL"_"$time_step".txt.gz"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##########################
+# OLD: NO LONGER USED
+##########################
+if false; then
+
 #
 # create CHT input file for this individual (For EAGLE 2)
 # Create input file for EAGLE2 (homozygous test variants do have allelic read counts)
@@ -60,3 +87,5 @@ python extract_haplotype_read_counts.py \
     | gzip > $cht_input_file_dir"haplotype_read_counts_rand_hap_"$parameter_string"."$INDIVIDUAL"_"$time_step".txt.gz"
 
 date
+
+fi

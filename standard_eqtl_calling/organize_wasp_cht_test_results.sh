@@ -68,41 +68,4 @@ for pc_num in $(seq 0 5); do
     significant_efdr_gene_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_efdr_thresh_"$fdr_thresh"_significant_egenes.txt"
     python assess_wasp_significance_efdr_approach.py $efdr_file $real_file $significant_efdr_results $significant_efdr_gene_results $fdr_thresh
 
-
-
-
-    ###############
-    # OLD!
-    ###############
-
-
-    if false; then 
-
-
-
-    # Using reference eqtl data sets, extract pvalues belonging to reference variant-gene pairs from OUR DATA
-    eqtl_file=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_eqtl_results.txt"
-    enrichment_output_stem=$cht_enrichment_dir"enrichment_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step
-    # python get_snp_gene_pairs_from_other_data_and_match_for_background.py $eqtl_file $enrichment_output_stem $eqtl_data_set_file $cis_distance $mvalue_file
-
-
-
-    # Assess genome wide significance of actual data based on the emperical FDR threshold $fdr_thresh
-    significant_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_fdr_thresh_"$fdr_thresh"_significant.txt"
-    significant_gene_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_fdr_thresh_"$fdr_thresh"_significant_egenes.txt"
-    #python assess_wasp_significance.py $null_file $real_file $significant_results $significant_gene_results $fdr_thresh
-
-
-    # Compute qvalues on null data
-    null_file=$cht_output_dir"cht_perm_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_eqtl_results.txt"
-    real_file=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_eqtl_results.txt"
-    qvalue_file=$cht_output_dir"null_qvalue_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step".txt"
-    #Rscript compute_qvalues.R $null_file $qvalue_file
-
-    # Assess genome wide significance of actual data based on the qvalue threshold (FDR <= .1) in null data
-    significant_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_qval_"$qval_thresh"_significant.txt"
-    significant_gene_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_qval_"$qval_thresh"_significant_egenes.txt"
-    #python assess_wasp_significance.py $null_file $real_file $qvalue_file $significant_results $significant_gene_results $qval_thresh
-
-    fi
 done
