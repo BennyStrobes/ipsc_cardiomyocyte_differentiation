@@ -83,7 +83,6 @@ date
 python get_genotype_sample_names.py $genotype_dir"YRI_het_prob_genotype_all_samples.vcf" $all_genotyped_samples_file
 
 date
-echo "MADE IT"
 $snp2h5_dir"snp2h5" --chrom $chrom_info_file \
     --format impute \
     --geno_prob $genotype_dir"geno_probs.h5" \
