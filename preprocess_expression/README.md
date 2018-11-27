@@ -4,8 +4,8 @@ This pipeline processes/quantifies the fastq files to organized allelic count ma
 
 ## Running the code
 
-Preprocessing can be run within 'preprocess_driver.key.sh'. 
-'preprocess_driver.key.sh' splits pipeline into 6 steps that can be run in series (all the user has to do is remove the if false; then code arround the desired part and submit jobs corresponding to the current section). 
+Preprocessing can be run within 'preprocess_driver_key.sh'. 
+'preprocess_driver_key.sh' splits pipeline into 6 steps that can be run in series (all the user has to do is remove the if false; then code arround the desired part and submit jobs corresponding to the current section). 
 Comments within 'preprocess_driver_key'.sh' explain what each section does. But briefly:
 
 PART 1: Concatenate all fastq files for each sample into one "merged" fastq file per sample. Samples have more than one fastq file initially because there are multiple sequencing rounds (to increase read depth).
@@ -23,7 +23,7 @@ PART 6: Part 2 of WASP Mapping pipeline
 
 ## Computer cluster
 
-This pipeline was written to run on midway rcc
+This pipeline was written to run on midway2 rcc
 
 ## Authors
 

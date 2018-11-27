@@ -27,11 +27,9 @@ raw_allelic_counts_dir=$preprocess_dir"raw_allelic_counts/"
 # Required by WASP
 chrom_info_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/chromInfo.txt"
 
-
 # Dosage genotype for all cell lines in our analysis
 # Created in preprocess pipeline
 dosage_genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"
-
 
 # Processed total expression data
 # This is the quantile normalized expression data
@@ -44,6 +42,11 @@ cm_eqtl_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_
 # iPSC eqtl file created by Nick Banovich et al (https://genome.cshlp.org/content/early/2017/12/05/gr.224436.117)
 # Downloaded here http://eqtl.uchicago.edu/yri_ipsc/iPSC-eQTL-summary.txt
 ipsc_eqtl_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/ipsc_eqtl_all/ipsc_eqtl_all_associations.txt"
+
+
+
+
+
 
 
 ##########################################################################
@@ -66,6 +69,12 @@ matrix_factorization_dir=$wasp_qtl_root"matrix_factorization/"
 
 # Directory containing visualizations/plots
 cht_visualization_dir=$wasp_qtl_root"cht_visualization/"
+
+
+
+
+
+
 
 
 
