@@ -1,0 +1,317 @@
+Line,Day,Feeder passage,FF passage,RNA conc. (ng/ul) From extraction,RIN,RNA ext. date,RNA ext. date dummy var(categorical),Person who extracted RNA,Person who extracted dummy var (categorical),Round of Extraction (categorical),1ug (ul),H2O (ul),Differentiation Batch,Differentiation Batch as dummy var (Categorical),Library Batch,well #,date harvested,time harvested,total confluence when harvested (as percent)?,confluence at day 0 (as percent),Beating on day of collection Y-1 N-0,first day beating was noted,% beating when harvested?,avg. day this line started beating,day this well started beating,"Networks+Stringy (0- none noted, 1--thin, 2- chunky, if no adjective-1)","flash freezing (LN2-0, EtOH-1)","Sheets vs. clumps (0-no notes, 1- clumps, 2- sheets, 3-both)","debris (0-none or not noted, 1-some, 2- lots)","cloudy (no-0, yes-1)","swirls/semi-circles/""background"" (not noted-0, noted-1)","collected after CO2 incident (very low CO2 for some time, not more than 18 hours, no-0, yes-1)",comments
+18505,0,23,32,31,9.9,4/21/2017,0,Claudia,0,3,32.3,17.7,C,3,1,7,11/29/2016,9:15,90,N/A,0,8,0,7.625,N/A,0,0,0,0,0,1,0,"empty patches surround my confluent semi-circles, weird growth pattern"
+18505,1,23,32,85,10,4/21/2017,0,Claudia,0,3,11.8,38.2,C,3,1,10,11/30/2016,9:12,60,N/A,0,8,0,7.625,N/A,1,0,0,1,0,0,0,large numbers of cells died off after Day 0 (more than other line have in the past). But it looks kind of networky so maybe its good
+18505,2,23,32,36,10,4/21/2017,0,Claudia,0,3,27.8,22.2,C,3,1,3,12/1/2016,9:16,40,N/A,0,8,0,7.625,N/A,1,0,0,1,0,0,0,"stringy and networky. Some die off in the last 24 hours, but it mostly seems like the cells have clumped together more into strands resulting in the appearance of lower confluence"
+18505,3,23,32,43,10,4/21/2017,0,Claudia,0,3,23.3,26.7,C,3,1,26,12/2/2016,9:15,25,N/A,0,8,0,7.625,N/A,1,0,1,0,0,0,0,stringy /clumpy. No other non-stringy or clumpy cells seem to have survived.
+18505,4,23,32,42,10,4/21/2017,0,Claudia,0,3,23.8,26.2,C,3,1,17,12/3/2016,9:21,60,N/A,0,8,0,7.625,N/A,2,0,1,0,0,1,0,"still networky clumps, can see whih things would have started beating. Some ""background"""
+18505,5,23,32,52,10,4/21/2017,0,Claudia,0,3,19.2,30.8,C,3,1,5,12/4/2016,9:15,50,N/A,0,8,0,7.625,N/A,0,0,1,0,1,1,0,"large globs with fuzzy edges and lots of ""background"" cells"
+18505,6,23,32,62,10,4/21/2017,0,Claudia,0,3,16.1,33.9,C,3,1,31,12/5/2016,9:16,75,N/A,0,8,0,7.625,N/A,0,0,1,0,0,1,0,"both have blank patches. Clumps, background looks spiky"
+18505,7,23,32,36,9.8,4/21/2017,0,Claudia,0,3,27.8,22.2,C,3,1,16,12/6/2016,9:25,90,N/A,0,8,0,7.625,N/A,0,0,1,0,0,1,0,large clumps with spiky background
+18505,8,23,32,104,10,4/21/2017,0,Claudia,0,3,9.6,40.4,C,3,1,30,12/7/2016,9:45,85,N/A,1,8,60,7.625,7,0,0,0,0,0,0,0,even stuff that isnt beating looks mostly ready to beat
+18505,9,23,32,14,10,4/21/2017,0,Claudia,0,3,50,0,C,3,1,24,12/8/2016,9:20,85,N/A,1,8,70,7.625,8,0,0,0,0,0,0,0,
+18505,10,23,32,18,10,4/21/2017,0,Claudia,0,3,55.6,-5.6,C,3,1,19,12/9/2016,9:20,95,N/A,1,8,85,7.625,8,0,0,0,0,0,0,0,
+18505,11,23,32,12,9.9,4/21/2017,0,Claudia,0,3,83.3,-33.3,C,3,1,14,12/10/2016,9:17,95,N/A,1,8,85,7.625,8,0,0,2,0,0,0,0,"sheets of cells with holes, waves of beating"
+18505,12,23,32,44,9.3,5/1/2017,1,Reem,1,5,22.7,27.3,C,3,1,1,12/11/2016,9:15,85,N/A,1,8,85,7.625,8,1,0,0,0,0,0,0,very stringy compared to yesterday's (which was more sheet-like)
+18505,13,23,32,32,9,5/1/2017,1,Reem,1,5,31.3,18.8,C,3,1,11,12/12/2016,9:20,85,N/A,1,8,90,7.625,7,1,0,0,0,0,0,0,"strong beating, very stringy"
+18505,14,23,32,25,9.4,4/21/2017,0,Claudia,0,3,40,10,C,3,1,27,12/13/2016,9:23,95,N/A,1,8,90,7.625,8,0,0,1,1,0,0,0,"almost everything is beating. Lumps, small isolated patches of a few cellsÉeverything."
+18505,15,23,32,53,9.6,5/1/2017,1,Reem,1,5,18.9,31.1,C,3,1,33,12/14/2016,9:11,90,N/A,1,8,95,7.625,7,0,0,0,0,0,0,0,
+18511,0,15,38,55,9.8,4/21/2017,0,Reem,1,1,18.2,31.8,C,3,2,7,11/29/2016,9:15,95,N/A,0,7,0,7.667,N/A,0,0,0,0,0,0,0,
+18511,1,15,38,87,10,4/21/2017,0,Reem,1,1,11.5,38.5,C,3,2,9,11/30/2016,9:12,80,N/A,0,7,0,7.667,N/A,0,0,0,1,0,0,0,lots of cells around the edge died between day 0 and collection time (about 21.5 hours)
+18511,2,15,38,174,10,4/21/2017,0,Reem,1,1,5.7,44.3,C,3,2,3,12/1/2016,9:16,75,N/A,0,7,0,7.667,N/A,0,0,0,0,0,0,0,"dead around the edges, still a nice covering of the rest of the plate"
+18511,3,15,38,56,10,4/21/2017,0,Reem,1,1,17.9,32.1,C,3,2,26,12/2/2016,9:15,65,N/A,0,7,0,7.667,N/A,1,0,1,0,0,0,0,less networky that other wells of this line. Clumps.
+18511,4,15,38,28,10,4/21/2017,0,Reem,1,1,35.7,14.3,C,3,2,17,12/3/2016,9:21,50,N/A,0,7,0,7.667,N/A,0,0,1,2,0,0,0,still have lots dying off. There are clumps that look like they might have started beating
+18511,5,15,38,40,9.9,4/21/2017,0,Reem,1,1,25,25,C,3,2,5,12/4/2016,9:15,60,N/A,0,7,0,7.667,N/A,0,0,1,0,0,0,0,"similar to 18505, but will smaller defined clumps and backgrund. In well 5 they clums loo stringier , globier in well 6"
+18511,6,15,38,73,10,4/21/2017,0,Reem,1,1,13.7,36.3,C,3,2,31,12/5/2016,9:16,95,N/A,0,7,0,7.667,N/A,0,0,1,0,0,1,0,"small clumps, lots of background which may or may not have beat"
+18511,7,15,38,45,10,4/21/2017,0,Reem,1,1,22.2,27.8,C,3,2,16,12/6/2016,9:25,95,N/A,1,7,1,7.667,7,0,0,1,0,0,1,0,"the stuff that is beating is some of the spiky ""background"", not the clumps. They are translucent."
+18511,8,15,38,44,10,4/21/2017,0,Reem,1,1,22.7,27.3,C,3,2,29,12/7/2016,9:45,98,N/A,1,7,20,7.667,8,0,0,0,0,0,0,0,
+18511,9,15,38,47,10,4/21/2017,0,Reem,1,1,21.3,28.7,C,3,2,23,12/8/2016,9:20,95,N/A,1,7,30,7.667,8,0,0,0,0,0,0,0,
+18511,10,15,38,20,10,4/21/2017,0,Reem,1,1,50,0,C,3,2,19,12/9/2016,9:20,70,N/A,1,7,50,7.667,8,0,0,0,0,0,0,0,
+18511,11,15,38,17,9.5,4/21/2017,0,Reem,1,1,50,0,C,3,2,14,12/10/2016,9:17,75,N/A,1,7,50,7.667,7,0,0,0,0,0,0,0,
+18511,12,15,38,22,9.6,4/21/2017,0,Reem,1,1,45.5,4.5,C,3,2,1,12/11/2016,9:15,75,N/A,1,7,65,7.667,8,0,0,3,0,0,0,0,"clumps and sheets are beating, not very networky"
+18511,13,15,38,14,9.9,4/21/2017,0,Reem,1,1,50,0,C,3,2,12,12/12/2016,9:20,80,N/A,1,7,90,7.667,8,0,0,0,0,0,0,0,circle of beating around the perimeter
+18511,14,15,38,18,10,4/21/2017,0,Reem,1,1,55.6,-5.6,C,3,2,27,12/13/2016,9:23,85,N/A,1,7,70,7.667,8,0,0,0,0,0,1,0,some smooth muscle in the wells (I think)
+18511,15,15,38,31,10,4/21/2017,0,Reem,1,1,32.3,17.7,C,3,2,33,12/14/2016,9:11,95,N/A,1,7,80,7.667,8,0,0,0,0,0,0,0,
+18520,0,15,34,17,9,4/21/2017,0,Katie,2,2,50,0,B,2,2,,11/12/2016,9:50,,N/A,0,7,0,,N/A,0,0,0,0,0,0,0,
+18520,1,15,31,76,10,4/21/2017,0,Katie,2,2,13.2,36.8,B,2,2,,11/4/2016,8:10,,N/A,0,7,0,,,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+18520,3,15,31,174,10,4/21/2017,0,Katie,2,2,5.7,44.3,B,2,2,,11/6/2016,12:00,,N/A,0,7,0,,N/A,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+18520,4,15,31,226,10,4/21/2017,0,Katie,2,2,4.4,45.6,B,2,2,,11/7/2016,9:10,,N/A,0,7,0,,N/A,0,0,0,0,0,0,0,frozen in liquid nitrogen
+18520,5,15,31,161,10,4/21/2017,0,Katie,2,2,6.2,43.8,B,2,2,,11/8/2016,9:18,,N/A,0,7,0,,N/A,0,0,0,0,0,0,0,
+18520,6,15,31,285,10,4/21/2017,0,Katie,2,2,3.5,46.5,B,2,2,,11/9/2016,9:15,,N/A,0,7,0,,N/A,0,0,0,0,0,0,0,
+18520,7,15,31,106,10,4/21/2017,0,Katie,2,2,9.4,40.6,B,2,2,,11/10/2016,9:20,,N/A,1,7,N/A,,7,0,0,0,0,0,0,0,a couple of small patches beating. harvested in hood b/c plates had extra wells
+18520,8,15,31,71,10,4/21/2017,0,Katie,2,2,14.1,35.9,B,2,2,,11/11/2016,9:15,,N/A,1,7,N/A,,,0,0,0,0,0,0,0,
+18520,9,15,31,36,10,4/21/2017,0,Katie,2,2,27.8,22.2,B,2,2,,11/12/2016,9:50,,N/A,1,7,50,,,0,0,0,0,0,0,0,
+18520,10,15,31,154,10,4/21/2017,0,Katie,2,2,6.5,43.5,B,2,2,,11/13/2016,9:42,,N/A,1,7,75,,,0,0,0,0,0,0,0,
+18520,11,15,31,117,10,4/21/2017,0,Katie,2,2,8.5,41.5,B,2,2,,11/14/2016,9:25,,N/A,1,7,N/A,,,0,0,0,0,0,0,0,
+18520,12,15,31,112,10,4/21/2017,0,Katie,2,2,8.9,41.1,B,2,2,,11/15/2016,9:18,,N/A,1,7,N/A,,,0,0,0,0,0,0,0,
+18520,13,15,31,67,10,4/21/2017,0,Katie,2,2,14.9,35.1,B,2,2,,11/16/2016,N/A,,N/A,1,7,30,,,0,0,0,0,0,0,0,wells for ATAC and RNA came from two different plates (from extras)
+18520,14,15,31,71,10,4/21/2017,0,Katie,2,2,14.1,35.9,B,2,2,,11/17/2016,9:45,,N/A,1,7,N/A,,,0,0,1,0,0,1,0,"globs. a few beating clumps visible under small microscope. lots of beating, including cells that look like background non-CMS"
+18520,15,15,31,119,10,4/21/2017,0,Katie,2,2,8.4,41.6,B,2,2,,11/18/2016,9:30,,N/A,1,7,N/A,,,1,0,1,0,0,0,0,"networky with some clumps in the middle. a few beating chunks (almost all large chunks beat, but not that many large chunks exist)"
+18855,0,11,36,16,9.6,4/21/2017,0,Claudia,0,1,50,0,B,2,1,,11/12/2016,9:50,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18855,1,11,33,105,10,4/21/2017,0,Claudia,0,1,9.5,40.5,B,2,1,,11/4/2016,8:10,,N/A,0,9,0,N/A,N/A,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+18855,3,11,33,54,10,4/21/2017,0,Claudia,0,1,18.5,31.5,B,2,1,,11/6/2016,12:00,,N/A,0,9,0,N/A,N/A,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+18855,4,11,33,76,10,4/21/2017,0,Claudia,0,1,13.2,36.8,B,2,1,,11/7/2016,9:10,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,frozen in liquid nitrogen
+18855,5,11,33,146,10,4/21/2017,0,Claudia,0,1,6.8,43.2,B,2,1,,11/8/2016,9:18,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18855,6,11,33,34,10,4/21/2017,0,Claudia,0,1,29.4,20.6,B,2,1,,11/9/2016,9:15,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18855,7,11,33,202,10,4/21/2017,0,Claudia,0,1,5,45,B,2,1,,11/10/2016,9:20,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,harvested in hood b/c using plates with extra wells
+18855,8,11,33,26,9.7,4/21/2017,0,Claudia,0,1,38.5,11.5,B,2,1,,11/11/2016,9:15,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18855,9,11,33,42,10,4/21/2017,0,Claudia,0,1,23.8,26.2,B,2,1,,11/12/2016,9:50,,N/A,1,9,80,N/A,,0,0,0,0,0,0,0,
+18855,10,11,33,32,9.8,4/21/2017,0,Claudia,0,1,31.3,18.8,B,2,1,,11/13/2016,9:42,,N/A,1,9,85,N/A,,0,0,0,0,0,0,0,
+18855,11,11,33,30,9.5,4/21/2017,0,Claudia,0,1,33.3,16.7,B,2,1,,11/14/2016,9:25,,N/A,1,9,N/A,N/A,,0,0,0,0,0,0,0,
+18855,12,11,33,59,8.9,5/1/2017,1,Reem,1,5,16.9,33.1,B,2,1,,11/15/2016,9:18,,N/A,1,9,N/A,N/A,,2,0,0,0,0,0,0,large networks of beating cells
+18855,13,11,33,28,10,4/21/2017,0,Claudia,0,1,35.7,14.3,B,2,1,,11/16/2016,N/A,,N/A,1,9,40,N/A,,0,0,0,0,0,0,0,high % of plate looks like CMS; 40% of cells look right/are beating
+18855,14,11,33,16,10,4/21/2017,0,Claudia,0,1,50,0,B,2,1,,11/17/2016,9:45,,N/A,1,9,65,N/A,,2,0,1,0,0,0,0,"chunky networks, about 20% of cells look right. under 10X microscope, there are lots of small beating clumps"
+18855,15,11,33,21,9.9,4/21/2017,0,Claudia,0,1,47.6,2.4,B,2,1,,11/18/2016,9:30,,N/A,1,9,N/A,N/A,,1,0,0,0,0,0,0,"chunky, less networky than 18520. lots of beating! beating cells look more networky at 10X"
+18858,0,18,33,34,9.3,4/21/2017,0,Reem,1,4,29.4,20.6,E,5,1,23,2/7/2017,9:15,100,100,0,8,0,8,N/A,0,0,2,0,0,0,0,thin layer covering whole plate
+18858,1,18,33,87,9.7,4/21/2017,0,Reem,1,4,11.5,38.5,E,5,1,3,2/8/2017,9:05,95,100,0,8,0,8,N/A,0,0,0,2,0,0,0,"lots of debris, still a thin layer covering almost all of the plate"
+18858,2,18,33,138,10,4/21/2017,0,Reem,1,4,7.2,42.8,E,5,1,17,2/9/2017,9:10,97,100,0,8,0,8,N/A,0,0,0,1,0,0,0,"a little debris, still quite dense"
+18858,3,18,33,80,10,4/21/2017,0,Reem,1,4,12.5,37.5,E,5,1,27,2/10/2017,9:19,100,100,0,8,0,8,N/A,0,0,0,2,0,0,0,"lots of debris, still very dense"
+18858,4,18,33,45,9.7,4/21/2017,0,Reem,1,4,22.2,27.8,E,5,1,19,2/11/2017,9:13,85,100,0,8,0,8,N/A,1,0,0,1,1,0,0,"some debris, hints of networks among cloudy patches"
+18858,5,18,33,43,9.9,4/21/2017,0,Reem,1,4,23.3,26.7,E,5,1,13,2/12/2017,9:03,60,100,0,8,0,8,N/A,1,0,0,2,0,0,0,lots of debris with thin networks left
+18858,6,18,33,71,10,4/21/2017,0,Reem,1,4,14.1,35.9,E,5,1,9,2/13/2017,9:15,60,100,0,8,0,8,N/A,2,0,0,1,0,0,0,"debris, networky clumps emerging"
+18858,7,18,33,75,9.7,4/21/2017,0,Reem,1,4,13.3,36.7,E,5,1,11,2/14/2017,9:15,90,100,0,8,0,8,N/A,1,0,0,0,1,0,0,"bright networky, thin fluffy background"
+18858,8,18,33,77,9.9,4/21/2017,0,Reem,1,4,13,37,E,5,1,7,2/15/2017,9:30,95,100,1,8,4,8,8,1,0,0,0,0,0,0,thin layer with networky circles and patches
+18858,9,18,33,76,10,4/21/2017,0,Reem,1,4,13.2,36.8,E,5,1,5,2/16/2017,9:15,95,100,1,8,10,8,8,0,0,0,0,0,0,0,
+18858,10,18,33,67,10,4/21/2017,0,Reem,1,4,14.9,35.1,E,5,1,15,2/17/2017,9:30,95,100,1,8,10,8,8,1,0,0,0,0,0,0,"great, 3D patches with bright stringy networks, thin background"
+18858,11,18,33,31,10,4/21/2017,0,Reem,1,4,32.3,17.7,E,5,1,29,2/18/2017,9:15,95,100,1,8,80,8,8,2,0,0,0,0,0,0,big networks and small networks. looks great
+18858,12,18,33,72,10,4/21/2017,0,Reem,1,4,13.9,36.1,E,5,1,31,2/19/2017,9:30,90,100,1,8,75,8,8,2,0,0,0,0,0,0,"large networks, beating strongly"
+18858,13,18,33,42,10,4/21/2017,0,Reem,1,4,23.8,26.2,E,5,1,25,2/20/2017,9:10,95,95,1,8,80,8,8,0,0,0,0,0,0,0,
+18858,14,18,33,88,10,4/21/2017,0,Reem,1,4,11.4,38.6,E,5,1,33,2/21/2017,9:07,85,95,1,8,70,8,8,2,0,1,0,0,0,0,beating clumps are visible to the naked eye. chunky networks
+18858,15,18,33,93,9.9,4/21/2017,0,Reem,1,4,10.8,39.2,E,5,1,1,2/22/2017,9:16,85,100,1,8,75,8,8,0,0,0,0,0,0,0,"large patches beating, can see without microscope"
+18870,0,18,45,60,10,5/1/2017,1,Reem,1,5,16.7,33.3,A,1,1,,11/12/2016,9:50,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18870,1,18,41,165,9.9,4/21/2017,0,Katie,2,4,6.1,43.9,A,1,1,,11/2/2016,8:10,70,N/A,0,9,0,N/A,N/A,0,1,0,0,0,0,0,frozen with EtOH and dry ice
+18870,2,18,41,437,10,4/21/2017,0,Katie,2,4,2.3,47.7,A,1,1,,11/3/2016,8:10,65,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,frozen in liquid nitrogen
+18870,3,18,41,297,10,4/21/2017,0,Katie,2,4,3.4,46.6,A,1,1,,11/4/2016,8:10,,N/A,0,9,0,N/A,N/A,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+18870,5,18,41,239,9.8,4/21/2017,0,Katie,2,4,4.2,45.8,A,1,1,,11/6/2016,12:00,,N/A,0,9,0,N/A,N/A,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+18870,6,18,41,297,10,4/21/2017,0,Katie,2,4,3.4,46.6,A,1,1,,11/7/2016,9:10,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,frozen in liquid nitrogen
+18870,7,18,41,165,10,4/21/2017,0,Katie,2,4,6.1,43.9,A,1,1,,11/8/2016,9:18,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18870,8,18,41,143,9.7,4/21/2017,0,Katie,2,4,7,43,A,1,1,,11/9/2016,9:15,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18870,9,18,41,52,8.4,4/21/2017,0,Katie,2,4,19.2,30.8,A,1,1,,11/10/2016,9:20,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,"some wells started beating, but not the ones collected today"
+18870,10,18,41,93,10,5/1/2017,1,Reem,1,5,10.8,39.2,A,1,1,,11/11/2016,9:15,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,
+18870,11,18,41,142,10,5/1/2017,1,Reem,1,5,7,43,A,1,1,,11/12/2016,9:50,,N/A,0,9,0,N/A,N/A,0,0,0,0,0,0,0,"these wells aren't beating but look like they could. some other wells (not harvested today) are beating, around 40%"
+18870,12,18,41,76,9.4,5/1/2017,1,Reem,1,5,13.2,36.8,A,1,1,,11/13/2016,9:42,,N/A,1,9,N/A,N/A,several days ago (day 9?),0,0,0,0,0,0,0,these cells are beating and started several days ago
+18870,13,18,41,95,9.6,5/1/2017,1,Reem,1,5,10.5,39.5,A,1,1,,11/14/2016,9:25,,N/A,1,9,N/A,N/A,,0,0,0,0,0,0,0,some wells that hadn't been beating yet started today
+18870,14,18,41,39,6.4,5/1/2017,1,Reem,1,5,25.6,24.4,A,1,1,,11/15/2016,9:18,,N/A,1,9,N/A,N/A,,0,0,0,0,0,0,0,"harvested wells are beating, but only very small patches. large percentage look like non-CMs"
+18870,15,18,41,109,10,5/1/2017,1,Reem,1,5,9.2,40.8,A,1,1,,11/16/2016,N/A,,N/A,1,9,N/A,N/A,13,0,0,0,0,0,0,0,
+18912,0,16,25,34,9.5,4/21/2017,0,Reem,1,2,29.4,20.6,G,7,1,25,3/15/2017,9:05,60,60,0,8,0,8.188,N/A,0,0,0,0,0,0,0,"thin layer, little patchy"
+18912,1,16,25,159,10,4/21/2017,0,Reem,1,2,6.3,43.7,G,7,1,19,3/16/2017,9:16,70,85,0,8,0,8.188,N/A,0,0,1,1,0,0,0,"clumps receding, some debris"
+18912,2,16,25,92,10,4/21/2017,0,Reem,1,2,10.9,39.1,G,7,1,31,3/17/2017,9:10,65,90,0,8,0,8.188,N/A,1,0,0,1,0,0,0,"debris, beginning to look stringy"
+18912,3,16,25,38,10,4/21/2017,0,Reem,1,2,26.3,23.7,G,7,1,1,3/18/2017,9:31,70,95,0,8,0,8.188,N/A,1,0,0,1,0,0,0,networky pattern forming. debris
+18912,4,16,25,79,10,4/21/2017,0,Reem,1,2,12.7,37.3,G,7,1,13,3/19/2017,9:14,45,95,0,8,0,8.188,N/A,0,0,0,1,0,0,0,"debris, small patches still there seems to have been a lot of die off early on"
+18912,5,16,25,50,10,4/21/2017,0,Reem,1,2,20,30,G,7,1,11,3/20/2017,9:08,75,85,0,8,0,8.188,N/A,0,0,0,0,0,1,0,started to form small circles with a ring around them
+18912,6,16,25,91,10,4/21/2017,0,Reem,1,2,11,39,G,7,1,3,3/21/2017,9:04,30,95,0,8,0,8.188,N/A,0,0,1,2,0,0,0,"only little clumps left on the plate, lots of debris"
+18912,7,16,25,89,10,4/21/2017,0,Reem,1,2,11.2,38.8,G,7,1,33,3/22/2017,9:11,75,90,0,8,0,8.188,N/A,0,0,1,0,0,1,0,"not beating, but thick encircled globs will probably beat"
+18912,8,16,25,80,10,4/21/2017,0,Reem,1,2,12.5,37.5,G,7,1,27,3/23/2017,9:17,80,75,1,8,1,8.188,7,1,0,1,0,0,0,0,thin networky layer and clumpy spheres
+18912,9,16,25,50,9.8,4/21/2017,0,Reem,1,2,20,30,G,7,1,23,3/24/2017,9:30,95,75,1,8,5,8.188,9,2,0,1,1,0,0,0,"chunky heart tissue, fine debris"
+18912,10,16,25,25,10,4/21/2017,0,Reem,1,2,40,10,G,7,1,5,3/25/2017,9:13,90,85,1,8,10,8.188,8,1,0,0,0,0,0,0,mostly a very thin layer a few fine networks. KATIE collected alone today (reem would normally collect RNA pellets)
+18912,11,16,25,27,9.7,4/21/2017,0,Reem,1,2,37,13,G,7,1,9,3/26/2027,9:13,75,80,1,8,40,8.188,8,2,0,0,0,0,0,0,both thin networks and chunky networks
+18912,12,16,25,21,9.5,5/1/2017,1,Reem,1,5,47.6,2.4,G,7,1,21,3/27/2017,9:20,65,90,1,8,60,8.188,8,0,0,0,2,0,0,0,"lots of debris, mostly a thin layer with a few splotches"
+18912,13,16,25,15,8.2,4/21/2017,0,Reem,1,2,50,0,G,7,1,7,3/28/2017,9:15,70,85,1,8,55,8.188,8,1,0,1,0,0,0,0,"large areas are very sparse, nice defined networks and clumps"
+18912,14,16,25,19,8.8,5/1/2017,1,Reem,1,5,50,0,G,7,1,15,3/29/2017,9:28,45,90,1,8,25,8.188,9,1,0,1,0,0,0,0,thin beating networks and chunky beating clumps
+18912,15,16,25,13,9.4,4/21/2017,0,Reem,1,2,50,0,G,7,1,17,30-Mar,9:20,40,90,1,8,65,8.188,9,0,0,0,0,0,0,0,"sparse overall, but nice sheets of CMs"
+19108,0,14,34,40,9.7,4/21/2017,0,Reem,1,3,25,25,A,1,2,,11/12/2016,9:50,,N/A,0,8,0,N/A,N/A,0,0,0,0,0,0,0,
+19108,1,14,31,328,10,4/21/2017,0,Reem,1,3,3,47,A,1,2,,11/2/2016,8:10,80,N/A,0,8,0,N/A,N/A,0,1,0,0,0,0,0,frozen with EtOH and dry ice
+19108,2,14,31,318,10,4/21/2017,0,Reem,1,3,3.1,46.9,A,1,2,,11/3/2016,8:10,85,N/A,0,8,0,N/A,N/A,0,0,0,0,0,0,0,frozen in liquid nitrogen
+19108,3,14,31,178,10,4/21/2017,0,Reem,1,3,5.6,44.4,A,1,2,,11/4/2016,8:10,,N/A,0,8,0,N/A,N/A,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+19108,5,14,31,164,9.7,4/21/2017,0,Reem,1,3,6.1,43.9,A,1,2,,11/6/2016,12:00,,N/A,0,8,0,N/A,N/A,0,1,0,0,0,0,0,flash frozen with EtOH and dry ice
+19108,6,14,31,172,10,4/21/2017,0,Reem,1,3,5.8,44.2,A,1,2,,11/7/2016,9:10,,N/A,0,8,0,N/A,N/A,0,0,0,0,0,0,0,frozen in liquid nitrogen
+19108,7,14,31,156,10,4/21/2017,0,Reem,1,3,6.4,43.6,A,1,2,,11/8/2016,9:18,,N/A,0,8,0,N/A,N/A,0,0,0,0,0,0,0,
+19108,8,14,31,100,10,4/21/2017,0,Reem,1,3,10,40,A,1,2,,11/9/2016,9:15,,N/A,0,8,0,N/A,N/A,1,0,0,0,0,0,0,some wells started beating today (but not the ones harvested today). looks like many cells are properly differentiated into CMS. translucenet and networky.
+19108,9,14,31,48,10,4/21/2017,0,Reem,1,3,20.8,29.2,A,1,2,,11/10/2016,9:20,,N/A,1,8,N/A,N/A,N/A,0,0,0,0,0,0,0,"looks great, most cells differentiated properly. wells collected today had some beating patches. harvested in hood b/c using plate with extra wells."
+19108,10,14,31,60,9.9,4/21/2017,0,Reem,1,3,16.7,33.3,A,1,2,,11/11/2016,9:15,,N/A,1,8,N/A,N/A,N/A,0,0,0,0,0,0,0,
+19108,11,14,31,38,9.1,5/1/2017,1,Reem,1,5,26.3,23.7,A,1,2,,11/12/2016,9:50,,N/A,1,8,90,N/A,N/A,0,0,0,0,0,0,0,beating forcefully
+19108,12,14,31,26,7.9,5/1/2017,1,Reem,1,5,38.5,11.5,A,1,2,,11/13/2016,9:42,,N/A,1,8,N/A,N/A,N/A,0,0,0,0,0,0,0,almost the whole well looks like CMs
+19108,13,14,31,49,8.2,5/1/2017,1,Reem,1,5,20.4,29.6,A,1,2,,11/14/2016,9:25,,N/A,1,8,N/A,N/A,N/A,0,0,0,0,0,0,0,beating beautifully :)
+19108,14,14,31,32,3.6,5/1/2017,1,Reem,1,5,31.3,18.8,A,1,2,,11/15/2016,9:18,,N/A,1,8,N/A,N/A,N/A,2,0,0,0,0,0,0,harvested wells are beating strongly with large networks and high percentage CM
+19108,15,14,31,25,4.2,5/1/2017,1,Reem,1,5,40,10,A,1,2,,11/16/2016,N/A,,N/A,1,8,N/A,N/A,N/A,0,0,0,0,0,0,0,19108 have been the best at differentiating this round but they've started to look sad. not beating as forcefully and many have begun to lift off the plate. some clumps of CMs have completely removed themselves from the plate but are still beating as free floating clumps.
+19128,0,22,22,40,9.7,4/21/2017,0,Katie,2,3,25,25,G,7,2,25,3/15/2017,9:05,95,95,0,9,0,10.83,N/A,0,0,0,0,0,0,0,"mostly a thin layer, a little dense in the middle"
+19128,1,22,22,46,10,4/21/2017,0,Katie,2,3,21.7,28.3,G,7,2,19,3/16/2017,9:16,85,95,0,9,0,10.83,N/A,0,0,0,1,0,0,0,"some debirs, edges look a little more jagged than smooth"
+19128,2,22,22,96,9.9,4/21/2017,0,Katie,2,3,10.4,39.6,G,7,2,31,3/17/2017,9:10,80,90,0,9,0,10.83,N/A,0,0,0,1,1,0,0,"a little debris, cloudy layer"
+19128,3,22,22,21,10,4/21/2017,0,Katie,2,3,47.6,2.4,G,7,2,1,3/18/2017,9:31,70,90,0,9,0,10.83,N/A,0,0,0,1,1,0,0,"debris, cloudy layer"
+19128,4,22,22,45,9.7,4/21/2017,0,Katie,2,3,22.2,27.8,G,7,2,13,3/19/2017,9:14,85,90,0,9,0,10.83,N/A,0,0,0,1,0,0,0,"little debris, layer looks thinner in the middle"
+19128,5,22,22,80,10,4/21/2017,0,Katie,2,3,12.5,37.5,G,7,2,11,3/20/2017,9:08,90,90,0,9,0,10.83,N/A,1,0,0,1,1,0,0,"cloudy, some medium sized debris, almost networky"
+19128,6,22,22,51,9.7,4/21/2017,0,Katie,2,3,19.6,30.4,G,7,2,3,3/21/2017,9:04,75,95,0,9,0,10.83,N/A,1,0,0,1,1,0,0,"cloudy but stringy, some debris"
+19128,7,22,22,76,9.8,4/21/2017,0,Katie,2,3,13.2,36.8,G,7,2,33,3/22/2017,9:11,80,85,0,9,0,10.83,N/A,1,0,0,1,1,0,0,"cloudy, debris, can see network patterns, not beating and doesnt look great"
+19128,8,22,22,72,10,4/21/2017,0,Katie,2,3,13.9,36.1,G,7,2,27,3/23/2017,9:17,70,85,0,9,0,10.83,N/A,1,0,0,0,0,0,0,"not beating, but there are sort of networky patterns"
+19128,9,22,22,74,10,4/21/2017,0,Katie,2,3,13.5,36.5,G,7,2,43,3/24/2017,9:30,55,75,0,9,0,10.83,N/A,0,0,0,0,0,0,0,"large fleck of debris, looks bad not beating"
+19128,10,22,22,48,9.9,4/21/2017,0,Katie,2,3,20.8,29.2,G,7,2,40,3/25/2017,9:13,60,70,0,9,0,10.83,N/A,2,0,1,0,1,0,0,"not beating, but looks almost right. networks are sort of clumpy and cloudy"
+19128,11,22,22,77,10,4/21/2017,0,Katie,2,3,13,37,G,7,2,38,3/26/2027,9:13,90,85,1,9,30,10.83,11,0,0,0,0,0,0,0,"not beating, looks like it was almost there."
+19128,12,22,22,65,9.9,4/21/2017,0,Katie,2,3,15.4,34.6,G,7,2,35,3/27/2017,9:20,90,85,1,9,5,10.83,9,0,0,0,0,1,0,0,"not beating, cloudy but textured"
+19128,13,22,22,60,10,4/21/2017,0,Katie,2,3,16.7,33.3,G,7,2,41,3/28/2017,9:15,85,60,1,9,75,10.83,8,0,0,0,0,0,0,0,"well 8 actually looks okay under light microscope, texture is okay but not beating"
+19128,14,22,22,50,9.7,4/21/2017,0,Katie,2,3,20,30,G,7,2,42,3/29/2017,9:28,80,70,1,9,75,10.83,8,0,0,1,0,1,0,0,"not beating, cloudy lumpy"
+19128,15,22,22,83,10,4/21/2017,0,Katie,2,3,12,38,G,7,2,37,30-Mar,9:20,90,90,1,9,5,10.83,14,0,0,1,0,0,0,0,"textured, clumps. looks like well 37 (collected for ATAC on this day)"
+19209,0,23,42,52,9.1,4/21/2017,0,Claudia,0,2,19.2,30.8,F,6,2,23,3/14/2017,9:24,75,75,0,9,0,9.583,N/A,0,0,0,0,0,0,0,healthy in thin patches
+19209,1,23,42,259,10,4/21/2017,0,Claudia,0,2,3.9,46.1,F,6,2,11,3/15/2017,9:05,85,85,0,9,0,9.583,N/A,0,0,0,1,0,0,0,not much debris
+19209,2,23,42,228,10,4/21/2017,0,Claudia,0,2,4.4,45.6,F,6,2,3,3/16/2017,9:16,85,80,0,9,0,9.583,N/A,0,0,0,1,1,0,0,"cloudy, debris"
+19209,3,23,42,133,10,4/21/2017,0,Claudia,0,2,7.5,42.5,F,6,2,15,3/17/2017,9:10,65,75,0,9,0,9.583,N/A,0,0,1,1,1,0,0,"debris, cloudy, patches are clumping together"
+19209,4,23,42,115,10,4/21/2017,0,Claudia,0,2,8.7,41.3,F,6,2,5,3/18/2017,9:31,70,85,0,9,0,9.583,N/A,1,0,0,1,0,0,0,"debris, layer looks networky"
+19209,5,23,42,95,10,4/21/2017,0,Claudia,0,2,10.5,39.5,F,6,2,29,3/19/2017,9:14,90,90,0,9,0,9.583,N/A,2,0,0,1,0,0,0,"small debris flecks, large tubey networks forming"
+19209,6,23,42,50,9.9,4/21/2017,0,Claudia,0,2,20,30,F,6,2,7,3/20/2017,9:08,90,70,0,9,0,9.583,N/A,2,0,0,0,0,0,0,chunky networks
+19209,7,23,42,50,9.9,4/21/2017,0,Claudia,0,2,20,30,F,6,2,17,3/21/2017,9:04,85,80,0,9,0,9.583,N/A,1,0,0,1,0,0,0,"a little debris, networky, patterns"
+19209,8,23,42,39,10,4/21/2017,0,Claudia,0,2,25.6,24.4,F,6,2,21,3/22/2017,9:11,65,80,0,9,0,9.583,N/A,2,0,0,0,0,0,0,"thick tubey networks, not beating but looks good"
+19209,9,23,42,23,10,4/21/2017,0,Claudia,0,2,43.5,6.5,F,6,2,13,3/23/2017,9:17,65,70,0,9,0,9.583,N/A,1,0,1,0,0,0,0,"thin strings and chunky patches, not beating"
+19209,10,23,42,30,10,4/21/2017,0,Claudia,0,2,33.3,16.7,F,6,2,31,3/24/2017,9:30,70,90,1,9,4,9.583,10,2,0,0,1,0,0,0,"large flecks of debris, patterns of ""macrotissues"""
+19209,11,23,42,48,10,4/21/2017,0,Claudia,0,2,20.8,29.2,F,6,2,9,3/25/2017,9:13,80,95,1,9,5,9.583,10,0,0,0,0,0,0,0,
+19209,12,23,42,35,10,4/21/2017,0,Claudia,0,2,28.6,21.4,F,6,2,19,3/26/2017,9:13,65,85,1,9,20,9.583,9,2,0,0,0,0,0,0,chunky networks
+19209,13,23,42,22,9.8,4/21/2017,0,Claudia,0,2,45.5,4.5,F,6,2,26,3/27/2017,9:20,80,90,1,9,15,9.583,9,2,0,0,0,0,1,0,"lots of bright chunky macrotissues. under phase scope, lots of this line is the swirly cell type not hearts"
+19209,14,23,42,15,9.7,4/21/2017,0,Claudia,0,2,66.7,-16.7,F,6,2,33,3/28/2017,9:15,75,95,1,9,25,9.583,9,0,0,1,0,0,1,0,swirly w/ bright spots and clumps
+19209,15,23,42,37,9.8,4/21/2017,0,Claudia,0,2,27,23,F,6,2,1,3/29/2017,9:28,65,75,1,9,25,9.583,10,0,0,0,0,0,0,0,"different textures, lots beating"
+19238,0,11,43,49,10,4/21/2017,0,Katie,2,1,20.4,29.6,D,4,1,13,2/4/2017,9:23,90,90,0,7,0,7.875,N/A,0,0,0,0,0,0,0,"dense, some cells growing on top of each other"
+19238,1,11,43,144,10,4/21/2017,0,Katie,2,1,6.9,43.1,D,4,1,17,2/5/2017,8:53,85,95,0,7,0,7.875,N/A,0,0,1,1,0,0,0,"dense sheets, patches where cells have died or contracted, starting to form lumps as usual. not much debris --> not much has died"
+19238,2,11,43,202,10,4/21/2017,0,Katie,2,1,5,45,D,4,1,21,2/6/2017,9:08,85,90,0,7,0,7.875,N/A,0,0,1,0,0,0,0,"dense clumps, especially dense around the outer edge, seems to be bunching together rather than dying off"
+19238,3,11,43,85,10,4/21/2017,0,Katie,2,1,11.8,38.2,D,4,1,29,2/7/2017,9:15,85,90,0,7,0,7.875,N/A,0,0,0,0,0,0,0,"still quite dense, especially around the edges"
+19238,4,11,43,90,10,4/21/2017,0,Katie,2,1,11.1,38.9,D,4,1,25,2/8/2017,9:05,80,90,0,7,0,7.875,N/A,0,0,0,2,0,0,0,"lots of debris, dense patches"
+19238,5,11,43,41,10,4/21/2017,0,Katie,2,1,24.4,25.6,D,4,1,1,2/9/2017,9:10,90,95,0,7,0,7.875,N/A,0,0,0,2,1,0,0,"lots of debris thin, textured (looks fluffy) in some spots"
+19238,6,11,43,85,10,4/21/2017,0,Katie,2,1,11.8,38.2,D,4,1,23,2/10/2017,9:19,90,85,0,7,0,7.875,N/A,2,0,0,0,1,0,0,"thick networky pattern in the middle, cloudy around the outside"
+19238,7,11,43,63,10,4/21/2017,0,Katie,2,1,15.9,34.1,D,4,1,15,2/11/2017,9:13,85,95,0,7,0,7.875,N/A,1,0,1,1,1,0,0,"cloudy patches and networky clumps and debris under phase scope, cells are not beating but look correct"
+19238,8,11,43,75,10,4/21/2017,0,Katie,2,1,13.3,36.7,D,4,1,3,2/12/2017,9:03,70,95,1,7,15,7.875,7,2,0,0,0,0,0,0,nice chunky networks
+19238,9,11,43,46,10,4/21/2017,0,Katie,2,1,21.7,28.3,D,4,1,5,2/13/2017,9:15,80,90,1,7,10,7.875,8,1,0,0,1,1,0,0,"some debris, some cloudy patches, some networky, some thin and stringy"
+19238,10,11,43,75,10,4/21/2017,0,Katie,2,1,13.3,36.7,D,4,1,31,2/14/2017,9:15,85,90,1,7,10,7.875,8,2,0,0,0,0,0,0,thick networks and thin networks
+19238,11,11,43,67,10,4/21/2017,0,Katie,2,1,14.9,35.1,D,4,1,27,2/15/2017,9:30,95,95,1,7,20,7.875,7,1,0,0,0,1,0,0,"cloudy patches, small networks"
+19238,12,11,43,28,10,4/21/2017,0,Katie,2,1,35.7,14.3,D,4,1,7,2/16/2017,9:15,85,90,1,7,40,7.875,8,2,0,0,0,0,0,0,"patches, thick networks, thin networks. all types are beating"
+19238,13,11,43,43,10,4/21/2017,0,Katie,2,1,23.3,26.7,D,4,1,11,2/17/2017,9:30,75,90,1,7,70,7.875,8,1,0,0,0,0,0,0,"stringy networks, looks great"
+19238,14,11,43,36,10,4/21/2017,0,Katie,2,1,27.8,22.2,D,4,1,9,2/18/2017,9:15,85,95,1,7,45,7.875,8,1,0,1,0,0,0,0,"patchy, stringy, networky. large beating clumps"
+19238,15,11,43,56,10,4/21/2017,0,Katie,2,1,17.9,32.1,D,4,1,19,2/19/2017,9:30,85,95,1,7,50,7.875,8,1,0,0,0,0,0,0,"patchy, networky. look great!"
+18508,0,13,17,37,8.8,10/23/2017,2,Reem,1,7,27,23,H,8,3,27,9/30/2017,9:40,98,98,0,7,0,7,NA,0,0,0,0,0,0,0,very confluent but healthy stem cells. We collected this day 0 on the same day as day 1 (did not start the differentiation in this well)
+18508,1,13,17,118,10,10/23/2017,2,Reem,1,7,8.5,41.5,H,8,3,1,9/30/2017,9:40,80,85,0,7,0,7,NA,0,0,0,1,1,0,0,"only a little debris, layer looks fuzzy"
+18508,2,13,17,57,10,10/23/2017,2,Reem,1,7,17.5,32.5,H,8,3,33,10/1/2017,9:46,65,80,0,7,0,7,NA,0,0,0,2,1,0,0,a lot of cells died off in the middle of the well
+18508,3,13,17,50,9.9,10/23/2017,2,Reem,1,7,20,30,H,8,3,23,10/2/2017,9:30,50,75,0,7,0,7,NA,0,0,0,2,0,0,0,"past the debris, the layer looks thin with some denser patches in the middle"
+18508,4,13,17,98,9.8,10/23/2017,2,Reem,1,7,10.2,39.8,H,8,3,19,10/3/2017,9:22,70,80,0,7,0,7,NA,2,0,0,1,0,0,0,starting to see dense network clumps with a differently textured area in between
+18508,5,13,17,127,10,10/23/2017,2,Reem,1,7,7.9,42.1,H,8,3,5,10/4/2017,9:33,95,80,0,7,0,7,NA,2,0,0,1,1,0,0,chunky networks with cloudy layer between
+18508,6,13,17,100,10,10/23/2017,2,Reem,1,7,10,40,H,8,3,17,10/5/2017,9:24,85,75,0,7,0,7,NA,1,0,0,1,0,0,0,mostly thin networks but a few chunky ones. this looks on track to CM to me
+18508,7,13,17,66,9.9,10/23/2017,2,Reem,1,7,15.2,34.8,H,8,3,3,10/6/2017,9:41,95,80,1,7,2,7,7,2,0,0,1,0,0,0,can see thin networks at 10X but chucnky with the lgiht scope
+18508,8,13,17,60,9.5,10/23/2017,2,Reem,1,7,16.7,33.3,H,8,3,15,10/7/2017,9:31,90,80,1,7,50,7,7,2,0,3,1,1,0,0,macrotissues beating visible at 4X
+18508,9,13,17,70,9.7,10/23/2017,2,Reem,1,7,14.3,35.7,H,8,3,13,10/8/2017,9:56,90,85,1,7,50,7,7,2,0,1,1,1,0,1,"in light microscope, there are big chunks beating, some spaces without clumps look cloudy to do sticky debris. Collections were late today due to CO2 incubator emergency that needed to be resolved."
+18508,10,13,17,57,9,10/23/2017,2,Reem,1,7,17.5,32.5,H,8,3,37,10/9/2017,9:46,95,80,1,7,65,7,7,1,0,3,1,1,0,1,large areas beating forcefully. some fluffy patches
+18508,11,13,17,27,9.3,10/23/2017,2,Reem,1,7,37,13,H,8,3,9,10/10/2017,9:43,85,85,1,7,75,7,7,1,0,3,1,1,0,1,"large sheets are beating, a few beating clumps"
+18508,12,13,17,15,2.3,10/23/2017,2,Reem,1,7,50,0,H,8,3,31,10/11/2017,9:46,85,75,1,7,50,7,7,1,0,1,1,1,1,1,"stringy networks, mostly around the outside of the well"
+18508,13,13,17,26,7.6,10/23/2017,2,Reem,1,7,38.5,11.5,H,8,3,21,10/12/2017,9:34,90,75,1,7,65,7,7,1,0,3,0,0,0,1,"beating very rapidly, in large spiderwebby networks"
+18508,14,13,17,17,6.1,10/23/2017,2,Reem,1,7,58.8,-8.8,H,8,3,11,10/13/2017,9:42,80,80,1,7,75,7,7,1,0,3,0,0,1,1,"sheets mostly around the outside, chunky in the sheets"
+18508,15,13,17,18,8.2,10/23/2017,2,Reem,1,7,55.6,-5.6,H,8,3,25,10/14/2017,9:33,70,70,1,7,70,7,7,1,0,1,0,0,1,1,stringy networks with a few textury/transparent sheets. everything is pulsing very rapidly
+19093,0,36,29,48,9,10/23/2017,2,Katie,2,6,20.8,29.2,H,8,3,27,9/30/2017,9:40,100,100,0,7,0,7,NA,0,0,0,0,0,0,0,very confluent but healthy stem cells. We collected this day 0 on the same day as day 1 (did not start the differentiation in this well)
+19093,1,36,29,171,10,10/23/2017,2,Katie,2,6,5.8,44.2,H,8,3,1,9/30/2017,9:40,75,85,0,7,0,7,NA,0,0,0,1,1,0,0,"only a little debris, layer looks fuzzy"
+19093,2,36,29,134,10,10/23/2017,2,Katie,2,6,7.5,42.5,H,8,3,33,10/1/2017,9:46,75,80,0,7,0,7,NA,0,0,0,2,1,0,0,cells dying off in the bottom left quandrant of the well
+19093,3,36,29,78,10,10/23/2017,2,Katie,2,6,12.8,37.2,H,8,3,23,10/2/2017,9:30,70,85,0,7,0,7,NA,0,0,0,2,1,0,0,"a thin continuous layer covering about half the well, little patches elsewhere. The continuous layer has some thicker and some thinner patches within it"
+19093,4,36,29,118,10,10/23/2017,2,Katie,2,6,8.5,41.5,H,8,3,19,10/3/2017,9:22,50,85,0,7,0,7,NA,2,0,0,1,0,0,0,dense almost networky patches with no other cells between patches. no cells left on the lower right of these wells--potentially due to too much force with the serological pipette
+19093,5,36,29,71,9.3,10/23/2017,2,Katie,2,6,14.1,35.9,H,8,3,5,10/4/2017,9:33,90,85,0,7,0,7,NA,2,0,0,2,1,0,0,chunky networks with cloudy layer between
+19093,6,36,29,107,9.9,10/23/2017,2,Katie,2,6,9.3,40.7,H,8,3,17,10/5/2017,9:24,85,85,0,7,0,7,NA,0,0,0,2,1,0,0,"a few clumps of cells, but a lot of the well is covered in a thin cloudy layer. lots of debris."
+19093,7,36,29,102,9.6,10/23/2017,2,Katie,2,6,9.8,40.2,H,8,3,3,10/6/2017,9:41,90,85,1,7,2,7,7,0,0,0,2,1,1,0,cloudy textured layer
+19093,8,36,29,105,9.7,10/23/2017,2,Katie,2,6,9.5,40.5,H,8,3,15,10/7/2017,9:31,85,80,1,7,30,7,7,1,0,2,1,1,1,0,"lots of the layer looks cloudy, but large beating sheets are visible with light scope"
+19093,9,36,29,113,9.8,10/23/2017,2,Katie,2,6,8.8,41.2,H,8,3,13,10/8/2017,9:56,85,80,1,7,15,7,7,1,0,2,1,0,1,1,"sheets are beating, can see waves of beating .Collections were late today due to CO2 incubator emergency that needed to be resolved."
+19093,10,36,29,79,9.2,10/23/2017,2,Katie,2,6,12.7,37.3,H,8,3,37,10/9/2017,9:46,80,80,1,7,8,7,7,1,0,2,2,0,1,1,well looks like a large continuous sheet with some bright string patches
+19093,11,36,29,58,8.9,10/23/2017,2,Katie,2,6,17.2,32.8,H,8,3,9,10/10/2017,9:43,85,85,1,7,40,7,7,1,0,1,1,1,1,1,"stringy hearts mostly around the rim of the well, the middle its cloudy"
+19093,12,36,29,253,9.2,10/23/2017,2,Katie,2,6,4,46,H,8,3,31,10/11/2017,9:46,70,85,1,7,25,7,7,1,0,3,1,0,1,1,large patches beating in unison.
+19093,13,36,29,287,9.3,10/23/2017,2,Katie,2,6,3.5,46.5,H,8,3,21,10/12/2017,9:34,75,85,1,7,15,7,7,1,0,1,1,0,1,1,very long linear heart strings. beating forcefully. only the edges are beating
+19093,14,36,29,217,9.3,10/23/2017,2,Katie,2,6,4.6,45.4,H,8,3,11,10/13/2017,9:42,70,85,1,7,30,7,7,1,0,1,1,0,1,1,stringy clumps 
+19093,15,36,29,206,8.7,10/23/2017,2,Katie,2,6,4.9,45.1,H,8,3,15,10/14/2017,9:33,60,85,1,7,35,7,7,1,0,1,0,0,1,1,"very stringy, can see pulses. these are going as a slower pace compared to 18508"
+18489,0,15,40,60,9.5,10/23/2017,2,Reem,1,6,16.7,33.3,I,9,3,15,10/1/2017,9:46,100,100,0,7,0,7,NA,0,0,0,0,0,0,0,this line is growing in colonies rather than a monolayer due to sudden issue with incubator a few days before differentiation. Thats why there is a lot of variance in Day 0 confluence
+18489,1,15,40,115,10,10/23/2017,2,Reem,1,6,8.7,41.3,I,9,3,29,10/2/2017,9:30,65,80,0,7,0,7,NA,0,0,0,1,0,0,0,there are colonies with very defined edges
+18489,2,15,40,138,10,10/23/2017,2,Reem,1,6,7.2,42.8,I,9,3,37,10/3/2017,9:22,50,85,0,7,0,7,NA,1,0,0,1,0,0,0,these cells are already forming little stringy/networky circular patterns. I've never seen a line do this so early
+18489,3,15,40,144,10,10/23/2017,2,Reem,1,6,6.9,43.1,I,9,3,13,10/4/2017,9:33,80,90,0,7,0,7,NA,1,0,0,2,1,0,0,tiny thin networks forming. a few small cloudy patches
+18489,4,15,40,59,10,10/23/2017,2,Reem,1,6,16.9,33.1,I,9,3,7,10/5/2017,9:24,70,70,0,7,0,7,NA,0,0,0,2,1,0,0,the tiny networks observed on previous days are no longer present. The well look cloudy with a few denser patches.
+18489,5,15,40,87,10,10/23/2017,2,Reem,1,6,11.5,38.5,I,9,3,21,10/6/2017,9:41,80,50,0,7,0,7,NA,0,0,0,1,1,0,0,layer is cloudy with lots of texture and a few circular dense globs
+18489,6,15,40,102,10,10/23/2017,2,Reem,1,6,9.8,40.2,I,9,3,33,10/7/2017,9:31,75,90,0,7,0,7,NA,1,0,0,1,1,0,0,"there are sort of networks, but they looks cloudy in a way they usually dont. the well looks like a cloudy textured layer"
+18489,7,15,40,104,10,10/23/2017,2,Reem,1,6,9.6,40.4,I,9,3,17,10/8/2017,9:56,80,70,1,7,15,7,7,1,0,1,0,0,1,1,thin networks are very defined across the plate. Collections were late today due to CO2 incubator emergency that needed to be resolved.
+18489,8,15,40,118,10,10/23/2017,2,Reem,1,6,8.5,41.5,I,9,3,1,10/9/2017,9:46,95,85,1,7,25,7,7,0,0,2,1,1,1,1,there is a very textured layer with small dense areas. sheets of beating
+18489,9,15,40,43,9.6,10/23/2017,2,Reem,1,6,23.3,26.7,I,9,3,3,10/10/2017,9:43,95,80,1,7,65,7,7,0,0,3,1,1,0,1,"again, a textured layer. not very typical appearance"
+18489,10,15,40,52,9.4,10/23/2017,2,Reem,1,6,19.2,30.8,I,9,3,19,10/11/2017,9:46,95,60,1,7,75,7,7,0,0,2,1,0,1,1,"still looks textured, but there are huge sheets beating in waves"
+18489,11,15,40,41,9.8,10/23/2017,2,Reem,1,6,24.4,25.6,I,9,3,9,10/12/2017,9:34,90,70,1,7,55,7,7,1,0,2,0,0,1,1,large sheets with strong pulses
+18489,12,15,40,60,9.1,10/23/2017,2,Reem,1,6,16.7,33.3,I,9,3,5,10/13/2017,9:42,65,40,1,7,30,7,7,1,0,2,0,0,1,1,"great sheets, some junk"
+18489,13,15,40,25,9.1,10/23/2017,2,Reem,1,6,40,10,I,9,3,35,10/14/2017,9:33,85,80,1,7,80,7,7,1,0,2,0,0,1,1,this might be the best well of 18489. stringy sheets cover most of the plate
+18489,14,15,40,35,8.6,10/23/2017,2,Reem,1,6,28.6,21.4,I,9,3,12,10/15/2017,9:29,60,50,1,7,55,7,7,2,0,2,0,0,1,1,this well has large sheets beating and a few chunky networks
+18489,15,15,40,31,8.9,10/23/2017,2,Reem,1,6,32.3,17.7,I,9,3,23,10/16/2017,9:47,80,95,1,7,80,7,7,1,0,2,0,0,1,1,large sheets that connect through stringy networks. looks great.
+19159,0,11,20,62,9,10/23/2017,2,Katie,2,7,16.1,33.9,I,9,3,15,10/1/2017,9:46,100,100,0,7,0,,NA,0,0,0,1,0,0,0,iPSCs are forming a thin  monolayer over the whole plate
+19159,1,11,20,193,10,10/23/2017,2,Katie,2,7,5.2,44.8,I,9,3,29,10/2/2017,9:30,70,80,0,7,0,,NA,0,0,0,1,0,0,0,"layer with patches, outlines are not perfectly round, some differences in density in the layer"
+19159,2,11,20,202,10,10/23/2017,2,Katie,2,7,5,45,I,9,3,37,10/3/2017,9:22,85,90,0,7,0,,NA,0,0,0,2,1,0,0,cloudy layer covering most of the plate-- looks pretty typical for day 2
+19159,3,11,20,144,10,10/23/2017,2,Katie,2,7,6.9,43.1,I,9,3,13,10/4/2017,9:33,90,100,0,7,0,,NA,0,0,0,2,1,0,0,"cloudy  layer, some texture starting to appear (some semblance of what will probably be ""networks"" soon)"
+19159,4,11,20,153,10,10/23/2017,2,Katie,2,7,6.5,43.5,I,9,3,7,10/5/2017,9:24,85,100,0,7,0,,NA,0,0,0,2,1,0,0,"tons of debris, from what i can see underneath there is a cloudy layer with a few small globby/dense areas"
+19159,5,11,20,148,10,10/23/2017,2,Katie,2,7,6.8,43.2,I,9,3,21,10/6/2017,9:41,90,100,0,7,0,,NA,0,0,0,2,1,0,0,"lots of debris, the layer is textured and looks almost like it has cheetah spots-- it doesnt look like something I've seen before during this diff"
+19159,6,11,20,70,9.2,10/23/2017,2,Katie,2,7,14.3,35.7,I,9,3,33,10/7/2017,9:31,70,95,0,7,0,,NA,0,0,0,2,1,0,0,"this is the most debris I have ever seen during this diff. The cells that are visible under the debris cloud look fluffy and textured, not like I would expect for day 6."
+19159,7,11,20,44,9,2/13/2018,3,Katie,2,10,22.7,27.3,I,9,4,17,10/8/2017,9:56,75,100,0,7,0,,NA,0,0,0,2,1,0,1,"again, there is so much debris. I think this must have differentiated into some other cell type that is not supposrted by this media. Collections were late today due to CO2 incubator emergency that needed to be resolved."
+19159,8,11,20,62,9.5,10/23/2017,2,Katie,2,7,16.1,33.9,I,9,3,1,10/9/2017,9:46,70,100,1,7,10,,7,0,0,0,2,0,0,1,still lots of debris. but lots of light beating and many cells look right.
+19159,9,11,20,26,9.7,10/23/2017,2,Katie,2,7,38.5,11.5,I,9,3,3,10/10/2017,9:43,80,100,1,7,15,,7,0,0,3,2,0,0,1,"lots of debris, layer looks textured, but not in the same way as 18489"
+19159,10,11,20,25,6.2,10/23/2017,2,Katie,2,7,40,10,I,9,3,20,10/11/2017,9:46,95,100,1,7,30,,8,0,0,1,2,0,0,1,a layer with no large chunks or beating networks
+19159,11,11,20,27,8.1,10/23/2017,2,Katie,2,7,37,13,I,9,3,9,10/12/2017,9:34,85,100,1,7,40,,8,0,0,1,2,1,1,1,"fuzzy layer around the outside, lots has died in the middle"
+19159,12,11,20,22,7.6,10/23/2017,2,Katie,2,7,45.5,4.5,I,9,3,6,10/13/2017,9:42,65,100,1,7,25,,8,0,0,1,2,1,1,1,"lots of cells continue to die, only a few areas beating."
+19159,13,11,20,19,5.9,10/23/2017,2,Katie,2,7,50,0,I,9,3,35,10/14/2017,9:33,75,90,1,7,10,,8,0,0,0,2,1,1,1,"still lots of cells dying which is atypical. The CMs that are there are in small clumps of only a few cells, surrounded by other junk in various stages of lifting off of the plate"
+19159,14,11,20,28,7.5,10/23/2017,2,Katie,2,7,35.7,14.3,I,9,3,11,10/15/2017,9:29,60,100,1,7,40,,8,0,0,1,1,1,1,1,"still a fluffy layer, but today there are actually beating clumps visble in the light microscope"
+19159,15,11,20,26,6.5,2/13/2018,3,Katie,2,10,38.5,11.5,I,9,4,23,10/16/2017,9:47,40,65,1,7,25,,7,0,0,0,1,0,1,1,"lots has died in the middle, but around the edge of the well there are beating patches."
+19190,0,15,23,27,8,2/13/2018,3,Reem,1,10,37.0,13.0,J,10,4,37,1/22/2018,9:04,95,95,0,NA,0,7,NA,0,0,0,0,0,0,0,very confluent even though there are a few empty spots on the plate
+19190,1,15,23,120,10,2/13/2018,3,Reem,1,10,8.3,41.7,J,10,4,11,1/23/2018,8:59,90,100,0,NA,0,7,NA,0,0,0,1,1,0,0,"some bunching, looks slight cloudy but could just be debris"
+19190,2,15,23,34,10,2/13/2018,3,Reem,1,10,29.4,20.6,J,10,4,13,1/24/2018,8:53,85,100,0,NA,0,7,NA,0,0,0,2,1,0,0,circuluar empty patches where cells have died or bunched up
+19190,3,15,23,42,9.5,2/13/2018,3,Reem,1,10,23.8,26.2,J,10,4,1,1/25/2018,9:00,80,100,0,NA,0,7,NA,0,0,0,2,1,0,0,"very cloudy, starting to be stringy macrotissue patterns"
+19190,4,15,23,100,10,2/13/2018,3,Reem,1,10,10.0,40.0,J,10,4,7,1/26/2018,8:50,95,100,0,NA,0,7,NA,0,0,0,1,1,0,0,"nice patterns forming, cloudy layer"
+19190,5,15,23,53,9.9,2/13/2018,3,Reem,1,10,18.9,31.1,J,10,4,35,1/27/2018,8:50,100,95,0,NA,0,7,NA,0,0,0,2,1,0,0,textured layer but no obvious shapes that hearts often make
+19190,6,15,23,40,10,2/13/2018,3,Reem,1,10,25.0,25.0,J,10,4,9,1/28/2018,8:54,95,100,0,NA,0,7,NA,0,0,0,1,1,0,0,these don't look quite right. like they tried and didnt make it.
+19190,7,15,23,54,9.5,2/13/2018,3,Reem,1,10,18.5,31.5,J,10,4,3,1/29/2018,9:16,85,100,0,NA,0,7,NA,2,0,0,1,1,0,0,looks nice and textured under phase scope
+19190,8,15,23,100,10,2/13/2018,3,Reem,1,10,10.0,40.0,J,10,4,21,1/30/2018,9:12,90,100,0,7,0,7,NA,2,0,0,1,0,0,0,looks like it should beat but hasnt
+19190,9,15,23,27,9.8,2/13/2018,3,Reem,1,10,37.0,13.0,J,10,4,17,1/31/2018,9:18,90,100,1,7,7,7,9,1,0,1,1,0,0,0,thin stringy networks beating
+19190,10,15,23,18,7.8,2/13/2018,3,Reem,1,10,50.0,0.0,J,10,4,33,2/1/2018,9:16,95,95,1,7,30,7,9,1,0,1,2,0,0,0,"lots of debris, very small clumpy networks"
+19190,11,15,23,29,8.9,2/13/2018,3,Reem,1,10,34.5,15.5,J,10,4,19,2/2/2108,9:12,85,95,1,7,45,7,9,1,0,2,2,0,0,0,"great thin stringy networks, some forming circles with dots in the middle"
+19190,12,15,23,31,9.8,2/13/2018,3,Reem,1,10,32.3,17.7,J,10,4,5,2/3/2018,9:10,85,100,1,7,60,7,7,2,0,3,1,0,0,0,"lost of thin layer, some denser clumps that forms sort of thick networks"
+19190,13,15,23,30,NA,2/13/2018,3,Reem,1,10,33.3,16.7,J,10,4,15,2/4/2018,9:02,85,100,1,7,50,7,9,1,0,1,2,0,0,0,"this networks, lots beating"
+19190,14,15,23,22,7.1,2/13/2018,3,Reem,1,10,45.5,4.5,J,10,4,25,2/5/2018,9:10,80,95,1,7,50,7,9,1,0,1,2,0,0,0,thin spidery networks beating strongly!
+19190,15,15,23,27,3.8,2/13/2018,3,Reem,1,10,37.0,13.0,J,10,4,23,2/6/2018,9:18,80,100,1,7,40,7,9,1,0,1,2,0,0,0,thin spidery networks beating strongly!
+19193,0,14,31,69,7.8,2/13/2018,3,Katie,2,9,14.5,35.5,J,10,4,37,1/22/2018,9:04,90,90,0,NA,0,9,NA,0,0,0,0,0,0,0,may be slightly unhealthy-- look spiky in pics
+19193,1,14,31,169,NA,2/13/2018,3,Katie,2,9,5.9,44.1,J,10,4,11,1/23/2018,8:59,90,95,0,NA,0,9,NA,0,0,0,1,0,0,0,these wells have a weird bright pattern i think where the cells were most confluent
+19193,2,14,31,102,2.5,2/13/2018,3,Katie,2,9,9.8,40.2,J,10,4,13,1/24/2018,8:53,80,95,0,NA,0,9,NA,0,0,0,2,1,0,0,cloudly layer looks like we would expect
+19193,3,14,31,49,9.8,2/13/2018,3,Katie,2,9,20.4,29.6,J,10,4,1,1/25/2018,9:00,80,95,0,NA,0,9,NA,0,0,0,2,1,0,0,a ton of debris covering a thin cloudy layer
+19193,4,14,31,49,9.4,2/13/2018,3,Katie,2,9,20.4,29.6,J,10,4,7,1/26/2018,8:50,95,95,0,NA,0,9,NA,0,0,0,2,1,0,0,cloudy layer no distinct patterns
+19193,5,14,31,68,10,2/13/2018,3,Katie,2,9,14.7,35.3,J,10,4,35,1/27/2018,8:50,90,95,0,NA,0,9,NA,0,0,0,2,1,0,0,middle of the well looks cloudy the rest are dense spiky clumps
+19193,6,14,31,112,10,2/13/2018,3,Katie,2,9,8.9,41.1,J,10,4,9,1/28/2018,8:54,100,95,0,NA,0,9,NA,0,0,0,1,1,0,0,"don't look quite right. these are textured and cloudy, but morphology is off under phase scope."
+19193,7,14,31,114,10,2/13/2018,3,Katie,2,9,8.8,41.2,J,10,4,3,1/29/2018,9:16,95,95,0,NA,0,9,NA,1,0,0,1,2,0,0,"under light scope, there are small stringy patterns. looks okay under phase scope"
+19193,8,14,31,134,10,2/13/2018,3,Katie,2,9,7.5,42.5,J,10,4,21,1/30/2018,9:12,95,100,0,NA,0,9,NA,0,0,0,1,1,0,0,this odesnt look right under light scope. not too good under phase scope either. cells seem like maybe they are too dense
+19193,9,14,31,83,10,2/13/2018,3,Katie,2,9,12.0,38.0,J,10,4,17,1/31/2018,9:18,85,90,1,9,1,9,9,0,0,0,1,0,0,0,weird textured layer with no obvious clumps
+19193,10,14,31,22,10,2/13/2018,3,Katie,2,9,45.5,4.5,J,10,4,33,2/1/2018,9:16,95,90,1,9,20,9,9,0,0,2,0,1,0,0,very dense layer. some cloudy areas. texture almost looks like networks but not quite.
+19193,11,14,31,168,10,2/13/2018,3,Katie,2,9,6.0,44.0,J,10,4,19,2/2/2108,9:12,85,95,1,9,1,9,10,0,0,0,0,1,0,0,"a few beating, the rest looks a little too spiky and dense"
+19193,12,14,31,56,10,2/13/2018,3,Katie,2,9,17.9,32.1,J,10,4,5,2/3/2018,9:10,80,95,1,9,10,9,10,1,0,3,0,0,1,0,"defined networky pattern, but it looks almost too dense and spiky"
+19193,13,14,31,34,9.6,2/13/2018,3,Katie,2,9,29.4,20.6,J,10,4,15,2/4/2018,9:02,85,90,1,9,25,9,9,1,0,2,0,0,1,0,networks but surrounded by dense patches of background
+19193,14,14,31,45,10,2/13/2018,3,Katie,2,9,22.2,27.8,J,10,4,25,2/5/2018,9:10,80,90,1,9,40,9,9,1,0,2,0,0,1,0,"some areas looks like a smooth cheetah print, dense texture layer. other smooth areas"
+19193,15,14,31,16,9.4,2/13/2018,3,Katie,2,9,50.0,0.0,J,10,4,24,2/6/2018,9:18,85,90,1,9,25,9,9,0,0,3,0,0,1,0,still very dense and textured
+18907,0,11,29,10,6,2/13/2018,3,Reem,1,8,50.0,0.0,K,11,4,37,1/22/2018,9:04,30,30,0,NA,0,7,NA,0,0,0,0,0,0,0,"not very many cells, this line struggled to grow right before the differentiation started"
+18907,1,11,29,99,10,2/13/2018,3,Reem,1,8,10.1,39.9,K,11,4,11,1/23/2018,8:59,65,65,0,NA,0,7,NA,0,0,0,1,1,0,0,"bunching more or less as expected, patches look slightly cloudy"
+18907,2,11,29,93,10,2/13/2018,3,Reem,1,8,10.8,39.2,K,11,4,13,1/24/2018,8:53,20,40,0,NA,0,7,NA,0,0,0,2,1,0,0,alot has died off and much of the well is empty. the cells that are there look about right.
+18907,3,11,29,35,9.8,2/13/2018,3,Reem,1,8,28.6,21.4,K,11,4,1,1/25/2018,9:00,20,65,0,NA,0,7,NA,0,0,0,2,0,0,0,"only a few dense clumps are still sticking to the plate still, but there is a thin layer of other cells. chunky debris."
+18907,4,11,29,48,9.7,2/13/2018,3,Reem,1,8,20.8,29.2,K,11,4,7,1/26/2018,8:50,30,40,0,NA,0,7,NA,0,0,0,2,1,0,0,"lots of cells died off early, it seems like cells are starting to proliferate again to some extent"
+18907,5,11,29,36,8.8,2/13/2018,3,Reem,1,8,27.8,22.2,K,11,4,35,1/27/2018,8:50,20,20,0,NA,0,7,NA,0,0,0,2,0,0,0,mostly covered in a very thin layer of cells. a little bit more dense around the edges. debris is thick fleck
+18907,6,11,29,43,9.7,2/13/2018,3,Reem,1,8,23.3,26.7,K,11,4,9,1/28/2018,8:54,70,50,0,NA,0,7,NA,0,0,0,1,0,0,0,"mostly ""background"". some dense clumps that look okay."
+18907,7,11,29,73,NA,2/13/2018,3,Reem,1,8,13.7,36.3,K,11,4,3,1/29/2018,9:16,50,45,1,7,5,7,7,1,0,2,1,0,1,0,they are forming patterns that are a circle with a dot in the middle -- BEATING!! large clumps
+18907,8,11,29,99,NA,2/13/2018,3,Reem,1,8,10.1,39.9,K,11,4,21,1/30/2018,9:12,70,40,1,7,10,7,7,0,0,1,1,1,1,0,"mostly beating around the outside, a few spots in the middle"
+18907,9,11,29,37,9.9,2/13/2018,3,Reem,1,8,27.0,23.0,K,11,4,18,1/31/2018,9:18,55,31,1,7,20,7,7,2,0,3,0,0,1,0,thick sheets spanning large portion of the middle of the well and the rim beating is slow and steady waves
+18907,10,11,29,44,8.5,2/13/2018,3,Reem,1,8,22.7,27.3,K,11,4,33,2/1/2018,9:16,65,20,1,7,15,7,7,2,0,3,1,0,1,0,cell patterns in the middle of the well look almost like veins.the beating parts around the outside are sheets with dense circles.
+18907,11,11,29,39,9.7,2/13/2018,3,Reem,1,8,25.6,24.4,K,11,4,20,2/2/2018,9:12,75,35,1,7,10,7,7,2,0,3,1,0,1,0,"a few large flakes of debris, ghostly non-beating vein shapes. good heartsin the middle and around the rim"
+18907,12,11,29,56,9.8,2/13/2018,3,Reem,1,8,17.9,32.1,K,11,4,5,2/3/2018,9:10,65,50,1,7,20,7,7,2,0,3,0,0,1,0,"huge areas of the plate covered by sheets beating in consant waves. sheets are thick with dense spots, based on light microscope it looks like a higher percentage is beating about 35%)"
+18907,13,11,29,45,9.1,2/13/2018,3,Reem,1,8,22.2,27.8,K,11,4,16,2/4/2018,9:02,55,35,1,7,20,7,7,2,0,1,1,0,1,0,"large peices of debris, chunky thick networks beating mostly in the middle of the well"
+18907,14,11,29,28,9.8,2/13/2018,3,Reem,1,8,35.7,14.3,K,11,4,26,2/5/2018,9:10,60,20,1,7,17,7,7,2,0,3,1,0,1,0,still faint spidery vein patterns all over the well with some chunky beating parts in the center and around the rim
+18907,15,11,29,39,9,2/13/2018,3,Reem,1,8,25.6,24.4,K,11,4,23,2/6/2018,9:18,65,35,1,7,17,7,7,2,0,3,1,0,1,0,"no ghostly veins in this one, just a bunch of thin background with a few dense beating clumps/networks"
+18517,0,14,41,49,9,2/13/2018,3,Katie,2,8,20.4,29.6,K,11,4,13,1/22/2018,9:04,100,100,0,NA,0,8,NA,0,0,0,0,0,0,0,very confluent even though there are a few empty spots on the plate
+18517,1,14,41,230,10,2/13/2018,3,Katie,2,8,4.3,45.7,K,11,4,31,1/23/2018,8:59,90,95,0,NA,0,8,NA,0,0,0,0,0,0,0,"very confluent, so its hard to tell if cells are responding to the media change in the way we expect."
+18517,2,14,41,212,10,2/13/2018,3,Katie,2,8,4.7,45.3,K,11,4,17,1/24/2018,8:53,80,95,0,NA,0,8,NA,0,0,0,1,1,0,0,nice layer looks like we would expect
+18517,3,14,41,51,10,2/13/2018,3,Katie,2,8,19.6,30.4,K,11,4,19,1/25/2018,9:00,85,100,0,NA,0,8,NA,0,0,0,1,1,0,0,"cloudy layer, looks pretty good"
+18517,4,14,41,108,10,2/13/2018,3,Katie,2,8,9.3,40.7,K,11,4,27,1/26/2018,8:50,90,95,0,NA,0,8,NA,0,0,0,2,1,0,0,chunky networky patterns arestarting to appear but itsa little too early to call them legit networks
+18517,5,14,41,124,10,2/13/2018,3,Katie,2,8,8.1,41.9,K,11,4,5,1/27/2018,8:50,95,100,0,NA,0,8,NA,0,0,0,2,1,0,0,the debris is so dense that its difficult to see what the cells look like. media color is good-- yellow
+18517,6,14,41,171,10,2/13/2018,3,Katie,2,8,5.8,44.2,K,11,4,11,1/28/2018,8:54,95,100,0,NA,0,8,NA,0,0,0,2,1,0,0,"these cells are very confluent still, but they are nice and textured and are forming shapes"
+18517,7,14,41,116,9.5,2/13/2018,3,Katie,2,8,8.6,41.4,K,11,4,9,1/29/2018,9:16,85,100,0,NA,0,8,NA,2,0,0,2,1,0,0,"textured, cells looks right under phase scope but not beating yet"
+18517,8,14,41,99,10,2/13/2018,3,Katie,2,8,10.1,39.9,K,11,4,21,1/30/2018,9:12,90,100,0,NA,0,8,NA,0,0,0,1,1,0,0,"textured, fuzzy, look okay"
+18517,9,14,41,63,9.9,2/13/2018,3,Katie,2,8,15.9,34.1,K,11,4,23,1/31/2018,9:18,85,95,1,8,1,8,9,0,0,0,1,0,0,0,"looks much different than a few days. a few denser patches under light scope, but not definite heart shapes"
+18517,10,14,41,35,9.7,2/13/2018,3,Katie,2,8,28.6,21.4,K,11,4,15,2/1/2018,9:16,85,100,1,8,5,8,9,0,0,3,1,0,0,0,"textured layer, some larger flecks of debris"
+18517,11,14,41,44,9.6,2/13/2018,3,Katie,2,8,22.7,27.3,K,11,4,1,2/2/2108,9:12,90,100,1,8,7,8,9,0,0,3,1,0,0,0,"a fuzzy layer with dense spots, some large heart clumps"
+18517,12,14,41,52,NA,2/13/2018,3,Katie,2,8,19.2,30.8,K,11,4,3,2/3/2018,9:10,95,100,1,8,45,8,9,0,0,2,1,0,0,0,fuzzy and textured with some dense spots
+18517,13,14,41,54,9.5,2/13/2018,3,Katie,2,8,18.5,31.5,K,11,4,39,2/4/2018,9:02,90,95,1,8,30,8,9,0,0,2,0,0,1,0,"very thick layer that is thinner in the middle. patterns in the layer that arent quite ""networks"""
+18517,14,14,41,275,6.4,2/13/2018,3,Katie,2,8,3.6,46.4,K,11,4,37,2/5/2018,9:10,85,95,1,8,30,8,9,0,0,2,1,0,1,0,"some smooth thin areas, some dense textured"
+18517,15,14,41,49,9.2,2/13/2018,3,Katie,2,8,20.4,29.6,K,11,4,7,2/6/2018,9:18,85,100,1,8,25,8,8,0,0,2,0,0,1,0,"again some smooth patches some dense and textured, some strong beating"
+19127,0,23,18,55,9.1,2/13/2018,3,Reem,1,9,18.2,31.8,K,11,4,13,1/22/2018,9:04,95,95,0,NA,0,7,NA,0,0,0,0,0,0,0,very confluent even though there are a few empty spots on the plate
+19127,1,23,18,78,9.8,2/13/2018,3,Reem,1,9,12.8,37.2,K,11,4,31,1/23/2018,8:59,35,50,0,NA,0,7,NA,0,0,0,2,0,0,0,cells are bunching together a lot-- many seems to be lifting off the plate..
+19127,2,23,18,117,10,2/13/2018,3,Reem,1,9,8.5,41.5,K,11,4,17,1/24/2018,8:53,55,70,0,NA,0,7,NA,0,0,0,2,1,0,0,"cells are forming stringy patterns moreso that a layer, but we have seen this before"
+19127,3,23,18,94,10,2/13/2018,3,Reem,1,9,10.6,39.4,K,11,4,19,1/25/2018,9:00,65,75,0,NA,0,7,NA,0,0,0,1,1,0,0,"cloudy layer, forming little areas that look like small circles-- its a pattern i have seen before in differentiations"
+19127,4,23,18,100,10,2/13/2018,3,Reem,1,9,10.0,40.0,K,11,4,27,1/26/2018,8:50,55,65,0,NA,0,7,NA,0,0,0,1,1,0,0,cells are very textured with circlepatterns of different sizes
+19127,5,23,18,120,10,2/13/2018,3,Reem,1,9,8.3,41.7,K,11,4,5,1/27/2018,8:50,80,80,0,NA,0,7,NA,0,0,0,2,1,0,0,"textures, dense circular shapes"
+19127,6,23,18,87,10,2/13/2018,3,Reem,1,9,11.5,38.5,K,11,4,11,1/28/2018,8:54,90,80,0,NA,0,7,NA,0,0,0,2,1,0,0,"large flecks of debris. textured, cloudy layer"
+19127,7,23,18,70,9.8,2/13/2018,3,Reem,1,9,14.3,35.7,K,11,4,9,1/29/2018,9:16,80,75,0,NA,0,7,NA,0,0,0,2,1,1,0,"textured layer,cloudy, not beating but looks okay"
+19127,8,23,18,82,9.8,2/13/2018,3,Reem,1,9,12.2,37.8,K,11,4,21,1/30/2018,9:12,90,80,1,7,15,7,7,0,0,1,2,1,1,0,"textured, fuzzy, a few small networks can be seen in light scope"
+19127,9,23,18,66,9.9,2/13/2018,3,Reem,1,9,15.2,34.8,K,11,4,23,1/31/2018,9:18,85,85,1,7,25,7,7,2,0,3,1,0,1,0,large patches beating forcefully
+19127,10,23,18,45,9.1,2/13/2018,3,Reem,1,9,22.2,27.8,K,11,4,15,2/1/2018,9:16,80,75,1,7,5,7,8,0,0,1,1,1,1,0,most of the well is a large cloudy patch.mostly garbage.
+19127,11,23,18,52,9.1,2/13/2018,3,Reem,1,9,19.2,30.8,K,11,4,1,2/2/2108,9:12,90,80,1,7,20,7,7,2,0,1,0,1,1,0,large chunky heart clumps beating strongly in unison
+19127,12,23,18,50,8.9,2/13/2018,3,Reem,1,9,20.0,30.0,K,11,4,5,2/3/2018,9:10,90,80,1,7,15,7,7,2,0,1,1,1,1,0,chunky networks spanning long areas beating in strong waves surrounded by swirls
+19127,13,23,18,44,9,2/13/2018,3,Reem,1,9,22.7,27.3,K,11,4,39,2/4/2018,9:02,55,55,1,7,3,7,8,0,0,1,0,1,1,0,"these wells are less confluent than others of this line, so instead of chunky networks they just have bulbous beating clumps"
+19127,14,23,18,36,8.3,2/13/2018,3,Reem,1,9,27.8,22.2,K,11,4,38,2/5/2018,9:10,70,75,1,7,10,7,7,2,0,1,1,1,1,0,a few very dense heart clumps/spheres surrounded by junk
+19127,15,23,18,53,9.6,2/13/2018,3,Reem,1,9,18.9,31.1,K,11,4,7,2/6/2018,9:18,80,75,1,7,10,7,7,2,0,1,0,1,1,0,"as with other wells of this line, there are dense stringy macrotissues in the middle surrounded by junk"
