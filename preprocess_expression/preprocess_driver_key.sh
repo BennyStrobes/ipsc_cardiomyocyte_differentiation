@@ -289,7 +289,7 @@ fi
 
 
 #############################################
-##OLD, retired scripts
+##OLD (retired scripts) NO LONGER USED!
 #############################################
 
 
@@ -325,9 +325,4 @@ target_region_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_
 ##### Part 4
 # Make heatmap showing correlation between ipsc temporal samples as well as those from other data sets
 sh expression_correlation_heatmap.sh $expression_file_cross_data_sets $target_region_file $visualize_total_expression_dir 
-
-
-
-
-
 fi
