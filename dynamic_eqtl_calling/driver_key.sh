@@ -1,31 +1,39 @@
-#!/bin/bash
-#SBATCH --time=20:00:00 --partition=broadwl --mem=14GB
+
+######################################
+# Dynamic eQTL analysis
+######################################
+
+# This scripts assumes you have run the ipsc_preproccess_pipeline first (https://github.com/BennyStrobes/ipsc_cardiomyocyte_differentiation/tree/master/preprocess_expression)
+# And have save the results at the root directory here:
+preprocess_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/"
+
+# This scripts assumes you have run the ipsc_standard_eqtl_pipeline first (https://github.com/BennyStrobes/ipsc_cardiomyocyte_differentiation/tree/master/standard_eqtl_calling)
+# And have save the results at the root directory here:
+standard_eqtl_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_step_independent_qtl_pipelines/wasp/"
+
+
+
+
 
 ###############################################################################
 # Input Data
 ###############################################################################
 
-# Directory created by "time_step_independent_qtl_pipelines" scripts
-# Contains 1 file per sample with information on each test (variant, target region)
-# Each file (sample) has the same number of lines (tests)
-# cht_input_file_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_step_independent_qtl_pipelines/wasp/cht_input_files/"
-
 # File containing all of the target regions we are using. We are using this file to convert from gene positions to ensable id
-target_region_input_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_step_independent_qtl_pipelines/wasp/target_regions/target_regions_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_merged.txt"
+target_region_input_file=$standard_eqtl_dir"target_regions/target_regions_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_merged.txt"
 
 # cell line specific pcs
-cell_line_specific_pc_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/covariates/cell_line_ignore_missing_principal_components_9.txt"
+cell_line_specific_pc_file=$preprocess_dir"covariates/cell_line_ignore_missing_principal_components_9.txt"
 
 # Gene expression data for all samples
-# Expression is RPKM transformed, then quantile normalized.
-# Script will standardize each gene
-total_expression_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/processed_total_expression/quantile_normalized_no_projection.txt"
+
+total_expression_file=$preprocess_dir"processed_total_expression/quantile_normalized_no_projection.txt"
 
 # Dosage-based genotypes for all samples
-genotype_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess/genotype/YRI_genotype.vcf"
+genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"
 
-# File_name of per-time-step eqtl results (t=0)
-t_0_eqtl_results_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_step_independent_qtl_pipelines/wasp/cht_output/cht_results_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_num_pc_3_time_0_eqtl_results.txt"
+# File_name of per-time-step eqtl results (t=0) (TO DELETE)
+# t_0_eqtl_results_file=$standard_eqtl_dir"cht_output/cht_results_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_num_pc_3_time_0_eqtl_results.txt"
 
 # Directory containing chromHMM results
 # Each cell line has its own file with suffix $cell_line_identifier'_15_coreMarks_mnemonics.bed.gz'
@@ -37,7 +45,7 @@ chrom_hmm_input_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/prep
 #### 2. "$time_step"_efdr_thresh_.1_significant_egenes.txt giving list of significant variant gene pairs at this time step
 time_step_independent_stem="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_step_independent_qtl_pipelines/wasp/cht_output/cht_results_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_num_pc_3_time_"
 
-# Directory containing gsea data
+# Directory containing gsea data (for gene set enrichment)
 gsea_data_dir="/project2/gilad/bstrober/tools/tools/gsea/data/"
 
 # File containing conversions from ensamble ids to gene symbols
@@ -65,6 +73,7 @@ output_root="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_dyn
 input_data_dir=$output_root"input_data/"
 
 # Directory containing text files with results from dynamic qtl analysis
+temp_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_dynamic_qtl_pipelines/qtl_results/"
 qtl_results_dir=$output_root"qtl_results/"
 
 # Directory containing visualization of results found in qtl_results_dir
@@ -146,71 +155,38 @@ fi
 ## 2. covariate_method: Takes on "none", "pc1", "pc1_2", "pc1_3", "pc1_4", "pc1_5"
 ## 3. num_jobs: How many nodes to parallelize on  to parrallelize
 
-
 num_jobs="10"
 
 ################################
-# Run Dynamic eQTLs using GLM with sweep over covariate methods
+# Run Dynamic eQTLs using GLM with sweep over covariate methods and model versions
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
-model_version="glm"
+model_versions=( "glm" "glmm" "glm_quadratic")
 ################################
-if false; then
+
+# Loop through covariate methods
 for covariate_method in "${covariate_methods[@]}"; do
-    echo $covariate_method
-    # Run for real data
-    permute="False"
-    for job_number in $(seq 0 $(($num_jobs-1))); do 
-        output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
-        sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
-    done
-    # Run for permuted data
-    permute="True"
-    for job_number in $(seq 0 $(($num_jobs-1))); do 
-        output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
-        sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
-    done
-done
-fi
+    # Loop through model versions
+    for model_version in "${model_versions[@]}"; do
+        # Loop through parallelization jobs
+        for job_number in $(seq 0 $(($num_jobs-1))); do 
+            
+            # Run for real data
+            permute="False"
+            output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
+            if false; then
+            sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
+            fi
 
-################################
-# Run Dynamic eQTLs using GLMM with 5 PCs
-covariate_method="pc1_5"
-model_version="glmm"
-################################
-# Run for real data
-if false; then
-permute="False"
-for job_number in $(seq 0 $(($num_jobs-1))); do 
-    output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
-    sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
+            # Run for permuted data
+            permute="True"
+            output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
+            if false; then
+            sh run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
+            fi
+        done
+    done
 done
-# Run for permuted data
-permute="True"
-for job_number in $(seq 0 $(($num_jobs-1))); do 
-    output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
-    sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
-done
-fi
 
-################################
-# Run Dynamic eQTLs using GLM_quadratic with 5 PCs
-covariate_method="pc1_5"
-model_version="glm_quadratic"
-################################
-if false; then
-# Run for real data
-permute="False"
-for job_number in $(seq 0 $(($num_jobs-1))); do 
-    output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
-    sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
-done
-# Run for permuted data
-permute="True"
-for job_number in $(seq 0 $(($num_jobs-1))); do 
-    output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
-    sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
-done
-fi
 
 
 
@@ -226,9 +202,9 @@ fi
 model_version="glm"
 covariate_method="pc1_5"
 parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
-
+if false; then
 sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir
-
+fi
 
 
 
