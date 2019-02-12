@@ -10,7 +10,9 @@ qtl_results_dir="$6"
 qtl_pvalue_distribution_visualization_dir="$7"
 cell_line_overlap_analysis_dir="$8"
 genotype_file="$9"
-t_0_eqtl_results_file="${10}"
+time_step_independent_stem="${10}"
+chrom_hmm_input_dir="${11}"
+tissue_specific_chrom_hmm_enrichment_dir="${12}"
 
 
 ########################################
@@ -21,6 +23,8 @@ perm_eqtl_results_file=$qtl_results_dir$parameter_string"_permute_True_results.t
 if false; then
 sh multiple_testing_correction.sh $parameter_string $qtl_results_dir $real_eqtl_results_file $perm_eqtl_results_file $num_jobs
 fi
+significant_egene_file=$qtl_results_dir$parameter_string"_efdr_.05_significant_egenes.txt"
+
 
 ########################################
 ### Part B: Visualize dynamic eQTL pvalue distributions
@@ -42,5 +46,12 @@ perm_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_gene
 python perform_cell_line_overlap_analysis.py $real_eqtl_results_file $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "dynamic_eqtl"
 real_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_t0_real_overlap_matrix.txt"
 perm_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_t0_perm_overlap_matrix.txt"
-python perform_cell_line_overlap_analysis.py $t_0_eqtl_results_file $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "standard_eqtl"
+python perform_cell_line_overlap_analysis.py $time_step_independent_stem"0_eqtl_results.txt" $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "standard_eqtl"
 fi
+
+########################################
+### Part D: Tissue specific chromHMM enrichment analysis
+# Compute enrichment of dynamic eQTLs within cell type matched chromHMM enhancer elements
+threshold="1.0"
+num_permutations="1000"
+sh tissue_specific_chrom_hmm_enrichment_analysis.sh $parameter_string $real_eqtl_results_file $significant_egene_file $num_permutations $threshold $chrom_hmm_input_dir $time_step_independent_stem $model_version $tissue_specific_chrom_hmm_enrichment_dir

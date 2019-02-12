@@ -32,9 +32,6 @@ total_expression_file=$preprocess_dir"processed_total_expression/quantile_normal
 # Dosage-based genotypes for all samples
 genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"
 
-# File_name of per-time-step eqtl results (t=0)
-t_0_eqtl_results_file=$standard_eqtl_dir"cht_output/cht_results_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_num_pc_3_time_0_eqtl_results.txt"
-
 # Directory containing chromHMM results
 # Each cell line has its own file with suffix $cell_line_identifier'_15_coreMarks_mnemonics.bed.gz'
 chrom_hmm_input_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/chrom_hmm/"
@@ -82,14 +79,13 @@ qtl_pvalue_distribution_visualization_dir=$output_root"qtl_pvalue_distribution_v
 # Directory containing results from cell_line_overlap_analysis
 cell_line_overlap_analysis_dir=$output_root"cell_line_overlap/"
 
-
-
-
-# Output directory containing chromHMM enrichment results
-chrom_hmm_enrichment_directory=$output_root"chromHMM_enrichment/"
-
 # Output directory containing tissue specific chromHMM enrichment results
 tissue_specific_chrom_hmm_enrichment_dir=$output_root"tissue_specific_chromHMM_enrichment/"
+
+
+
+
+
 
 # Output directory containing visualizations of top dynanmic qtl visualizations
 dynamic_qtl_visualization_dir=$output_root"dynamic_qtl_hit_visualization/"
@@ -221,7 +217,9 @@ done
 model_version="glm"
 covariate_method="pc1_5"
 parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
-sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $t_0_eqtl_results_file
+
+sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir
+
 
 
 
