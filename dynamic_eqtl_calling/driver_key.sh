@@ -73,11 +73,17 @@ output_root="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_dyn
 input_data_dir=$output_root"input_data/"
 
 # Directory containing text files with results from dynamic qtl analysis
-temp_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_dynamic_qtl_pipelines/qtl_results/"
-qtl_results_dir=$output_root"qtl_results/"
+temp_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_dynamic_qtl_pipelines/"
+qtl_results_dir=$temp_dir"qtl_results/"
 
 # Directory containing visualization of results found in qtl_results_dir
-qtl_visualization_dir=$output_root"qtl_visualization/"
+qtl_pvalue_distribution_visualization_dir=$output_root"qtl_pvalue_distribution_visualization/"
+
+# Directory containing results from cell_line_overlap_analysis
+cell_line_overlap_analysis_dir=$output_root"cell_line_overlap/"
+
+
+
 
 # Output directory containing chromHMM enrichment results
 chrom_hmm_enrichment_directory=$output_root"chromHMM_enrichment/"
@@ -192,19 +198,31 @@ done
 
 
 
-
+################### TO DO
+# cell line overlap analysis visualization (previously 'visualize_cell_line_overlap_between_methods.R')
+# Scatter comparing glm to glmm (previously in 'visualize_method_comparison.R')
 
 
 ##########################################
 # Step 3: Run Downstream analysis on eQTL results
 ##########################################
 
+# The following script runs many types of downstream analysis on the dynamic eqtl results:
+########################################
+### Part A: Multiple testing correction
+### Merges results from parallelization runs and computes significance after multiple testing correction
+########################################
+### Part B: Visualize dynamic eQTL pvalue distributions
+### Plot pvalue distributions (qq-plots) for dynamic eqtl run
+########################################
+### Part C: Cell Line overlap analysis
+### For each cell line pair, compute fraction of time (across dynamic eQTLs and background variants) that those two cell lines were in the same genotype bin ({0,1,2})
+
 model_version="glm"
 covariate_method="pc1_5"
 parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
-if false; then
-sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir
-fi
+sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file
+
 
 
 

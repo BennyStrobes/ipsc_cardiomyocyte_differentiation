@@ -271,15 +271,16 @@ num_lines_string = args[8]
 
 
 
-
+# Extract total number of lines in file
 total_lines = as.numeric(strsplit(num_lines_string," ")[[1]][1])
 
+# Determine number of lines each parrallelized job will complete
 lines_per_job = ceiling(total_lines/num_jobs)
-
 start_num = job_number*lines_per_job
 end_num = (job_number + 1)*lines_per_job
 
 
+# Stream input file
 stop = FALSE
 count = 0
 f = file(input_data_file, "r")
@@ -289,9 +290,7 @@ next_line = readLines(f, n = 1)
 sink(output_file)
 
 while(!stop) {
-
-
-
+    # Only consider lines between start_num and end_num (for parallelization purposes)
     if (count >= start_num & count < end_num) {
     # Parse the line
     data = strsplit(next_line,'\t')[[1]]    
@@ -316,6 +315,7 @@ while(!stop) {
     if (permute == "True") {
         time_steps_interaction <- sample(time_steps_interaction)
     } 
+    # Run the model in try-catch statement
     tryCatch(
     {
         if (covariate_method == "none") {
