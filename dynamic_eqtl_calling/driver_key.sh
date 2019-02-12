@@ -32,8 +32,8 @@ total_expression_file=$preprocess_dir"processed_total_expression/quantile_normal
 # Dosage-based genotypes for all samples
 genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"
 
-# File_name of per-time-step eqtl results (t=0) (TO DELETE)
-# t_0_eqtl_results_file=$standard_eqtl_dir"cht_output/cht_results_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_num_pc_3_time_0_eqtl_results.txt"
+# File_name of per-time-step eqtl results (t=0)
+t_0_eqtl_results_file=$standard_eqtl_dir"cht_output/cht_results_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_num_pc_3_time_0_eqtl_results.txt"
 
 # Directory containing chromHMM results
 # Each cell line has its own file with suffix $cell_line_identifier'_15_coreMarks_mnemonics.bed.gz'
@@ -217,11 +217,11 @@ done
 ########################################
 ### Part C: Cell Line overlap analysis
 ### For each cell line pair, compute fraction of time (across dynamic eQTLs and background variants) that those two cell lines were in the same genotype bin ({0,1,2})
-
+### Do so for both dynamic eQTLs and per-time step eqtls at time step 0
 model_version="glm"
 covariate_method="pc1_5"
 parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
-sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file
+sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $t_0_eqtl_results_file
 
 
 

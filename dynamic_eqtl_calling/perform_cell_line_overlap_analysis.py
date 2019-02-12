@@ -21,7 +21,23 @@ def extract_variants_from_dynamic_qtl_file(dynamic_qtl_all_hits_file):
         variants[rs_id] = 0.0
     return variants
 
-def extract_top_n_variants(dynamic_qtl_all_hits_file, nn):
+# Create dictionary list of all tested variants
+def extract_variants_from_standard_qtl_file(dynamic_qtl_all_hits_file):
+    f = open(dynamic_qtl_all_hits_file)
+    head_count = 0
+    variants = {} 
+    for line in f:
+        line = line.rstrip()
+        data = line.split()
+        if head_count == 0:
+            head_count = head_count + 1
+            continue
+        rs_id = data[3]
+        variants[rs_id] = 0.0
+    return variants
+
+
+def extract_top_n_variants_from_dynamic_qtl_file(dynamic_qtl_all_hits_file, nn):
     f = open(dynamic_qtl_all_hits_file)
     head_count = 0
     variants = {}
@@ -53,6 +69,40 @@ def extract_top_n_variants(dynamic_qtl_all_hits_file, nn):
         variants[tupler[1]] = 0
         if len(variants) == nn:
             return variants
+
+def extract_top_n_variants_from_standard_qtl_file(dynamic_qtl_all_hits_file, nn):
+    f = open(dynamic_qtl_all_hits_file)
+    head_count = 0
+    variants = {}
+    genes = {}
+    for line in f:
+        line = line.rstrip()
+        data = line.split()
+        if head_count == 0:
+            head_count = head_count + 1
+            continue
+        rs_id = data[3]
+        pvalue = float(data[-1])
+        ensamble_id = data[1]
+        if ensamble_id not in genes:
+            genes[ensamble_id] = (pvalue, rs_id)
+        else: # seen gene before
+            old_tupler = genes[ensamble_id]
+            old_pvalue = old_tupler[0]
+            old_rs_id = old_tupler[1]
+            if old_pvalue < pvalue:
+                genes[ensamble_id] = old_tupler
+            else:
+                genes[ensamble_id] = (pvalue, rs_id)
+    listy = []
+    for ensamble_id in genes.keys():
+        listy.append(genes[ensamble_id])
+    sorted_listy = sorted(listy, key=lambda x: x[0])
+    for i, tupler in enumerate(sorted_listy):
+        variants[tupler[1]] = 0
+        if len(variants) == nn:
+            return variants
+
 
 # Create dictionary list of all tested variants
 def extract_sig_variants_from_dynamic_qtl_file(file_name):
@@ -259,18 +309,25 @@ def print_dosage_matrix(sig_variants, variant_to_maf, output_file, cell_line_nam
     t.close()
 
 
-dynamic_qtl_all_hits_file = sys.argv[1]
+qtl_all_hits_file = sys.argv[1]
 genotype_file = sys.argv[2]
 real_overlap_matrix_file = sys.argv[3]
 perm_overlap_matrix_file = sys.argv[4]
 num_hits = int(sys.argv[5])
+version = sys.argv[6]
 
 
-# Create dictionary list of all tested variants
-tested_variants = extract_variants_from_dynamic_qtl_file(dynamic_qtl_all_hits_file)
+if version == 'dynamic_eqtl':
+    # Create dictionary list of all tested variants
+    tested_variants = extract_variants_from_dynamic_qtl_file(qtl_all_hits_file)
+    # Extract top n variants
+    top_nn_variants = extract_top_n_variants_from_dynamic_qtl_file(qtl_all_hits_file, num_hits)
+elif version == 'standard_eqtl':
+    # Create dictionary list of all tested variants
+    tested_variants = extract_variants_from_standard_qtl_file(qtl_all_hits_file)
+    # Extract top n variants
+    top_nn_variants = extract_top_n_variants_from_standard_qtl_file(qtl_all_hits_file, num_hits)
 
-# Extract top n variants
-top_nn_variants = extract_top_n_variants(dynamic_qtl_all_hits_file, num_hits)
 
 # Create mapping from variants to:
 ### 1. MAF (only have to create for tested_variants cause includes sig_variants)
