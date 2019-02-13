@@ -57,7 +57,8 @@ gtex_gwas_hits_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/prepr
 # File containing list of cardiomyopathy genes
 cardiomyopathy_gene_list="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/cardiomyopathy_disease_genes/cardiomyopathy_genes.txt"
 
-
+# Directory contaiing executables required to run liftover
+liftover_directory="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/liftOver_x86/"
 
 ###############################################################################
 # Output directories (aasume all of these exist prior to starting analysis)
@@ -88,6 +89,11 @@ time_step_independent_comparison_dir=$output_root"time_step_independent_comparis
 # Output directory containing gene set enrichments
 gene_set_enrichment_dir=$output_root"gene_set_enrichment/"
 
+# Output directory containing gwas overlaps
+gwas_overlap_dir=$output_root"gwas_overlap/"
+
+
+
 
 
 
@@ -95,11 +101,6 @@ gene_set_enrichment_dir=$output_root"gene_set_enrichment/"
 dynamic_qtl_visualization_dir=$output_root"dynamic_qtl_hit_visualization/"
 
 
-# Output directory containing gwas overlaps
-gwas_overlap_dir=$output_root"gwas_overlap/"
-
-# Output directory containing comparisons to time-step independent analysis
-time_step_comparison_dir=$output_root"time_step_independent_comparison/"
 
 # Output directory containing figures for manuscripts
 manuscript_figures_dir=$output_root"manuscript_figures/"
@@ -222,12 +223,18 @@ done
 # Compare Dynamic eQTLs to per time step eQTLs
 ########################################
 ### Part F: Gene Set enrichment within GSEA
+########################################
+### Part G: Gene Set enrichment within dilated cardiomyopathy gene sets
+########################################
+### Part H: Enrichment within GTEx GWAS variants
+########################################
+### Part I: Extract GWAS data for Miami plots at a few specific, exemplary positions
 
 model_version="glm"
 covariate_method="pc1_5"
 parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
 
-sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list
+sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory
 
 
 

@@ -18,6 +18,9 @@ gsea_data_dir="${14}"
 gencode_file="${15}"
 gene_set_enrichment_dir="${16}"
 cardiomyopathy_gene_list="${17}"
+gtex_gwas_hits_dir="${18}"
+gwas_overlap_dir="${19}"
+liftover_directory="${20}"
 
 ########################################
 ### Part A: Multiple testing correction
@@ -28,6 +31,7 @@ if false; then
 sh multiple_testing_correction.sh $parameter_string $qtl_results_dir $real_eqtl_results_file $perm_eqtl_results_file $num_jobs
 fi
 significant_egene_file=$qtl_results_dir$parameter_string"_efdr_.05_significant_egenes.txt"
+significant_qtl_file=$qtl_results_dir$parameter_string"_efdr_.05_significant.txt"
 
 
 ########################################
@@ -83,6 +87,23 @@ python gsea_gene_set_enrichment_analysis.py $parameter_string $significant_egene
 fi
 
 ########################################
-### Part F: Gene Set enrichment within dilated cardiomyopathy gene sets
+### Part G: Gene Set enrichment within dilated cardiomyopathy gene sets
+if false; then
 python cardiomyopathy_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $parameter_string $real_eqtl_results_file
+fi
+
+date
+########################################
+### Part H: Enrichment within GTEx GWAS variants
+threshold="5e-8"
+python gtex_gwas_dynamic_qtl_overlap.py $gtex_gwas_hits_dir $gwas_overlap_dir $significant_qtl_file $parameter_string $threshold
+threshold="5e-6"
+python gtex_gwas_dynamic_qtl_overlap.py $gtex_gwas_hits_dir $gwas_overlap_dir $significant_qtl_file $parameter_string $threshold
+
+
+########################################
+### Part I: Extract GWAS data for Miami plots at a few specific, exemplary positions
+python extract_specific_gwas_examples_for_miami_plots.py $gtex_gwas_hits_dir $gwas_overlap_dir$parameter_string"_" $real_eqtl_results_file $genotype_file $liftover_directory
+
+date
 
