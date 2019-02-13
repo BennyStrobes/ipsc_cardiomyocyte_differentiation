@@ -85,6 +85,8 @@ tissue_specific_chrom_hmm_enrichment_dir=$output_root"tissue_specific_chromHMM_e
 # Output directory containing comparisons to time-step independent analysis
 time_step_independent_comparison_dir=$output_root"time_step_independent_comparison/"
 
+# Output directory containing gene set enrichments
+gene_set_enrichment_dir=$output_root"gene_set_enrichment/"
 
 
 
@@ -92,11 +94,6 @@ time_step_independent_comparison_dir=$output_root"time_step_independent_comparis
 # Output directory containing visualizations of top dynanmic qtl visualizations
 dynamic_qtl_visualization_dir=$output_root"dynamic_qtl_hit_visualization/"
 
-# Output directory containing gene set enrichments
-gene_set_enrichment_dir=$output_root"gene_set_enrichment/"
-
-# Output directory containing gene set enrichments within Marios' gene sets
-cardiomyopathy_gene_set_enrichment_dir=$output_root"cardiomyopathy_gene_set_enrichment/"
 
 # Output directory containing gwas overlaps
 gwas_overlap_dir=$output_root"gwas_overlap/"
@@ -200,7 +197,7 @@ done
 # cell line overlap analysis visualization (previously 'visualize_cell_line_overlap_between_methods.R')
 # Scatter comparing glm to glmm (previously in 'visualize_method_comparison.R')
 # Visualize tissue-specific chromHMM enrichments (previously in 'make_plots_for_manuscript')
-
+# Time step independent comparison visualizations (previously in 'visualize_time_step_independent_comparison.R')
 
 ##########################################
 # Step 3: Run Downstream analysis on eQTL results
@@ -223,12 +220,14 @@ done
 ########################################
 ### Part E: Time Step Independent Comparison
 # Compare Dynamic eQTLs to per time step eQTLs
+########################################
+### Part F: Gene Set enrichment within GSEA
 
 model_version="glm"
 covariate_method="pc1_5"
 parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
 
-sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir
+sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir
 
 
 

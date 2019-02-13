@@ -14,6 +14,10 @@ time_step_independent_stem="${10}"
 chrom_hmm_input_dir="${11}"
 tissue_specific_chrom_hmm_enrichment_dir="${12}"
 time_step_independent_comparison_dir="${13}"
+gsea_data_dir="${14}"
+gencode_file="${15}"
+gene_set_enrichment_dir="${16}"
+
 
 ########################################
 ### Part A: Multiple testing correction
@@ -66,4 +70,13 @@ fi
 threshold="1.0"
 dynamic_standard_egenes_comparison_file=$time_step_independent_comparison_dir$parameter_string"_"$threshold"_dynamic_standard_egenes_comparison.txt"
 dynamic_standard_egenes_background_comparison_file=$time_step_independent_comparison_dir$parameter_string"_"$threshold"_background_dynamic_standard_egenes_comparison.txt"
+if false; then
 python time_step_independent_comparison.py $dynamic_standard_egenes_comparison_file $dynamic_standard_egenes_background_comparison_file $time_step_independent_stem $threshold $model_version $real_eqtl_results_file $significant_egene_file
+fi
+
+
+
+########################################
+### Part F: Gene Set enrichment within GSEA
+python gsea_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $gsea_data_dir $time_step_independent_stem 
+
