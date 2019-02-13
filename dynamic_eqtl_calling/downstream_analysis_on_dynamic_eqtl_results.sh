@@ -17,7 +17,7 @@ time_step_independent_comparison_dir="${13}"
 gsea_data_dir="${14}"
 gencode_file="${15}"
 gene_set_enrichment_dir="${16}"
-
+cardiomyopathy_gene_list="${17}"
 
 ########################################
 ### Part A: Multiple testing correction
@@ -78,5 +78,11 @@ fi
 
 ########################################
 ### Part F: Gene Set enrichment within GSEA
+if false; then
 python gsea_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $gsea_data_dir $time_step_independent_stem 
+fi
+
+########################################
+### Part F: Gene Set enrichment within dilated cardiomyopathy gene sets
+python cardiomyopathy_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $parameter_string $real_eqtl_results_file
 
