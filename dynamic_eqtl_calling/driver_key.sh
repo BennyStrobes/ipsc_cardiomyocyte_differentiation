@@ -82,6 +82,8 @@ cell_line_overlap_analysis_dir=$output_root"cell_line_overlap/"
 # Output directory containing tissue specific chromHMM enrichment results
 tissue_specific_chrom_hmm_enrichment_dir=$output_root"tissue_specific_chromHMM_enrichment/"
 
+# Output directory containing comparisons to time-step independent analysis
+time_step_independent_comparison_dir=$output_root"time_step_independent_comparison/"
 
 
 
@@ -197,6 +199,7 @@ done
 ################### TO DO
 # cell line overlap analysis visualization (previously 'visualize_cell_line_overlap_between_methods.R')
 # Scatter comparing glm to glmm (previously in 'visualize_method_comparison.R')
+# Visualize tissue-specific chromHMM enrichments (previously in 'make_plots_for_manuscript')
 
 
 ##########################################
@@ -214,11 +217,18 @@ done
 ### Part C: Cell Line overlap analysis
 ### For each cell line pair, compute fraction of time (across dynamic eQTLs and background variants) that those two cell lines were in the same genotype bin ({0,1,2})
 ### Do so for both dynamic eQTLs and per-time step eqtls at time step 0
+########################################
+### Part D: Tissue specific chromHMM enrichment analysis
+# Compute enrichment of dynamic eQTLs within cell type matched chromHMM enhancer elements
+########################################
+### Part E: Time Step Independent Comparison
+# Compare Dynamic eQTLs to per time step eQTLs
+
 model_version="glm"
 covariate_method="pc1_5"
 parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
 
-sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir
+sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir
 
 
 

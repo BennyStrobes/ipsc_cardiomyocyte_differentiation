@@ -13,7 +13,7 @@ genotype_file="$9"
 time_step_independent_stem="${10}"
 chrom_hmm_input_dir="${11}"
 tissue_specific_chrom_hmm_enrichment_dir="${12}"
-
+time_step_independent_comparison_dir="${13}"
 
 ########################################
 ### Part A: Multiple testing correction
@@ -54,4 +54,16 @@ fi
 # Compute enrichment of dynamic eQTLs within cell type matched chromHMM enhancer elements
 threshold="1.0"
 num_permutations="1000"
+if false; then
 sh tissue_specific_chrom_hmm_enrichment_analysis.sh $parameter_string $real_eqtl_results_file $significant_egene_file $num_permutations $threshold $chrom_hmm_input_dir $time_step_independent_stem $model_version $tissue_specific_chrom_hmm_enrichment_dir
+fi
+
+
+
+########################################
+### Part E: Time Step Independent Comparison
+# Compare Dynamic eQTLs to per time step eQTLs
+threshold="1.0"
+dynamic_standard_egenes_comparison_file=$time_step_independent_comparison_dir$parameter_string"_"$threshold"_dynamic_standard_egenes_comparison.txt"
+dynamic_standard_egenes_background_comparison_file=$time_step_independent_comparison_dir$parameter_string"_"$threshold"_background_dynamic_standard_egenes_comparison.txt"
+python time_step_independent_comparison.py $dynamic_standard_egenes_comparison_file $dynamic_standard_egenes_background_comparison_file $time_step_independent_stem $threshold $model_version $real_eqtl_results_file $significant_egene_file
