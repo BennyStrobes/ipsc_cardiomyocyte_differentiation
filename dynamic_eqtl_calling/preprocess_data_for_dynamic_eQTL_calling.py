@@ -49,6 +49,8 @@ def get_sample_info(joint_test_input_file):
     pc6 = []
     pc7 = []
     pc8 = []
+    pc9 = []
+    pc10 = []
     # Stream joint test input file
     f = open(joint_test_input_file)
     head_count = 0  # skip header
@@ -70,7 +72,9 @@ def get_sample_info(joint_test_input_file):
         pc6.append(data[7])
         pc7.append(data[8])
         pc8.append(data[9])
-    return np.asarray(sample_names), np.asarray(time_steps), np.asarray(pc1), np.asarray(pc2), np.asarray(pc3), np.asarray(pc4), np.asarray(pc5), np.asarray(pc6), np.asarray(pc7), np.asarray(pc8)
+        pc9.append(data[10])
+        pc10.append(data[11])
+    return np.asarray(sample_names), np.asarray(time_steps), np.asarray(pc1), np.asarray(pc2), np.asarray(pc3), np.asarray(pc4), np.asarray(pc5), np.asarray(pc6), np.asarray(pc7), np.asarray(pc8), np.asarray(pc9), np.asarray(pc10)
 
 # Extract dictionary of test_names (variant_gene pairs), variants, and gene_names
 def extract_test_names(target_region_input_file):
@@ -179,7 +183,7 @@ def sample_to_cell_line_names(sample_names):
         cell_lines.append(ele.split('_')[0])
     return np.asarray(cell_lines)
 
-def print_dynamic_eqtl_input_file(output_file, test_names, variants, genes, sample_names, time_steps, environmental_variable_form, pc1, pc2, pc3, pc4, pc5, pc6, pc7,pc8):
+def print_dynamic_eqtl_input_file(output_file, test_names, variants, genes, sample_names, time_steps, environmental_variable_form, pc1, pc2, pc3, pc4, pc5, pc6, pc7,pc8,pc9,pc10):
     # Convert vector of sample names (cellLine_timeStep) to a vector of cell lines
     cell_line_names = sample_to_cell_line_names(sample_names)
     # Open file handle to output file
@@ -193,7 +197,7 @@ def print_dynamic_eqtl_input_file(output_file, test_names, variants, genes, samp
         # extract total expression vector
         te_vec = genes[ensamble_id].astype(str)
         # Print
-        t.write(rs_id + '\t' + ensamble_id + '\t' + ';'.join(time_steps) + '\t' + ';'.join(geno_vec) + '\t' + ';'.join(te_vec) + '\t' + ';'.join(cell_line_names) + '\t' + ';'.join(pc1) + '\t' + ';'.join(pc2) + '\t' + ';'.join(pc3) + '\t' + ';'.join(pc4) + '\t' + ';'.join(pc5) + '\t' + ';'.join(pc6) + '\t' + ';'.join(pc7) + '\t' + ';'.join(pc8) + '\n')
+        t.write(rs_id + '\t' + ensamble_id + '\t' + ';'.join(time_steps) + '\t' + ';'.join(geno_vec) + '\t' + ';'.join(te_vec) + '\t' + ';'.join(cell_line_names) + '\t' + ';'.join(pc1) + '\t' + ';'.join(pc2) + '\t' + ';'.join(pc3) + '\t' + ';'.join(pc4) + '\t' + ';'.join(pc5) + '\t' + ';'.join(pc6) + '\t' + ';'.join(pc7) + '\t' + ';'.join(pc8) + '\t' + ';'.join(pc9) + '\t' + ';'.join(pc10) + '\n')
     t.close()
 
 
@@ -216,7 +220,7 @@ sample_names = extract_sample_names(total_expression_file)
 # Open output file handle
 t = open(joint_test_input_file, 'w')
 # Write header to output file handle
-t.write('sample_id\tenvironmental_variable\tcell_line_pc1\tcell_line_pc2\tcell_line_pc3\tcell_line_pc4\tcell_line_pc5\tcell_line_pc6\tcell_line_pc7\tcell_line_pc8\n')
+t.write('sample_id\tenvironmental_variable\tcell_line_pc1\tcell_line_pc2\tcell_line_pc3\tcell_line_pc4\tcell_line_pc5\tcell_line_pc6\tcell_line_pc7\tcell_line_pc8\tcell_line_pc9\tcell_line_pc10\n')
 
 
 # Loop through sample names
@@ -234,14 +238,16 @@ for sample_name in sample_names:
     pc6 = get_cell_line_specific_pc(sample_name, cell_line_specific_pc_file, 6)
     pc7 = get_cell_line_specific_pc(sample_name, cell_line_specific_pc_file, 7)
     pc8 = get_cell_line_specific_pc(sample_name, cell_line_specific_pc_file, 8)
+    pc9 = get_cell_line_specific_pc(sample_name, cell_line_specific_pc_file, 9)
+    pc10 = get_cell_line_specific_pc(sample_name, cell_line_specific_pc_file, 10)
 
     # Print information to output file
-    t.write(sample_name + '\t' + environmental_variable + '\t' + pc1 + '\t' + pc2 + '\t' + pc3 + '\t' + pc4 + '\t' + pc5 + '\t' + pc6 + '\t' + pc7 + '\t' + pc8 + '\n')
+    t.write(sample_name + '\t' + environmental_variable + '\t' + pc1 + '\t' + pc2 + '\t' + pc3 + '\t' + pc4 + '\t' + pc5 + '\t' + pc6 + '\t' + pc7 + '\t' + pc8 + '\t' + pc9 + '\t' + pc10 + '\n')
 t.close()
 
 
 # Create vectors of names of samples, and their corresponding time step
-sample_names, time_steps, pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8 = get_sample_info(joint_test_input_file)
+sample_names, time_steps, pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10 = get_sample_info(joint_test_input_file)
 
 # Extract dictionary of test_names (variant_gene pairs), variants, and gene_names
 test_names, variants, genes = extract_test_names(target_region_input_file)
@@ -254,6 +260,6 @@ genes = extract_gene_expression(genes, total_expression_file, sample_names)
 variants = extract_genotype_data(variants, genotype_file, sample_names, genotype_version)
 
 # Make output file where each row is a test, and columns contain all info (expression, genotype, time steps) to run the test
-print_dynamic_eqtl_input_file(dynamic_eqtl_input_file, test_names, variants, genes, sample_names, time_steps, environmental_variable_form, pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8)
+print_dynamic_eqtl_input_file(dynamic_eqtl_input_file, test_names, variants, genes, sample_names, time_steps, environmental_variable_form, pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10)
 
 

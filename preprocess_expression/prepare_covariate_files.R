@@ -449,7 +449,7 @@ raw_covariates <- read.csv(metadata_input_file)
 
 ###############################
 # Run Cell line PCA!
-n <- 9  # Number of PCs to save
+n <- 10  # Number of PCs to save
 #  Ouptut file to save PC loadings to 
 pc_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_principal_components_", n, ".txt")
 save_pcs(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, n, pc_output_file)
