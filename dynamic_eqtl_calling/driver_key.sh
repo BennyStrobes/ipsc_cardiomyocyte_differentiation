@@ -23,7 +23,7 @@ standard_eqtl_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_s
 target_region_input_file=$standard_eqtl_dir"target_regions/target_regions_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_merged.txt"
 
 # cell line specific pcs
-cell_line_specific_pc_file=$preprocess_dir"covariates/cell_line_ignore_missing_principal_components_9.txt"
+cell_line_specific_pc_file=$preprocess_dir"covariates/cell_line_ignore_missing_principal_components_10.txt"
 
 # Gene expression data for all samples
 
@@ -92,6 +92,9 @@ gene_set_enrichment_dir=$output_root"gene_set_enrichment/"
 # Output directory containing gwas overlaps
 gwas_overlap_dir=$output_root"gwas_overlap/"
 
+# Output directory containing input data for dynamic eqtl visualiztion
+visualization_input_dir=$output_root"visualization_input/"
+
 # Output directory containing manuscript figures
 visualization_dir=$output_root"visualization/"
 
@@ -121,9 +124,9 @@ genotype_version="dosage"
 joint_test_input_file=$input_data_dir"joint_test_input_file_"$environmental_variable_form".txt"
 # Second output file from this analysis
 dynamic_eqtl_input_file=$input_data_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_input.txt"
-
+if false; then
 sbatch preprocess_data_for_dynamic_eQTL_calling.sh $joint_test_input_file $dynamic_eqtl_input_file $total_expression_file $genotype_file $environmental_variable_form $genotype_version $cell_line_specific_pc_file $target_region_input_file
-
+fi
 
 
 
@@ -149,7 +152,9 @@ num_jobs="10"
 ################################
 # Run Dynamic eQTLs using GLM with sweep over covariate methods and model versions
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
+covariate_methods=( "pc1_10" )
 model_versions=( "glm" "glmm" "glm_quadratic")
+model_versions=( "glm" )
 ################################
 
 # Loop through covariate methods
@@ -165,12 +170,11 @@ for covariate_method in "${covariate_methods[@]}"; do
             if false; then
             sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
             fi
-
             # Run for permuted data
             permute="True"
             output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
             if false; then
-            sh run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
+            sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
             fi
         done
     done
@@ -216,6 +220,8 @@ done
 ### Part H: Enrichment within GTEx GWAS variants
 ########################################
 ### Part I: Extract GWAS data for Miami plots at a few specific, exemplary positions
+########################################
+### Part J: Organize significant eqtl results for dynamic eqtl visualization
 
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
 model_versions=( "glm" "glmm" "glm_quadratic")
@@ -225,12 +231,10 @@ for covariate_method in "${covariate_methods[@]}"; do
     # Loop through model versions
     for model_version in "${model_versions[@]}"; do
         parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
-        sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory
+        sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir
     done
 done
 fi
-
-
 
 ##########################################
 # Step 4: Visualize results from dynamic qtl analysis

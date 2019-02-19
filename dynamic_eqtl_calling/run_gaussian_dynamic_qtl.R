@@ -251,6 +251,97 @@ run_linear_model_seven_cov <- function(model_version, expr, genotype, genotype_i
     return(list(coef=coef, pvalue=pvalue))
 }
 
+
+run_linear_model_eight_cov <- function(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, cov1, cov2, cov3, cov4, cov5, cov6, cov7,cov8) {
+    # Run the models
+    if (model_version == "glm") {  # Regular linear model
+        fit <- lm(expr ~ genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + cov8 + cov8:time_steps + genotype_interaction:time_steps_interaction)
+        pvalue <- summary(fit)$coefficients[20,4]
+        coef <- paste(summary(fit)$coefficients[,1],collapse=',')
+    } else if (model_version == "glmm") { # Linear mixed model
+        fit_full <- lmer(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + genotype_interaction:time_steps_interaction + (1|cell_lines), REML=FALSE)
+        fit_null <- lmer(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + (1|cell_lines), REML=FALSE)
+        coefs <- data.frame(coef(summary(fit_full)))
+        coef <- paste(coefs[,1],collapse=',')
+        #tvalue <- coefs[4,3]
+        #pvalue <- 2*pt(-abs(tvalue),df=num_samp-1)
+        lrt <- anova(fit_null,fit_full)
+        pvalue <- lrt[[8]][2]
+    } else if (model_version == "glmm_time") { # Linear mixed model
+        fit_full <- lm(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + genotype_interaction:time_steps_interaction + (1|factor(time_steps)), REML=FALSE)
+        fit_null <- lm(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + (1|factor(time_steps)), REML=FALSE)
+        coefs <- data.frame(coef(summary(fit_full)))
+        coef <- coefs[18,1]
+        #tvalue <- coefs[4,3]
+        #pvalue <- 2*pt(-abs(tvalue),df=num_samp-1)
+        lrt <- anova(fit_null,fit_full)
+        pvalue <- lrt[[8]][2]
+    } 
+
+    return(list(coef=coef, pvalue=pvalue))
+}
+
+run_linear_model_nine_cov <- function(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, cov1, cov2, cov3, cov4, cov5, cov6, cov7,cov8,cov9) {
+    # Run the models
+    if (model_version == "glm") {  # Regular linear model
+        fit <- lm(expr ~ genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + cov8 + cov8:time_steps + cov9 + cov9:time_steps + genotype_interaction:time_steps_interaction)
+        pvalue <- summary(fit)$coefficients[22,4]
+        coef <- paste(summary(fit)$coefficients[,1],collapse=',')
+    } else if (model_version == "glmm") { # Linear mixed model
+        fit_full <- lmer(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + genotype_interaction:time_steps_interaction + (1|cell_lines), REML=FALSE)
+        fit_null <- lmer(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + (1|cell_lines), REML=FALSE)
+        coefs <- data.frame(coef(summary(fit_full)))
+        coef <- paste(coefs[,1],collapse=',')
+        #tvalue <- coefs[4,3]
+        #pvalue <- 2*pt(-abs(tvalue),df=num_samp-1)
+        lrt <- anova(fit_null,fit_full)
+        pvalue <- lrt[[8]][2]
+    } else if (model_version == "glmm_time") { # Linear mixed model
+        fit_full <- lm(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + genotype_interaction:time_steps_interaction + (1|factor(time_steps)), REML=FALSE)
+        fit_null <- lm(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + (1|factor(time_steps)), REML=FALSE)
+        coefs <- data.frame(coef(summary(fit_full)))
+        coef <- coefs[18,1]
+        #tvalue <- coefs[4,3]
+        #pvalue <- 2*pt(-abs(tvalue),df=num_samp-1)
+        lrt <- anova(fit_null,fit_full)
+        pvalue <- lrt[[8]][2]
+    } 
+
+    return(list(coef=coef, pvalue=pvalue))
+}
+
+
+run_linear_model_ten_cov <- function(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, cov1, cov2, cov3, cov4, cov5, cov6, cov7,cov8,cov9,cov10) {
+    # Run the models
+    if (model_version == "glm") {  # Regular linear model
+        fit <- lm(expr ~ genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + cov8 + cov8:time_steps + cov9 + cov9:time_steps + cov10 + cov10:time_steps + genotype_interaction:time_steps_interaction)
+        pvalue <- summary(fit)$coefficients[24,4]
+        coef <- paste(summary(fit)$coefficients[,1],collapse=',')
+    } else if (model_version == "glmm") { # Linear mixed model
+        fit_full <- lmer(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + genotype_interaction:time_steps_interaction + (1|cell_lines), REML=FALSE)
+        fit_null <- lmer(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + (1|cell_lines), REML=FALSE)
+        coefs <- data.frame(coef(summary(fit_full)))
+        coef <- paste(coefs[,1],collapse=',')
+        #tvalue <- coefs[4,3]
+        #pvalue <- 2*pt(-abs(tvalue),df=num_samp-1)
+        lrt <- anova(fit_null,fit_full)
+        pvalue <- lrt[[8]][2]
+    } else if (model_version == "glmm_time") { # Linear mixed model
+        fit_full <- lm(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + genotype_interaction:time_steps_interaction + (1|factor(time_steps)), REML=FALSE)
+        fit_null <- lm(expr ~  genotype + time_steps + cov1 + cov1:time_steps + cov2 + cov2:time_steps + cov3 + cov3:time_steps + cov4 + cov4:time_steps + cov5 + cov5:time_steps + cov6 + cov6:time_steps + cov7 + cov7:time_steps + (1|factor(time_steps)), REML=FALSE)
+        coefs <- data.frame(coef(summary(fit_full)))
+        coef <- coefs[18,1]
+        #tvalue <- coefs[4,3]
+        #pvalue <- 2*pt(-abs(tvalue),df=num_samp-1)
+        lrt <- anova(fit_null,fit_full)
+        pvalue <- lrt[[8]][2]
+    } 
+
+    return(list(coef=coef, pvalue=pvalue))
+}
+
+
+
 null_response <- function(){
     return(list(coef=0,pvalue=1))
 }
@@ -310,6 +401,9 @@ while(!stop) {
     pc5 = as.numeric(strsplit(data[11],';')[[1]])
     pc6 = as.numeric(strsplit(data[12],';')[[1]])
     pc7 = as.numeric(strsplit(data[13],';')[[1]])
+    pc8 = as.numeric(strsplit(data[14],';')[[1]])
+    pc9 = as.numeric(strsplit(data[15],';')[[1]])
+    pc10 = as.numeric(strsplit(data[16],';')[[1]])
 
     # Permute the data
     if (permute == "True") {
@@ -334,7 +428,14 @@ while(!stop) {
             lm_results <- run_linear_model_six_cov(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, pc1, pc2, pc3, pc4, pc5, pc6)
         } else if (covariate_method == "pc1_7") {
             lm_results <- run_linear_model_seven_cov(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, pc1, pc2, pc3, pc4, pc5, pc6, pc7)
+        } else if (covariate_method == "pc1_8") {
+            lm_results <- run_linear_model_eight_cov(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8)
+        } else if (covariate_method == "pc1_9") {
+            lm_results <- run_linear_model_nine_cov(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9)
+        } else if (covariate_method == "pc1_10") {
+            lm_results <- run_linear_model_ten_cov(model_version, expr, genotype, genotype_interaction, time_steps, time_steps_interaction, cell_lines, pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10)
         }
+
         # print result to output file!!
         new_line <- paste0(rs_id, "\t", ensamble_id ,"\t",lm_results$coef,"\t", lm_results$pvalue,"\n")
         cat(new_line)

@@ -21,6 +21,7 @@ cardiomyopathy_gene_list="${17}"
 gtex_gwas_hits_dir="${18}"
 gwas_overlap_dir="${19}"
 liftover_directory="${20}"
+visualization_input_dir="${21}"
 
 date
 
@@ -97,6 +98,11 @@ python gtex_gwas_dynamic_qtl_overlap.py $gtex_gwas_hits_dir $gwas_overlap_dir $s
 ########################################
 ### Part I: Extract GWAS data for Miami plots at a few specific, exemplary positions
 python extract_specific_gwas_examples_for_miami_plots.py $gtex_gwas_hits_dir $gwas_overlap_dir$parameter_string"_" $real_eqtl_results_file $genotype_file $liftover_directory
+
+########################################
+### Part J: Organize significant eqtl results for dynamic eqtl visualization
+
+python organize_dynamic_qtl_egenes_for_visualization.py $dynamic_eqtl_input_file $significant_qtl_file $visualization_input_dir$parameter_string
 
 date
 
