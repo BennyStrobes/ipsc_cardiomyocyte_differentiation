@@ -172,7 +172,7 @@ load_in_odds_ratios <- function(file_name, adding_constant) {
     odds_ratios <- (real_overlaps/real_misses)/(perm_overlaps/perm_misses)
     return(odds_ratios)
 }
-cre_enrichments_boxplot <- function(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root) {
+cre_enrichments_boxplot <- function(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, title) {
     odds_ratios <- c()
     roadmap_cell_types <- c()
     dynamic_qtl_versions <- c()
@@ -204,6 +204,9 @@ cre_enrichments_boxplot <- function(cre, cell_lines, hits_versions, adding_const
     boxplot <- ggplot(df, aes(x=roadmap_cell_type,y=odds_ratio,fill=qtl_version)) + geom_boxplot(outlier.shape=NA) + labs(x = "Roadmap Cell Type", y = expression(log[10]("odds ratio")), fill="") + scale_fill_manual(values=c("darkgrey", "firebrick"))
     boxplot <- boxplot + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
     boxplot <- boxplot + geom_hline(yintercept = 0.0) 
+    if (title != "none") {
+        boxplot <- boxplot + ggtitle(title) + theme(plot.title =element_text(size=8, face='plain'))
+    }
 	return(boxplot)
 }
 
@@ -371,6 +374,57 @@ make_miami_plot <- function(gwas_overlap_dir, output_file) {
 
 }
 
+cre_enrichment_over_range_of_pcs_boxplot <- function(tissue_specific_chrom_hmm_enrichment_dir, output_file) {
+    cell_lines <- c("ipsc_only", "heart_only")
+    hits_versions <- c("early_time_step", "late_time_step")
+    cre <- "enhancer"
+    adding_constant <- 1
+    num_permutations="1000"
+    threshold = "1.0"
+
+    #Range of PCs
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_none_")
+    plot_0 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "0 PC")
+    legend <- get_legend(plot_0 + theme(legend.position="bottom"))
+    plot_0 <- plot_0 + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_")
+    plot_1 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "1 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_2_")
+    plot_2 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "2 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_3_")
+    plot_3 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "3 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_4_")
+    plot_4 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "4 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_")
+    plot_5 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "5 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_6_")
+    plot_6 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "6 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_7_")
+    plot_7 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "7 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_8_")
+    plot_8 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "8 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_9_")
+    plot_9 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "9 PC") + theme(legend.position="none")
+
+    input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_10_")
+    plot_10 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "10 PC") + theme(legend.position="none")
+
+
+
+    combined <- plot_grid(plot_0, plot_1, plot_2, plot_3, plot_4, plot_5, plot_6, plot_7, plot_8, plot_9, plot_10, legend, labels = c('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', ''), ncol = 3)
+    ggsave(combined, file=output_file, width=7.2,height=7.0,units="in")
+}
+
+
 
 produce_figure_3 <- function(qtl_results_dir, time_step_comparison_dir, tissue_specific_chrom_hmm_enrichment_dir, gwas_overlap_dir, visualization_input_dir, output_file) {
     #############################
@@ -390,7 +444,7 @@ produce_figure_3 <- function(qtl_results_dir, time_step_comparison_dir, tissue_s
     adding_constant <- 1
     num_permutations="1000"
     threshold = "1.0"
-    fig3b <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root)
+    fig3b <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "none")
 
     #############################
     # Figure 3c
@@ -537,7 +591,7 @@ violin_plot_top_n_genes <- function(cell_line_overlap_analysis_dir, output_file,
     p <- p + theme(legend.text = element_text(size=10))+ theme(legend.title = element_text(size=10)) + scale_fill_manual(values=c("goldenrod3","steelblue3"))
     p <- p + labs(x = "", y = "Cell line overalap frequency", fill="")
     p <- p + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8),axis.text.x = element_text(angle = 90,hjust=1, vjust=.5)) 
-
+    p <- p + theme(legend.position="bottom")
     p <- p + geom_violin()
 
     ggsave(p, file=output_file, width=7.2, height=5.5,units="in")
@@ -704,6 +758,114 @@ boxplot_comparing_time_steps_grouped_by_two_dynamic_qtl_classes <- function(inpu
 
 }
 
+# Helper method to qq_plot_vs_uniform
+# Makes a qqplot for a specific time step
+make_qq_plot_vs_uniform_one_time_step <- function(real_eqtl_file, null_eqtl_file,title_name) {
+    # Read in real data
+    all_eqtl_nominal_pvalues <- read.table(real_eqtl_file, header=FALSE)
+
+    # Extract pvalues
+    pvalues <- sort(all_eqtl_nominal_pvalues$V4)
+    # Simulate uniform distribution
+    uniform_1 <- sort(runif(length(pvalues)))
+    # Sample points (because impossible to plot ALL hits)
+    pvalues <- sample_non_significant_hits(pvalues)
+    
+    # Read in null data
+    null_data <- read.table(null_eqtl_file,header=FALSE)
+    # Extract pvalues
+    null_pvalues <- sort(null_data$V4)
+    # Simulate uniform distribution
+    uniform_2 <- sort(runif(length(null_pvalues)))
+    # Sample points (because impossible to plot ALL hits)
+    null_pvalues <- sample_non_significant_hits(null_pvalues)
+
+
+    # Organize into data frame
+    all_pvalues <- c(pvalues, null_pvalues)
+    type <- c(rep("real",length(pvalues)),rep("permuted",length(null_pvalues)))
+
+    uniform <- c(sample_non_significant_hits(uniform_1), sample_non_significant_hits(uniform_2))
+
+    df <- data.frame(pvalues=-log10(all_pvalues + 1e-17), expected_pvalues=-log10(uniform + 1e-17), type=factor(type, levels=c("real", "permuted")))
+
+    # PLOT!
+    max_val <-max(max(-log10(uniform + 1e-17)), max(-log10(all_pvalues + 1e-17)))
+    #PLOT!
+    scatter <- ggplot(df, aes(x = expected_pvalues, y = pvalues, colour = type)) + geom_point() 
+    scatter <- scatter + theme(text = element_text(size=14), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black")) 
+    scatter <- scatter + labs(title=title_name, colour="",x = expression(log[10]("expected p-value")), y = expression(log[10]("observed p-value")))
+    scatter <- scatter + geom_abline() 
+    scatter <- scatter + theme(legend.position="bottom")
+    scatter <- scatter + scale_colour_manual(values=c("dodgerblue3","chartreuse4"))
+    scatter <- scatter + scale_x_continuous(limits = c(-.1, max_val + .1), breaks = round(seq(0, max_val, by = 5),1)) + scale_y_continuous(limits = c(-.1,max_val+.1), breaks = round(seq(0, max_val, by = 5),1))
+    scatter <- scatter + theme(plot.title=element_text(size=8, face="plain"), text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+    return(scatter)
+}
+
+sample_non_significant_hits <- function(pvalues, fraction_kept=.01,fraction_sampled=.001) {
+    index <- floor(length(pvalues)*fraction_kept)
+    to_keep <- pvalues[1:index]
+    to_filter <- pvalues[(index+1):length(pvalues)]
+    filtered <- sort(sample(to_filter,floor(length(to_filter)*fraction_sampled)))
+    return(c(to_keep,filtered))
+}
+
+###############################################################################
+# QQPlot showing both:
+## 1. Real data pvalues compared to uniform
+## 2. Permuted data pvalues compared to pvalues
+# One plot for linear dynamic eqtls and 1 plot for nonlinear dynamic qtls
+#################################################################################
+qq_plot_for_linear_and_non_linear_dynamic_qtls <- function(qtl_results_dir, output_file) {
+    linear_real_file <- paste0(qtl_results_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_permute_False_results.txt")
+    linear_perm_file <- paste0(qtl_results_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_permute_True_results.txt")
+    nonlinear_real_file <- paste0(qtl_results_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_permute_False_results.txt")
+    nonlinear_perm_file <- paste0(qtl_results_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_permute_True_results.txt")
+
+    linear_qq <- make_qq_plot_vs_uniform_one_time_step(linear_real_file,linear_perm_file, "Linear dynamic eQTL")
+    nonlinear_qq <- make_qq_plot_vs_uniform_one_time_step(nonlinear_real_file, nonlinear_perm_file, "Nonlinear dynamic eQTL")
+
+    legend <- get_legend(linear_qq)
+
+    gg <- plot_grid(linear_qq + theme(legend.position="none"),nonlinear_qq + theme(legend.position="none"), legend, ncol=1, label_size=8, labels = c('A', 'B'), rel_heights=c(1,1,.06))
+
+    ggsave(gg, file=output_file, width=7.2,height=5, units="in")
+
+}
+
+compare_eqtl_results_to_banovich_eqtls <- function(eqtl_data_set_comparison_dir, output_file) {
+    ipsc_file <- paste0(eqtl_data_set_comparison_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_1.0_compare_dynamic_qtls_to_ipsc.txt")
+    ipsc_cm_file <- paste0(eqtl_data_set_comparison_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_1.0_compare_dynamic_qtls_to_ipsc_cm.txt")
+
+    ipsc_data <- read.table(ipsc_file, header=TRUE)
+    ipsc_cm_data <- read.table(ipsc_cm_file, header=TRUE)
+    ipsc_data <- ipsc_data[as.character(ipsc_data$dynamic_eqtl_class) != "change",]
+    ipsc_cm_data <- ipsc_cm_data[as.character(ipsc_cm_data$dynamic_eqtl_class) != "change",]
+
+    pvalue_arr <- c()
+    dynamic_eqtl_class_arr <- c()
+    cell_type_arr <- c()
+
+    pvalue_arr <- c(pvalue_arr, ipsc_data$eqtl_pvalue + 1e-9)
+    dynamic_eqtl_class_arr <- c(dynamic_eqtl_class_arr, as.character(ipsc_data$dynamic_eqtl_class))
+    cell_type_arr <- c(cell_type_arr, rep("ipsc", length(ipsc_data$dynamic_eqtl_class)))
+
+    pvalue_arr <- c(pvalue_arr, ipsc_cm_data$eqtl_pvalue + 1e-9)
+    dynamic_eqtl_class_arr <- c(dynamic_eqtl_class_arr, as.character(ipsc_cm_data$dynamic_eqtl_class))
+    cell_type_arr <- c(cell_type_arr, rep("ipsc_cm", length(ipsc_cm_data$dynamic_eqtl_class)))
+
+    df <- data.frame(pvalue=-log10(pvalue_arr), cell_type = as.factor(cell_type_arr), dynamic_eqtl_class = as.factor(dynamic_eqtl_class_arr))
+    print(summary(df))
+    # PLOT
+    boxplot <- ggplot(df, aes(x=cell_type,y=pvalue,fill=dynamic_eqtl_class)) + geom_boxplot() + labs(x = "Cell type", y = expression(-log[10]("p-value")),fill= "") + scale_fill_manual(values=c("darkgrey", "firebrick"))
+    boxplot <- boxplot + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
+    boxplot <- boxplot + theme(legend.position="bottom")
+    ggsave(boxplot, file=output_file, width=7.2, height=4.5,units="in")
+}
+
+
+
 
 #############################
 ## Command Line Args
@@ -713,23 +875,47 @@ cell_line_overlap_analysis_dir = args[2]
 tissue_specific_chrom_hmm_enrichment_dir = args[3]
 time_step_independent_comparison_dir = args[4]
 gwas_overlap_dir = args[5]
-visualization_input_dir = args[6]
-visualization_dir = args[7]
+eqtl_data_set_comparison_dir = args[6]
+visualization_input_dir = args[7]
+visualization_dir = args[8]
 
 
+
+###############################################################################
+# Make Plot comparing dynamic eQTLs with Banovich eqtl results
+#################################################################################
+output_file <- paste0(visualization_dir, "dynamic_eqtl_comparison_to_banovich_eqtls.png")
+compare_eqtl_results_to_banovich_eqtls(eqtl_data_set_comparison_dir, output_file)
+
+print("DONE")
 ###############################################################################
 # Make Manuscript Figure 3
 #################################################################################
 output_file <- paste0(visualization_dir, "figure3.png")
-produce_figure_3(qtl_results_dir, time_step_independent_comparison_dir, tissue_specific_chrom_hmm_enrichment_dir, gwas_overlap_dir, visualization_input_dir, output_file)
+# produce_figure_3(qtl_results_dir, time_step_independent_comparison_dir, tissue_specific_chrom_hmm_enrichment_dir, gwas_overlap_dir, visualization_input_dir, output_file)
 
 
+###############################################################################
+# Make CRE enrichment boxplot over a range of number of PCs
+#################################################################################
+output_file <- paste0(visualization_dir, "cre_enrichment_boxplot_over_a_range_of_pcs.png")
+#cre_enrichment_over_range_of_pcs_boxplot(tissue_specific_chrom_hmm_enrichment_dir, output_file)
+
+
+###############################################################################
+# QQPlot showing both:
+## 1. Real data pvalues compared to uniform
+## 2. Permuted data pvalues compared to pvalues
+# One plot for linear dynamic eqtls and 1 plot for nonlinear dynamic qtls
+#################################################################################
+output_file <- paste0(visualization_dir, "linear_and_nonlinear_pc1_5_qq_plots.png")
+#qq_plot_for_linear_and_non_linear_dynamic_qtls(qtl_results_dir, output_file)
 
 ###############################################################################
 # Make plot showing two dynamic QTLs for SCN5A that are known GWAS variants
 #################################################################################
 output_file <- paste0(visualization_dir, "two_gwas_dynamic_qtls.png")
-two_dynamic_qtls_that_are_known_gwas_variants(output_file, visualization_input_dir)
+#two_dynamic_qtls_that_are_known_gwas_variants(output_file, visualization_input_dir)
 
 
 ###############################################################################
@@ -737,27 +923,27 @@ two_dynamic_qtls_that_are_known_gwas_variants(output_file, visualization_input_d
 #################################################################################
 output_file <- paste0(visualization_dir, "rs8107849_ENSG00000166704_nonlinear_viz.png")
 dynamic_qtl_input_file <- paste0(visualization_input_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_dynamic_qtl_efdr_05_visualization_input.txt")
-non_linear_dynamic_qtl_plot <- make_dynamic_qtl_plot(dynamic_qtl_input_file, "rs8107849", "ENSG00000166704", "ZNF606", "glm_quadratic", "pc1_5", -2.5,4, 'T','C')
+#non_linear_dynamic_qtl_plot <- make_dynamic_qtl_plot(dynamic_qtl_input_file, "rs8107849", "ENSG00000166704", "ZNF606", "glm_quadratic", "pc1_5", -2.5,4, 'T','C')
 output_file <- paste0(visualization_dir, "rs8107849_ENSG00000166704_nonlinear_viz.png")
-ggsave(non_linear_dynamic_qtl_plot + labs(title=""), file=output_file, width=7.2, height=4.5,units="in")
+#ggsave(non_linear_dynamic_qtl_plot + labs(title=""), file=output_file, width=7.2, height=4.5,units="in")
 
 
 ###############################################################################
 # Plot frequency distributions for real and background for each of the covariate methods using top n genes
 ###############################################################################
 num_genes <- "200"
-covariate_methods <- c("none", "pc1", "pc1_2", "pc1_3", "pc1_4", "pc1_5")
-covariate_method_names <- c("Dynamic eQTL (0 PC)", "Dynamic eQTL (1 PC)", "Dynamic eQTL (2 PC)", "Dynamic eQTL (3 PC)", "Dynamic eQTL (4 PC)", "Dynamic eQTL (5 PC)")
+covariate_methods <- c("none", "pc1", "pc1_2", "pc1_3", "pc1_4", "pc1_5", "pc1_6", "pc1_7", "pc1_8", "pc1_9", "pc1_10")
+covariate_method_names <- c("Dynamic eQTL (0 PC)", "Dynamic eQTL (1 PC)", "Dynamic eQTL (2 PC)", "Dynamic eQTL (3 PC)", "Dynamic eQTL (4 PC)", "Dynamic eQTL (5 PC)", "Dynamic eQTL (6 PC)", "Dynamic eQTL (7 PC)", "Dynamic eQTL (8 PC)", "Dynamic eQTL (9 PC)", "Dynamic eQTL (10 PC)")
 model_options <- c("glm")
 output_file <- paste0(visualization_dir, "real_and_observed_in_cell_line_overlap_glm_", num_genes,"_violin_plot.png")
-violin_plot_top_n_genes(cell_line_overlap_analysis_dir, output_file, num_genes, covariate_methods, model_options, covariate_method_names)
+# violin_plot_top_n_genes(cell_line_overlap_analysis_dir, output_file, num_genes, covariate_methods, model_options, covariate_method_names)
 
 ###############################################################################
 # Scatter plot comparing pvalues from glm dynamic QTLs and glmm dynamic qtls
 ###############################################################################
 output_file <- paste0(visualization_dir, "compare_glm_glmm_pc1_5_scatter.png")
 input_file <- paste0(visualization_input_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_covariate_method_pc1_5_merge_glm_glmm.txt")
-cmp_glm_glmm(input_file, output_file)
+#cmp_glm_glmm(input_file, output_file)
 
 
 ############################################################################
@@ -768,7 +954,7 @@ cmp_glm_glmm(input_file, output_file)
 pvalue_threshold <- .05
 time_step_independent_comparison_file <- paste0(time_step_independent_comparison_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_1.0_dynamic_standard_egenes_comparison.txt")
 output_file <- paste0(visualization_dir, "joint_plot_summarizing_per_time_step_eqtl_comparison_",pvalue_threshold,".png")
-joint_plot_summarizing_time_step_independent_comparison(pvalue_threshold, time_step_independent_comparison_file, output_file)
+#joint_plot_summarizing_time_step_independent_comparison(pvalue_threshold, time_step_independent_comparison_file, output_file)
 
 
 ############################################################################
@@ -776,17 +962,17 @@ joint_plot_summarizing_time_step_independent_comparison(pvalue_threshold, time_s
 ############################################################################
 output_file <- paste0(visualization_dir, "dynamic_egenes_glm_pc1_5_boxplot_comparing_per_time_step_qtls.png")
 time_step_independent_comparison_file <- paste0(time_step_independent_comparison_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_1.0_dynamic_standard_egenes_comparison.txt")
-boxplot_comparing_time_steps_grouped_by_dynamic_qtl_classes(time_step_independent_comparison_file, output_file)
+# boxplot_comparing_time_steps_grouped_by_dynamic_qtl_classes(time_step_independent_comparison_file, output_file)
 
 ############################################################################
 # Boxplot showing Standard eQTL p- values (y-axis) in all 16 time steps (x-axis) of non-linear dynamic eQTLs (most significant variant per dynamic eQTL gene) stratified by linear dynamic eQTL classifications (early, switch, and late) 
 ############################################################################
 output_file <- paste0(visualization_dir, "nonlinear_dynamic_egenes_glm_quadratic_pc1_5_boxplot_comparing_per_time_step_qtls.png")
 time_step_independent_comparison_file <- paste0(time_step_independent_comparison_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_1.0_dynamic_standard_egenes_comparison.txt")
-boxplot_comparing_time_steps_grouped_by_two_dynamic_qtl_classes(time_step_independent_comparison_file, output_file)
+# boxplot_comparing_time_steps_grouped_by_two_dynamic_qtl_classes(time_step_independent_comparison_file, output_file)
 
 ############################################################################
 # Miami Plot with all three significant phenotypes
 ############################################################################
 output_file <- paste0(visualization_dir, "joint_miami_plot_rs28818910_ENSG00000167173.png")
-make_miami_plot(gwas_overlap_dir, output_file)
+# make_miami_plot(gwas_overlap_dir, output_file)

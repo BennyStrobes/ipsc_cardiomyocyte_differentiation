@@ -2349,7 +2349,129 @@ make_figure_1_alt_e <- function(sample_info, quant_expr, mixutre_hmm_cell_line_g
 
 
 
+banovich_ipsc_heatmap_comparison <- function(day_0_file, day_15_file, output_file) {
+    day_15_data <- read.table(day_15_file,header=TRUE)
+    day_15_lines <- day_15_data[,1]
+    day_15_corr <- day_15_data[,2:(dim(day_15_data)[2])]
+    rownames(day_15_corr) = day_15_lines
+    colnames(day_15_corr) = day_15_lines
+    melted_mat_15 <- melt(as.matrix(day_15_corr))
+    colnames(melted_mat_15) <- c("day_15_cell_line", "ipsc_cell_line", "pearson_correlation")
+    
+    melted_mat_15$day_15_cell_line <- factor(melted_mat_15$day_15_cell_line, levels=day_15_lines)
+    melted_mat_15$ipsc_cell_line <- factor(melted_mat_15$ipsc_cell_line, levels=day_15_lines)
 
+    #  PLOT!
+    heatmap_15 <- ggplot(data=melted_mat_15, aes(x=day_15_cell_line, y=ipsc_cell_line)) + geom_tile(aes(fill=pearson_correlation))
+    heatmap_15 <- heatmap_15 + labs(y="iPSC-derived cardiomyocytes cell line", x = "Day 15 cell line",fill=expression(paste("  ",rho)))
+    heatmap_15 <- heatmap_15 + scale_fill_distiller(palette = "Blues", direction=1)
+    heatmap_15 <- heatmap_15 + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8),  axis.text.x = element_text(angle = 90,hjust=1, vjust=.5)) 
+
+
+    day_0_data <- read.table(day_0_file,header=TRUE)
+    day_0_lines <- day_0_data[,1]
+    day_0_corr <- day_0_data[,2:(dim(day_0_data)[2])]
+    rownames(day_0_corr) = day_0_lines
+    colnames(day_0_corr) = day_0_lines
+    melted_mat_0 <- melt(as.matrix(day_0_corr))
+    colnames(melted_mat_0) <- c("day_0_cell_line", "ipsc_cell_line", "pearson_correlation")
+    
+    melted_mat_0$day_0_cell_line <- factor(melted_mat_0$day_0_cell_line, levels=day_0_lines)
+    melted_mat_0$ipsc_cell_line <- factor(melted_mat_0$ipsc_cell_line, levels=day_0_lines)
+
+    #  PLOT!
+    heatmap_0 <- ggplot(data=melted_mat_0, aes(x=day_0_cell_line, y=ipsc_cell_line)) + geom_tile(aes(fill=pearson_correlation))
+    heatmap_0 <- heatmap_0 + labs(y="iPSC cell cine", x = "Day 0 cell line",fill=expression(paste("  ",rho)))
+    heatmap_0 <- heatmap_0 + scale_fill_distiller(palette = "Blues", direction=1)
+    heatmap_0 <- heatmap_0 + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8),  axis.text.x = element_text(angle = 90,hjust=1, vjust=.5)) 
+
+
+    combined <- plot_grid(heatmap_0 , heatmap_15 , labels = c("A", "B"), ncol=1)
+
+    ggsave(combined,file=output_file, width=7.2, height=7.5, units="in")
+
+    return(combined)
+
+
+
+
+}
+
+
+banovich_ipsc_boxplot_comparison <- function(day_0_file, day_15_file, output_file) {
+    day_15_data <- read.table(day_15_file,header=TRUE)
+    day_15_lines <- day_15_data[,1]
+    day_15_corr <- day_15_data[,2:(dim(day_15_data)[2])]
+    rownames(day_15_corr) = day_15_lines
+    colnames(day_15_corr) = day_15_lines
+
+
+    day_0_data <- read.table(day_0_file,header=TRUE)
+    day_0_lines <- day_0_data[,1]
+    day_0_corr <- day_0_data[,2:(dim(day_0_data)[2])]
+    rownames(day_0_corr) = day_0_lines
+    colnames(day_0_corr) = day_0_lines
+
+
+    num_ipsc_lines <- dim(day_0_corr)[1]
+    num_ipsc_cm_lines <- dim(day_15_corr)[1]
+
+    correlations <- c()
+    replica <- c()
+    day <- c()
+
+    for (counter1 in 1:num_ipsc_lines) {
+        for (counter2 in 1:num_ipsc_lines) {
+            cell_line1 <- day_0_lines[counter1]
+            cell_line2 <- day_0_lines[counter2]
+            if (counter1 == counter2) {
+                replica <- c(replica, "matched lines")
+            } else {
+                replica <- c(replica, "different lines")
+            }
+            correlations <- c(correlations, day_0_corr[counter1,counter2])
+            day <- c(day, "day_0")
+        }
+    }
+
+    for (counter1 in 1:num_ipsc_cm_lines) {
+        for (counter2 in 1:num_ipsc_cm_lines) {
+            cell_line1 <- day_15_lines[counter1]
+            cell_line2 <- day_15_lines[counter2]
+            if (counter1 == counter2) {
+                replica <- c(replica, "matched lines")
+            } else {
+                replica <- c(replica, "different lines")
+            }
+            correlations <- c(correlations, day_15_corr[counter1,counter2])
+            day <- c(day, "day_15")
+        }
+    }
+
+    df <- data.frame(correlation=correlations, day=factor(day), replica=factor(replica, levels=c("matched lines", "different lines")))
+    
+    df_day_0 <- df[as.character(df$day) == "day_0",]
+    df_day_15 <- df[as.character(df$day) == "day_15",]
+
+
+    boxplot_0 <- ggplot(df_day_0, aes(x=replica,y=correlation,fill=replica)) + geom_boxplot() + labs(title="Day 0 cell lines compared to iPSCs (Banovich et al.)",x = "", y = expression(paste("",rho))) 
+    boxplot_0 <- boxplot_0 + theme(legend.position="none")
+    boxplot_0 <- boxplot_0 + scale_fill_manual(values=c("dodgerblue3", "chartreuse4"))
+    boxplot_0 <- boxplot_0 + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+    
+    boxplot_15 <- ggplot(df_day_15, aes(x=replica,y=correlation,fill=replica)) + geom_boxplot() + labs(title="Day 15 cell lines compared to iPSC-derived cardiomyocytes (Banovich et al.)",x = "", y = expression(paste("",rho))) 
+    boxplot_15 <- boxplot_15 + scale_fill_manual(values=c("dodgerblue3", "chartreuse4"))
+
+    boxplot_15 <- boxplot_15 + theme(legend.position="none")
+    boxplot_15 <- boxplot_15 + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+    
+
+    combined <- plot_grid(boxplot_0, boxplot_15 , labels = c("A", "B"), ncol=1)
+
+    ggsave(combined, file=output_file,width = 7.2,height=5.5,units="in")
+
+
+}
 
 
 
@@ -2366,7 +2488,45 @@ preprocess_total_expression_dir = args[1]  # Where total expression processed da
 visualize_total_expression_dir = args[2]  # Ouputdir to save images
 covariate_dir = args[3]  # Input dir with covariate information
 mixutre_hmm_cell_line_grouping_dir = args[4]  # Directory containing files assigning cell lines to groupings
+banovich_ipsc_comparison_dir = args[5]  # Directory containing results comparing banovich ipsc to time step ipscs
 
+
+# Compare banovich ipscs to per time step ipscs with boxplot of correlations
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_regress_out_10_3_pcs.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_regress_out_3_3_pcs.txt")
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_regress_out_10_3_3_3_boxplot.png")
+banovich_ipsc_boxplot_comparison(day_0_file, day_15_file, output_file)
+# Compare banovich ipscs to per time step ipscs with heatmap
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_regress_out_10_3_pcs.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_regress_out_3_3_pcs.txt")
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_regress_out_10_3_3_3_heatmap.png")
+banovich_ipsc_heatmap_comparison(day_0_file, day_15_file, output_file)
+
+
+# Compare banovich ipscs to per time step ipscs with boxplot of correlations
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_all_genes.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_all_genes.txt")
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_all_genes_boxplot.png")
+banovich_ipsc_boxplot_comparison(day_0_file, day_15_file, output_file)
+# Compare banovich ipscs to per time step ipscs with heatmap
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_all_genes.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_all_genes.txt")
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_all_genes_heatmap.png")
+banovich_ipsc_heatmap_comparison(day_0_file, day_15_file, output_file)
+
+# Compare banovich ipscs to per time step ipscs with boxplot of correlations
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_3_3_1000.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_3_3_1000.txt")
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_3_3_1000_boxplot.png")
+banovich_ipsc_boxplot_comparison(day_0_file, day_15_file, output_file)
+# Compare banovich ipscs to per time step ipscs with heatmap
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_3_3_1000.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_3_3_1000.txt")
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_3_3_1000_heatmap.png")
+banovich_ipsc_heatmap_comparison(day_0_file, day_15_file, output_file)
+
+
+print("done")
 #  Get sample information 
 sample_info_file <- paste0(preprocess_total_expression_dir, "sample_info.txt")
 sample_info <- read.table(sample_info_file, header=TRUE)
@@ -2535,7 +2695,7 @@ plot_pca_eigenvectors_by_line(sample_info, quant_expr, eigenvectors_output_file)
 ####################################################################
 
 # Variance explained of first 7 pcs from cell PCA
-n <- 7
+n <- 10
 cell_line_pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "cell_line_ignore_missing_pca_plot_variance_explained", n, ".png")
 cell_line_pc_pve <- plot_pca_variance_explained(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, n, cell_line_pca_plot_variance_explained_output_file, "Cell line collapsed PC number")
 
@@ -2636,7 +2796,7 @@ combined <- plot_grid(cell_line_pc_scatter_flow+ theme(legend.position='bottom')
 combined2 <- plot_grid(cell_line_pc_pve, combined, labels=c("A", ""), ncol=1, rel_heights = c(.9, 1.2))
 ggsave(combined2, file=output_file, width=7.2, height=5.5,units="in")
 
-
+print("done")
 
 ####################################################################
 # Correlate flow results with PC results, as well as avg troponin

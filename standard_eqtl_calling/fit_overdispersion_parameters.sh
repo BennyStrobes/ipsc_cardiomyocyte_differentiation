@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --time=4:00:00 --partition=broadwl
+#SBATCH --time=4:00:00 --mem=10GB --partition=broadwl
 time_step="$1"
 parameter_string="$2"
 cht_input_file_dir="$3"
@@ -7,7 +7,6 @@ target_regions_dir="$4"
 
 CHT_IN_FILE=$cht_input_file_dir"cht_input_file_"$parameter_string"_time_"$time_step".txt"
 ls $cht_input_file_dir"haplotype_read_counts_"$parameter_string*"_"$time_step".txt.gz" | grep -v adjusted > $CHT_IN_FILE
-
 date
 
 #
@@ -31,5 +30,8 @@ date
 
 samples_file=$target_regions_dir"rna_seq_samples_"$time_step".txt"
 PC_output_file=$cht_input_file_dir"pcs_"$parameter_string"_time_"$time_step".txt"
-Rscript get_PCs.R $samples_file $cht_input_file_dir $parameter_string $time_step > $PC_output_file
+Rscript get_PCs.R $samples_file $cht_input_file_dir $parameter_string $time_step $PC_output_file
 
+samples_file=$target_regions_dir"rna_seq_samples_"$time_step".txt"
+PC_pve_output_file=$cht_input_file_dir"pcs_"$parameter_string"_time_"$time_step"_variance_explained.txt"
+Rscript get_PCs_variance_explained.R $samples_file $cht_input_file_dir $parameter_string $time_step $PC_pve_output_file

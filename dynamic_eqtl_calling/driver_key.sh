@@ -60,6 +60,16 @@ cardiomyopathy_gene_list="/project2/gilad/bstrober/ipsc_differentiation_19_lines
 # Directory contaiing executables required to run liftover
 liftover_directory="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/liftOver_x86/"
 
+# iPSC-CM eqtl file created by Nick Banovich et al (https://genome.cshlp.org/content/early/2017/12/05/gr.224436.117)
+# Downloaded here http://eqtl.uchicago.edu/yri_ipsc/eQTL_WASP_CM.txt
+cm_eqtl_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/eQTL_WASP_CM_thresh_1.0.txt"
+
+# iPSC eqtl file created by Nick Banovich et al (https://genome.cshlp.org/content/early/2017/12/05/gr.224436.117)
+# Downloaded here http://eqtl.uchicago.edu/yri_ipsc/iPSC-eQTL-summary.txt
+ipsc_eqtl_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/ipsc_eqtl_all/ipsc_eqtl_all_associations.txt"
+
+
+
 ###############################################################################
 # Output directories (aasume all of these exist prior to starting analysis)
 ###############################################################################
@@ -91,6 +101,9 @@ gene_set_enrichment_dir=$output_root"gene_set_enrichment/"
 
 # Output directory containing gwas overlaps
 gwas_overlap_dir=$output_root"gwas_overlap/"
+
+# Output directory containing comparison other eqtl data sets
+eqtl_data_set_comparison_dir=$output_root"eqtl_data_set_comparison/"
 
 # Output directory containing input data for dynamic eqtl visualiztion
 visualization_input_dir=$output_root"visualization_input/"
@@ -152,9 +165,7 @@ num_jobs="10"
 ################################
 # Run Dynamic eQTLs using GLM with sweep over covariate methods and model versions
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
-covariate_methods=( "pc1_10" )
 model_versions=( "glm" "glmm" "glm_quadratic")
-model_versions=( "glm" )
 ################################
 
 # Loop through covariate methods
@@ -180,8 +191,30 @@ for covariate_method in "${covariate_methods[@]}"; do
     done
 done
 
-
-
+covariate_methods=( "pc1_6" "pc1_7" "pc1_8" "pc1_9" "pc1_10")
+model_versions=( "glm" )
+# Loop through covariate methods
+for covariate_method in "${covariate_methods[@]}"; do
+    # Loop through model versions
+    for model_version in "${model_versions[@]}"; do
+        # Loop through parallelization jobs
+        for job_number in $(seq 0 $(($num_jobs-1))); do 
+            
+            # Run for real data
+            permute="False"
+            output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
+            if false; then
+            sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
+            fi
+            # Run for permuted data
+            permute="True"
+            output_file=$qtl_results_dir"gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method"_permute_"$permute"_results_"$job_number".txt"
+            if false; then
+            sbatch run_gaussian_dynamic_qtl.sh $dynamic_eqtl_input_file $output_file $model_version $permute $covariate_method $job_number $num_jobs
+            fi
+        done
+    done
+done
 
 
 
@@ -222,25 +255,49 @@ done
 ### Part I: Extract GWAS data for Miami plots at a few specific, exemplary positions
 ########################################
 ### Part J: Organize significant eqtl results for dynamic eqtl visualization
+########################################
+### Part K: Compare dynamic eqtls to existing data sets
+
 
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
 model_versions=( "glm" "glmm" "glm_quadratic")
-if false; then
+
+
 # Loop through covariate methods
+if false; then
 for covariate_method in "${covariate_methods[@]}"; do
     # Loop through model versions
     for model_version in "${model_versions[@]}"; do
         parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
-        sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir
+        sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir $cm_eqtl_file $ipsc_eqtl_file $eqtl_data_set_comparison_dir
     done
 done
 fi
 
+covariate_methods=( "pc1_6" "pc1_7" "pc1_8" "pc1_9" "pc1_10")
+model_versions=( "glm" )
+if false; then
+for covariate_method in "${covariate_methods[@]}"; do
+    # Loop through model versions
+    for model_version in "${model_versions[@]}"; do
+        parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
+        sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir $cm_eqtl_file $ipsc_eqtl_file $eqtl_data_set_comparison_dir
+    done
+done
+fi
+
+
+model_version="glm"
+covariate_method="pc1_5"
+parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
+# sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir $cm_eqtl_file $ipsc_eqtl_file $eqtl_data_set_comparison_dir
+
+
+
 ##########################################
 # Step 4: Visualize results from dynamic qtl analysis
 ##########################################
-sh visualize_dynamic_qtl_results.sh $qtl_results_dir $cell_line_overlap_analysis_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gwas_overlap_dir $visualization_input_dir $visualization_dir
-
+sh visualize_dynamic_qtl_results.sh $qtl_results_dir $cell_line_overlap_analysis_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gwas_overlap_dir $eqtl_data_set_comparison_dir $visualization_input_dir $visualization_dir
 
 
 

@@ -179,9 +179,9 @@ def sample_background_variant_gene_pairs(background_object, variant_gene_pair_in
         maf_bin = get_maf_bin(maf, maf_bin_size)
         converged = False
         while converged == False:
-            if len(background_object[distance_bin][maf_bin]) < 10:
+            if len(background_object[distance_bin][maf_bin]) < 4:
                 print('small backgroudn: should investigate')
-                pdb.set_trace()
+                print(len(background_object[distance_bin][maf_bin]))
             randomly_selected_pair = random.choice(background_object[distance_bin][maf_bin])
             if randomly_selected_pair not in background_variant_gene_pairs:
                 background_variant_gene_pairs[randomly_selected_pair] = 1
@@ -519,6 +519,8 @@ output_root = sys.argv[8]
 hits_version = sys.argv[9]
 model_version = sys.argv[10]
 threshold = float(sys.argv[11])
+
+print('start')
 
 # Extract list of cell line ids used for this cell_line_version
 cell_line_ids = get_cell_line_ids(cell_line_version, chrom_hmm_input_dir)

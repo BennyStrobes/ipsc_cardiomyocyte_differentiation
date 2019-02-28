@@ -32,9 +32,13 @@ for(i in 1:nrow(indv.tab)) {
 # perform principal component analysis
 pca <- prcomp(read.count.matrix)
 
+# Ignore intercept
+sdev <- pca$sdev[2:length(pca$sdev)]
+
+variance_explained <- (sdev^2)/sum(sdev^2)
 
 # write PC loadings to stdout
-write.table(pca$rotation, file=output_file, sep=" ",
+write.table(variance_explained, file=output_file, sep=" ",
             append=FALSE, quote=FALSE,
             col.names=FALSE, row.names=FALSE)
 

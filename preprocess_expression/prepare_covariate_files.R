@@ -1,6 +1,6 @@
 args = commandArgs(trailingOnly=TRUE)
 library(edgeR)
-library(Rsubread)
+# library(Rsubread)
 library(Biobase)
 library(preprocessCore)
 library(ggplot2)
@@ -28,12 +28,19 @@ save_python_style_matrix <- function(counts, output_file, row_label_name) {
 # Write PC scores to output file
 save_pcs <- function(sample_names, quant_expr, n, output_file) {
     svd1 <- svd(as.matrix(quant_expr))
-
     #  Scores of first n pc's across all samples
     pc <- svd1$v[,1:n]
     colnames(pc) <- paste0("PC",1:n)
     rownames(pc) <- sample_names
     save_python_style_matrix(pc, output_file, "Sample_id")
+}
+
+save_pc_gene_weights <- function(gene_names, quant_expr, n, output_file) {
+    svd1 <- svd(as.matrix(quant_expr))
+    weights <- svd1$u[,1:n]
+    colnames(weights) <- paste0("PC",1:n)
+    rownames(weights) <- gene_names
+    save_python_style_matrix(weights, output_file, "Gene_id")
 }
 
 save_sva <- function(sample_info, quant_expr, sva_output_file, corrected_expression_sva) {
@@ -453,14 +460,20 @@ n <- 10  # Number of PCs to save
 #  Ouptut file to save PC loadings to 
 pc_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_principal_components_", n, ".txt")
 save_pcs(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, n, pc_output_file)
+#  Ouptut file to save Gene loadings to
+pc_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_principal_components_", n, "_gene_weights.txt")
+save_pc_gene_weights(cell_line_expression_ignore_missing_rownames, cell_line_expression_ignore_missing, n, pc_output_file)
 
 ###############################
 # Run PCA on all 297 RNA-seq samples
 n <- 10 #  Number of pcs to save
 #  Ouptut file to save PC loadings to 
+
 pc_output_file <- paste0(covariate_dir, "principal_components_", n, ".txt")
 save_pcs(sample_info$Sample_name, quant_expr, n, pc_output_file)
-
+#  Ouptut file to save Gene loadings to
+pc_output_file <- paste0(covariate_dir, "principal_components_", n, "_gene_weights.txt")
+save_pc_gene_weights(rownames(quant_expr), quant_expr, n, pc_output_file)
 
 
 ##############################################################################################################################

@@ -263,7 +263,8 @@ def get_background_variant_gene_pairs(input_dicti, input_file):
         maf_bin = get_maf_bin(maf, maf_bin_size)
 
         tests_to_choose_from = background_qtls[distance_bin][maf_bin]
-        if len(tests_to_choose_from) < 10:
+        if len(tests_to_choose_from) < 4:
+            print(len(tests_to_choose_from))
             print('short supply')
             pdb.set_trace()
         working = False

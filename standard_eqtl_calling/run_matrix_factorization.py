@@ -60,7 +60,6 @@ def run_matrix_factorization(input_mat, row_labels, column_labels, output_root, 
     #input_mat = standardize_rows(input_mat)
     #input_mat = intercept_shift_rows(input_mat)
     #input_mat = intercept_shift_columns(input_mat)
-
     model = NMF(n_components=num_components, init='nndsvd', alpha=alpha_param, l1_ratio=1)
     W = model.fit_transform(input_mat)
     H = model.components_
@@ -242,8 +241,9 @@ variant_gene_pairs = alpha_full[:,0]
 
 allelic_fraction = np.abs((alpha/(alpha+beta)) - .5) 
 
-alpha_params = [0, .25, .5, .75, 1, 1.5, 2]
+alpha_params = [0, .25, .5, .75, 1, 1.5, 2, 5, 10]
 
+log_pvalue = -np.log10(pvalue + 1e-17)
 
 for num_components in np.arange(3, 6):
     for alpha_param in alpha_params:
@@ -251,13 +251,18 @@ for num_components in np.arange(3, 6):
         ## VERSION 1: allelic fraction
         version = 'allelic_fraction'
         output_root = matrix_factorization_dir + parameter_string + '_num_pc_' + str(pc_num) + '_fdr_' + fdr + '_' + version + '_factorization' + '_alpha_' + str(alpha_param) + '_' + str(num_components) + '_'
-        #W = run_matrix_factorization(allelic_fraction, variant_gene_pairs, np.arange(16).astype(str), output_root, version, num_components, alpha_param)
+        W = run_matrix_factorization(allelic_fraction, variant_gene_pairs, np.arange(16).astype(str), output_root, version, num_components, alpha_param)
 
 
         ## VERSION 2: pvalue
         version = 'pvalue'
         output_root = matrix_factorization_dir + parameter_string + '_num_pc_' + str(pc_num) + '_fdr_' + fdr + '_' + version + '_factorization' + '_alpha_' + str(alpha_param) + '_' + str(num_components) + '_'
         W = run_matrix_factorization(pvalue, variant_gene_pairs, np.arange(16).astype(str), output_root, version, num_components, alpha_param)
+
+        ## VERSION 3: -log10(pvalue)
+        version = 'log_pvalue'
+        output_root = matrix_factorization_dir + parameter_string + '_num_pc_' + str(pc_num) + '_fdr_' + fdr + '_' + version + '_factorization' + '_alpha_' + str(alpha_param) + '_' + str(num_components) + '_'
+        W = run_matrix_factorization(log_pvalue, variant_gene_pairs, np.arange(16).astype(str), output_root, version, num_components, alpha_param)
 
 
 

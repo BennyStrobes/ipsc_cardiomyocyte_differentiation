@@ -196,6 +196,7 @@ fi
 
 
 
+
 ##################################################################
 ### Run Combined Haplotype Test (CHT) / WASP
 ##################################################################
@@ -242,9 +243,8 @@ fi
 ##### 3. 'run_matrix_factorization.py': Run spare non-negative matrix factorization on the matrix of summary statisics (num_eGenesXnum_time_steps) for a range of number of latent factors and sparsity parameters
 ### It then runs `cht_visualization.R`: Make visualizations of WASP eqtl results
 fdr=".05"
-if false; then
-sbatch run_downstream_analysis_on_wasp_results.sh $parameter_string $cht_output_dir $fdr $target_regions_dir $matrix_factorization_dir $cm_eqtl_file $ipsc_eqtl_file $cht_visualization_dir
-fi
+sh run_downstream_analysis_on_wasp_results.sh $parameter_string $cht_output_dir $fdr $target_regions_dir $matrix_factorization_dir $cm_eqtl_file $ipsc_eqtl_file $cht_visualization_dir $cht_input_file_dir
+
 
 
 

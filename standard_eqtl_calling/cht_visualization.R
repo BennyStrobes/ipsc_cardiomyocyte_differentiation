@@ -503,12 +503,13 @@ qq_plot_vs_uniform <- function(input_stem, null_stem, output_file) {
     p15 <- make_qq_plot_vs_uniform_one_time_step(paste0(input_stem,time_step,"_eqtl_results.txt"),paste0(null_stem,time_step,"_eqtl_results.txt"), time_step)
     
     # Merge those 16 plots with cowplot!
+    legend = get_legend(p0)
+    gg <- plot_grid(p0 + theme(legend.position="none"),p1 + theme(legend.position="none"),p2 + theme(legend.position="none"),p3 + theme(legend.position="none"),p4 + theme(legend.position="none"),p5 + theme(legend.position="none"),p6 + theme(legend.position="none"),p7 + theme(legend.position="none"),p8 + theme(legend.position="none"),p9 + theme(legend.position="none"),p10 + theme(legend.position="none"),p11 + theme(legend.position="none"),p12 + theme(legend.position="none"),p13 + theme(legend.position="none"),p14 + theme(legend.position="none"),p15 + theme(legend.position="none"),nrow=4,ncol=4,label_size=8)
 
-    pdf(output_file)
-    gg <- plot_grid(p0,p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,nrow=4,ncol=4,label_size=8)
-    combined_gg <- ggdraw() + draw_plot(gg,0,0,1,1)
-    print(combined_gg)
-    dev.off()
+    gg_combined <- plot_grid(gg, legend,ncol=1,rel_heights = c(1, .04))
+
+    ggsave(gg_combined,file=output_file, width=7.2, height=8,units="in")
+
 }
 
 # Helper method to qq_plot_vs_uniform
@@ -535,20 +536,23 @@ make_qq_plot_vs_uniform_one_time_step <- function(real_eqtl_file, null_eqtl_file
 
     # Organize into data frame
     all_pvalues <- c(pvalues, null_pvalues)
-    type <- c(rep("real",length(pvalues)),rep("null",length(null_pvalues)))
+    type <- c(rep("real",length(pvalues)),rep("permuted",length(null_pvalues)))
 
     uniform <- c(sample_non_significant_hits(uniform_1), sample_non_significant_hits(uniform_2))
 
-    df <- data.frame(pvalues=-log10(all_pvalues + .000000000001), expected_pvalues=-log10(uniform + .000000000001), type=factor(type))
+    df <- data.frame(pvalues=-log10(all_pvalues + 1e-17), expected_pvalues=-log10(uniform + 1e-17), type=factor(type, levels=c("real", "permuted")))
 
     # PLOT!
-    max_val <-max(max(-log10(uniform + .000000000001)), max(-log10(all_pvalues + .000000000001)))
+    max_val <-max(max(-log10(uniform + 1e-17)), max(-log10(all_pvalues + 1e-17)))
     #PLOT!
     scatter <- ggplot(df, aes(x = expected_pvalues, y = pvalues, colour = type)) + geom_point() 
     scatter <- scatter + theme(text = element_text(size=14), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black")) 
-    scatter <- scatter + labs(colour="data type",x = "Uniform", y = "Real", title = paste0("Time step ", time_step))
-    scatter <- scatter + geom_abline() +  theme(legend.position="none")
+    scatter <- scatter + labs(colour="",x = expression(log[10]("expected p-value")), y = expression(log[10]("observed p-value")), title = paste0("Day ", time_step))
+    scatter <- scatter + geom_abline() 
+    scatter <- scatter + theme(legend.position="bottom")
+    scatter <- scatter + scale_colour_manual(values=c("dodgerblue3","chartreuse4"))
     scatter <- scatter + scale_x_continuous(limits = c(-.1, max_val + .1), breaks = round(seq(0, max_val, by = 5),1)) + scale_y_continuous(limits = c(-.1,max_val+.1), breaks = round(seq(0, max_val, by = 5),1))
+    scatter <- scatter + theme(plot.title=element_text(size=8, face="plain"), text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
     return(scatter)
 }
 
@@ -938,14 +942,47 @@ make_figure_2 <- function(figure_2a, figure_2b, figure_2c, output_file) {
 
 }
 
-number_of_significant_genes_merge_plots <- function(num_qtl_violin, num_qtl_bar_plot, output_file) {
+number_of_significant_genes_merge_plots <- function(num_qtl_violin, num_qtl_bar_plot, pc_pve_line_plot, output_file) {
 
-    combined <- plot_grid(num_qtl_violin, num_qtl_bar_plot, labels=c("A","B"), ncol=1)
+    combined <- plot_grid(pc_pve_line_plot, num_qtl_violin, num_qtl_bar_plot, labels=c("A","B","C"), ncol=1)
 
-    ggsave(combined,file=output_file, width=7.2, height=5,units="in")
+    ggsave(combined,file=output_file, width=7.2, height=6.3,units="in")
 
 }
 
+###############################################
+# Line Plot showing PVE of PCs in each time step
+per_time_step_pcs_pve_line_plot <- function(input_stem, output_file, n) {
+    pve_arr <- c()
+    time_step_arr <- c()
+    pc_num_arr <- c()
+    # Loop through time steps
+    for (time_step in 0:15) {
+        pve_file <- paste0(input_stem, time_step, "_variance_explained.txt")
+        data <- read.table(pve_file,header=FALSE)$V1
+        for (pc_num in 1:n) {
+            pve_arr <- c(pve_arr, data[pc_num])
+            time_step_arr <- c(time_step_arr, time_step)
+            pc_num_arr <- c(pc_num_arr, pc_num)
+        }
+    }
+    # Put data into nice clean data frame
+    df <- data.frame(pve=pve_arr, time=time_step_arr,pc=pc_num_arr)
+
+    # PLOT AWAY
+    line_plot <- ggplot(data=df, aes(x=pc, y=pve, group=factor(time), color=time)) +
+                geom_line() +
+                geom_point() +
+                scale_color_gradient(low="darkgrey",high="firebrick") + 
+                ylim(0,max(pve_arr) + .01) + 
+                scale_x_continuous(breaks=1:n) +
+                labs(x = "PC number", y = "Variance Explained", color="Day") + 
+                 theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8), axis.text.x = element_text(vjust=.5)) 
+
+    ggsave(line_plot, file=output_file, width=7.2, height=5.0,units="in")
+    return(line_plot)
+
+}
 
 
 
@@ -953,6 +990,7 @@ parameter_string = args[1]  # string used to keep track of files used with speci
 cht_output_dir = args[2]  # input directory with cht test results
 cht_visualization_dir = args[3]  # output directory to save images
 matrix_factorization_dir = args[4]  # Directory containing results from matrix factorization analysis
+cht_input_file_dir = args[5]  # Directory containing PCs from time step independent analysis
 
 
 pc_num <- 3
@@ -971,10 +1009,19 @@ output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,
 input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",pc_num,"_time_")
 num_qtl_bar_plot <- visualize_number_of_genome_wide_significant_egenes(input_stem, output_file)
 
+
+###############################################
+# Line Plot showing PVE of PCs in each time step
+n <- 10
+output_file <- paste0(cht_visualization_dir, parameter_string,"_per_time_step_pcs_pve_line_plot.png")
+input_stem <- paste0(cht_input_file_dir, "pcs_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_time_")
+pc_pve_line_plot <- per_time_step_pcs_pve_line_plot(input_stem, output_file, n)
+
+
 ###############################################
 # Merged plot showing num_qtl_violin and num_qtl_bar_plot side by side
 output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_number_of_significant_genes_merged_plot.png")
-number_of_significant_genes_merge_plots(num_qtl_violin, num_qtl_bar_plot, output_file)
+number_of_significant_genes_merge_plots(num_qtl_violin, num_qtl_bar_plot, pc_pve_line_plot, output_file)
 
 
 ###############################################
@@ -992,11 +1039,11 @@ eqtl_sharing_plot(input_file, output_file, pc_num)
 ## Each output image has 16 subplots (1 for each time step)
 
 # Output file
-output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_qq_plot_vs_uniform.pdf")
+output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_qq_plot_vs_uniform.png")
 # Input file stems
 input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",pc_num,"_time_")
 null_stem <- paste0(cht_output_dir,"cht_perm1_results_",parameter_string,"_num_pc_",pc_num,"_time_")
-#qq_plot_vs_uniform(input_stem,null_stem,output_file)
+qq_plot_vs_uniform(input_stem,null_stem,output_file)
 
 
 ###############################################
@@ -1042,7 +1089,7 @@ ggsave(figure_2b, file=output_file, width=7.2, height=5.3, units="in")
 
 sparsity_parameter = "0.5"
 num_factors = "3"
-factor_matrix_file <- paste0(matrix_factorization_dir,parameter_string,"_num_pc_", pc_num, "_fdr_.05_pvalue_factorization_alpha_", sparsity_parameter, "_", num_factors,"_loading_matrix.txt")
+factor_matrix_file <- paste0(matrix_factorization_dir,parameter_string,"_num_pc_", pc_num, "_fdr_.05_log_pvalue_factorization_alpha_", sparsity_parameter, "_", num_factors,"_loading_matrix.txt")
 figure_2c <- factor_matrix_heatmap(factor_matrix_file)
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_factor_matrix_",sparsity_parameter,"_",num_factors,".png")
 ggsave(figure_2c, file=output_file, width=7.2, height=5.3, units="in")
@@ -1062,7 +1109,7 @@ make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
 # Grid of heatmap showing factor matrix from sparse matrix factor analysis
 # Heatmaps will span number of latent factors and sparse prior choice
     
-factor_matrix_root <- paste0(matrix_factorization_dir, parameter_string, "_num_pc_", pc_num,"_fdr_.05_pvalue_factorization_alpha_")
+factor_matrix_root <- paste0(matrix_factorization_dir, parameter_string, "_num_pc_", pc_num,"_fdr_.05_log_pvalue_factorization_alpha_")
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_factor_matrices.png")
 make_grid_of_factor_matrices(factor_matrix_root, output_file)
 

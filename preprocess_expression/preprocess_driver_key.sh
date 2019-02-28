@@ -72,7 +72,13 @@ tabix_directory="/project2/gilad/bstrober/tools/tabix-0.2.6/"
 ### 4. 'flow_results.txt'
 mixture_hmm_cell_line_grouping_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/mixture_hmm_cell_line_groupings/"
 
+# File containing iPSC read counts from Banovich et al
+# https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107654
+ipsc_banovich_read_counts_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/expression_data_sets/iPSC_raw_counts.txt"
 
+# File containing iPSC-CM read counts from Banovich et al
+# https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107654
+ipsc_cm_banovich_read_counts_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/expression_data_sets/GSE107654_iPSC-CM_counts.txt"
 
 
 ################################################################################################################################################################
@@ -101,6 +107,9 @@ preprocess_total_expression_dir=$preprocess_data_dir"processed_total_expression/
 
 #  Directory containing covariate information (covariates, PCs)
 covariate_dir=$preprocess_data_dir"covariates/"
+
+# Directory containing total expression data comparison to banovich et al
+banovich_ipsc_comparison_dir=$preprocess_data_dir"banovich_ipsc_comparison/"
 
 #  Directory containing plots/figures related to exploratory analysis of the total expression data (preprocess_total_expression_dir)
 visualize_total_expression_dir=$preprocess_data_dir"visualize_total_expression/"
@@ -174,9 +183,8 @@ fi
 #    4. Also does some exploratory visualization analysis of the expression data  (visualize_processed_total_expression.R)
 #  Takes about 4 hours to run
 exon_file=$genome_dir"exons.saf"
-if false; then
-sbatch preprocess_total_expression.sh $preprocess_total_expression_dir $exon_file $bam_dir $visualize_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir $mixture_hmm_cell_line_grouping_dir
-fi
+sh preprocess_total_expression.sh $preprocess_total_expression_dir $exon_file $bam_dir $visualize_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir $mixture_hmm_cell_line_grouping_dir $ipsc_banovich_read_counts_file $ipsc_cm_banovich_read_counts_file $banovich_ipsc_comparison_dir
+
 
 
 #############################################################################################################################

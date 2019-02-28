@@ -9,8 +9,9 @@ matrix_factorization_dir="$5"
 cm_eqtl_file="$6"
 ipsc_eqtl_file="$7"
 cht_visualization_dir="$8"
+cht_input_file_dir="$9"
 
-
+if false; then
 for pc_num in $(seq 0 5); do
 
 	echo $pc_num
@@ -25,7 +26,7 @@ for pc_num in $(seq 0 5); do
 	python run_matrix_factorization.py $parameter_string $cht_output_dir $matrix_factorization_dir $target_regions_dir $fdr $pc_num
 
 done
-
+fi
 
 # Make visualizations of WASP eqtl results
-Rscript cht_visualization.R $parameter_string $cht_output_dir $cht_visualization_dir $matrix_factorization_dir
+Rscript cht_visualization.R $parameter_string $cht_output_dir $cht_visualization_dir $matrix_factorization_dir $cht_input_file_dir
