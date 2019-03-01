@@ -111,6 +111,9 @@ visualization_input_dir=$output_root"visualization_input/"
 # Output directory containing manuscript figures
 visualization_dir=$output_root"visualization/"
 
+# Output directory containing results from power analysis
+power_analysis_dir=$output_root"power_analysis/"
+
 
 
 
@@ -287,17 +290,20 @@ done
 fi
 
 
-model_version="glm"
-covariate_method="pc1_5"
-parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
-# sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir $cm_eqtl_file $ipsc_eqtl_file $eqtl_data_set_comparison_dir
-
 
 
 ##########################################
-# Step 4: Visualize results from dynamic qtl analysis
+# Step 4: Perform dynamic qtl power analysis
 ##########################################
-sh visualize_dynamic_qtl_results.sh $qtl_results_dir $cell_line_overlap_analysis_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gwas_overlap_dir $eqtl_data_set_comparison_dir $visualization_input_dir $visualization_dir
+if false; then
+sbatch run_power_analysis.sh $power_analysis_dir
+fi
+
+##########################################
+# Step 5: Visualize results from dynamic qtl analysis
+##########################################
+sh visualize_dynamic_qtl_results.sh $qtl_results_dir $cell_line_overlap_analysis_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gwas_overlap_dir $eqtl_data_set_comparison_dir $visualization_input_dir $visualization_dir $power_analysis_dir
+
 
 
 

@@ -5,6 +5,8 @@ library(cowplot)
 library(reshape)
 library(lme4)
 library(lmtest)
+library(PRROC)
+
 
 
 make_te_plot <- function(ensamble_id, rs_id, te_df, lower, upper, ref_allele,alt_allele) {
@@ -864,6 +866,75 @@ compare_eqtl_results_to_banovich_eqtls <- function(eqtl_data_set_comparison_dir,
     ggsave(boxplot, file=output_file, width=7.2, height=4.5,units="in")
 }
 
+##############################################################################
+#  Make grid of precision-recall curves for a range of simulation model parameters
+##############################################################################
+precision_recall_simulation_grid <- function(power_analysis_dir, maf, num_simulations, linear_effects_sdev, output_file) {
+    num_time_steps <- 16
+    # Initialize output arrays
+    num_individuals_arr_df <- c()
+    effect_size_arr_df <- c()
+    sdev_arr_df <- c()
+    fpr_arr_df <- c()
+    tpr_arr_df <- c()
+
+    num_individuals <- 100
+    interaction_effect_size <- .1
+    sdev <- .3
+
+    
+
+
+
+    num_time_steps <- 16
+    num_individuals_arr = c(10, 20, 50, 100)
+    interaction_effect_size_arr = c(.001,.01,.05, .1,.5)
+    sdev_arr = c(.1, .3, .5, .7, .9, 1.1, 1.3, 1.5)
+    counter <- 0
+    for (num_individual_iter in 1:length(num_individuals_arr)) {
+        for (interaction_effect_size_iter in 1:length(interaction_effect_size_arr)) {
+            for (sdev_iter in 1:length(sdev_arr)) {
+                num_individuals <- num_individuals_arr[num_individual_iter]
+                interaction_effect_size <- interaction_effect_size_arr[interaction_effect_size_iter]
+                sdev <- sdev_arr[sdev_iter]
+                counter <- counter + 1
+                # 
+
+                file_name <- paste0(power_analysis_dir, "simulation_results_", num_individuals, "_individuals_", interaction_effect_size, "_interaction_beta_", sdev, "_sdev_", linear_effects_sdev, "_linear_effects_sd_", num_simulations, "_simulations_", num_time_steps, "_time_steps_", maf, "_maf.txt")
+                temp_data <- read.table(file_name, header=TRUE)
+                roc_obj <- roc.curve(scores.class0 = 1.0 - temp_data[,2][temp_data$alternate_model==1], scores.class1 = 1.0 - temp_data[,2][temp_data$alternate_model==0], curve = T)
+                sensitivity <- roc_obj$curve[,2]
+                specificity <- roc_obj$curve[,1]
+                num_points <- length(sensitivity)
+
+                fpr_arr_df <- c(fpr_arr_df, 1-specificity)
+                tpr_arr_df <- c(tpr_arr_df, sensitivity)
+                sdev_arr_df <- c(sdev_arr_df, rep(sdev, num_points))
+                effect_size_arr_df <- c(effect_size_arr_df, rep(interaction_effect_size, num_points))
+                num_individuals_arr_df <- c(num_individuals_arr_df, rep(num_individuals, num_points))
+            }
+        }
+    }
+
+    df <- data.frame(fpr=fpr_arr_df, tpr=tpr_arr_df, sd=factor(sdev_arr_df, levels=sdev_arr), beta=factor(effect_size_arr_df, levels=interaction_effect_size_arr), n=factor(num_individuals_arr_df, levels=num_individuals_arr))
+
+    plotter <- ggplot(data=df, aes(x=fpr, y=tpr, colour=sd)) + geom_line() +
+                geom_abline(slope=1) +
+                geom_hline(yintercept=0) + 
+                geom_vline(xintercept=0) + 
+                facet_grid(beta ~ n, scales='free', labeller=label_both) +
+                labs(x="False positive rate", y="True positive rate", colour="Standard Deviation") +
+                scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) + 
+                scale_x_continuous(expand = c(0, 0), limits = c(0, 1)) + 
+                theme(legend.position="bottom") +
+                theme(panel.spacing = unit(2, "lines")) +
+                theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
+                #theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
+
+    ggsave(plotter, file=output_file, width=7.2, height=7.2,units="in")
+
+
+}
 
 
 
@@ -878,14 +949,25 @@ gwas_overlap_dir = args[5]
 eqtl_data_set_comparison_dir = args[6]
 visualization_input_dir = args[7]
 visualization_dir = args[8]
+power_analysis_dir = args[9]
 
+
+
+##############################################################################
+#  Make grid of precision-recall curves for a range of simulation model parameters
+##############################################################################
+maf = .2
+num_simulations = 1000
+linear_effects_sdev = .01
+output_file <- paste0(visualization_dir, "simulation_precision_recall_curves_", linear_effects_sdev, "_linear_effects_sdev_", maf, "_maf_", num_simulations, "_simulations.png")
+precision_recall_simulation_grid(power_analysis_dir, maf, num_simulations, linear_effects_sdev, output_file)
 
 
 ###############################################################################
 # Make Plot comparing dynamic eQTLs with Banovich eqtl results
 #################################################################################
 output_file <- paste0(visualization_dir, "dynamic_eqtl_comparison_to_banovich_eqtls.png")
-compare_eqtl_results_to_banovich_eqtls(eqtl_data_set_comparison_dir, output_file)
+# compare_eqtl_results_to_banovich_eqtls(eqtl_data_set_comparison_dir, output_file)
 
 print("DONE")
 ###############################################################################
