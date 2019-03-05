@@ -649,9 +649,10 @@ make_pca_plot <- function(i, cell_lines, pc1, pc2, sample_info) {
     df <- data.frame(pc1 = i_pc1, pc2 = i_pc2, time_step = i_time)
 
     #PLOT!
-    pca_scatter <-  ggplot(df,aes(pc1,pc2)) + geom_point(aes(colour=time_step)) + theme(text = element_text(size=12), axis.text = element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black")) 
-    pca_scatter <- pca_scatter + scale_color_gradient(low="pink",high="blue") + ggtitle(i_cell_line) + xlim(min(pc1)-.01,max(pc1)+.01) + ylim(min(pc2)-.01,max(pc2) + .01)
-    pca_scatter <- pca_scatter + labs(colour = " ")
+    pca_scatter <-  ggplot(df,aes(pc1,pc2)) + geom_point(aes(colour=time_step)) + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8), axis.text.x = element_text(vjust=.5)) 
+    pca_scatter <- pca_scatter  + ggtitle(paste0("NA",i_cell_line)) + xlim(min(pc1)-.01,max(pc1)+.01) + ylim(min(pc2)-.01,max(pc2) + .01)
+    pca_scatter <- pca_scatter + scale_color_gradient(low="darkgrey",high="firebrick")
+    pca_scatter <- pca_scatter + labs(colour = "Day") + theme(legend.position="left")
 
     return(pca_scatter)
 }
@@ -700,144 +701,10 @@ plot_pca_seperate_cell_lines <- function(sample_info, quant_expr, output_file,pc
     legend <- get_legend(p1)
 
     # Merge all cell lines into one plot
-    pdf(output_file)
     gg <- plot_grid(p1 + theme(legend.position="none"),p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,nrow=5,ncol=4)
     combined_gg <- ggdraw() + draw_plot(gg,0,0,1,1) + draw_plot(legend,.83,0,1,.3)
-    print(combined_gg)
-    dev.off()
+    ggsave(combined_gg, file=output_file, width=7.2, height=7.2,units="in")
 }
-
-
-
-# Fit the current model using training data
-fit_model <- function(x_train, y_train, lambda, model_type) {
-    if (model_type == "linear_regression") {
-        #  Fit lasso linear regression with glmnet
-        fit <- glmnet(x=x_train, y=y_train, alpha=1, lambda=lambda)
-        #  Extract coefficient matrix of dim (num_genes + 1, 1)
-        beta <- as.matrix(fit$beta)
-        #  Include intercept..
-        beta <- rbind(fit$a0,beta)
-    } else if (model_type == "beta_binomial_regression") {
-        #  Organize data for stan
-        concShape <- 1.0001  # Diffuse prior hyperparameters for BB
-        concRate <- 1e-4  # Diffuse prior hyperparameters for BB
-        ns <- numeric(length(y_train)) + 15  # n in beta binomial is max of all time steps
-        dat <- list(N=length(y_train), P=ncol(x_train), ys=y_train, x=x_train, concShape=concShape, concRate=concRate, lambda=lambda, ns=ns)
-
-        ############################################
-        # Propper initialization
-        ###########################################
-        rat <- dat$ys/dat$ns # ratios
-        # moment estimator of concentration parameter
-        conc <- pmin( 1/var(rat, na.rm=T), 1000 )
-        m <- pmin( pmax( mean(rat, na.rm=T), 1/1000 ), 1-1/1000)
-        betaInit <- numeric(ncol(x_train))
-        betaInit[1] <- log(m/(1.0-m))
-        init=list(conc=conc, beta=as.array(betaInit),alpha=0)
-
-
-        #  Run stan second order optimization
-        fit <- optimizing(BETABINOMIAL_GLM, data=dat,iter=10000, init=init, algorithm="LBFGS", hessian=T, as_vector=F, verbose=TRUE)
-
-        #  Extract Parameters
-        beta <- as.matrix(fit$par$beta)
-        #  Include intercept..
-        beta <- rbind(fit$par$alpha, beta)
-    }
-    return(beta)
-}
-
-#  Use fitted model to make predictions on testing data
-model_prediction <- function(x_test, model_type, beta) {
-    #  Add intercept to model
-    column_of_ones <- (numeric(nrow(x_test)) +1)
-    x_test<- cbind(column_of_ones, x_test)
-    if (model_type == "linear_regression") {
-        # Compute linear predictions
-        y_predicted <- x_test %*% beta
-    } else if (model_type == "beta_binomial_regression") {
-        y_predicted <- (1/(1 + exp(-(x_test %*% beta))))*15
-    }
-
-    # Return in vector form
-    return(y_predicted[,1])
-}
-
-# Determine optimal choice of lambda through k-fold cross validation
-# x is design matrix
-# y is response vector
-# lambdas is 1d grid of possible lambdas
-# k puts the k in k-fold
-# model_type is type of glm
-select_lambda_through_k_fold_cv <- function(x, y, lambdas, k, model_type) {
-    #  Shuffle data
-    shuffle_indices <- sample(nrow(x))
-    x_shuffled <- x[shuffle_indices,]
-    y_shuffled <- y[shuffle_indices]
-
-    # Assign samples to folds
-    folds <- cut(seq(1, nrow(x)), breaks=k, labels=FALSE)
-
-    # Keep track of MSE of every lambda in every fold (matrix of dimension (number of lambdas X number of folds))
-    mse_mat <- matrix(0, length(lambdas), k)
-
-    #  Loop through each lambda
-    for (i in 1:length(lambdas)) {
-        #  Value of lambda:
-        i_lambda <- lambdas[i]
-
-        #  Loop through each fold
-        for (fold_number in 1:k) {
-            #Split data into training data and validation data (based on fold)
-            x_train <- x_shuffled[folds != fold_number,]
-            y_train <- y_shuffled[folds != fold_number]
-
-            x_test <- x_shuffled[folds == fold_number,]
-            y_test <- y_shuffled[folds == fold_number]
-
-            #  Fit the current model using training data
-            beta <- fit_model(x_train, y_train, i_lambda, model_type)
-            #  Use fitted model to make predictions on testing data
-            y_predicted <- model_prediction(x_test, model_type, beta)
-
-            #  Summarize accuracy
-            mse <- mean((y_test - y_predicted)^2)
-            mse_mat[i, fold_number] <- mse
-        }
-    }
-
-    #  Compute average(mse) across all folds (lambda_errors is of length(lambdas))
-    lambda_errors <- rowMeans(mse_mat)
-
-    #  Compute optimal lambda (lambda with smallest error)
-    optimal_lambda <- lambdas[which.min(lambda_errors)]
-    return(optimal_lambda)
-}
-
-
-#  Driver to train the glm.
-#  x is the expr matrix of dim (samples X genes)
-#  y is the corresponding vector of time step of dim (samples)
-#  We want to first learn lambda via K-fold CV
-#  Then, using the optimal lambda, we will optimize beta
-train_glm <- function(x, y, model_type) {
-
-    # Grid of optional lambdas
-    lambdas <- c(0, .001, .01, .1, 1)
-    
-    # Number of folds in CV
-    k <- 3
-    
-    # Search grid of lambdas with k-fold cross validation for optimal lambda
-    optimal_lambda <- select_lambda_through_k_fold_cv(x, y, lambdas, k, model_type)
-
-    #  Train model on ALL of training data using optimal lambda
-    beta <- fit_model(x, y, optimal_lambda, model_type)
-    return(beta)
-}
-
-
 
 
 
@@ -2575,7 +2442,7 @@ colnames(cell_line_expression_ignore_missing) <- substr(colnames(cell_line_expre
 ####################################################################
 output_file <- paste0(visualize_total_expression_dir, "figure1.png")
 fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a_mock.png"
-make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
+#make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
 
 
 
@@ -2583,7 +2450,7 @@ make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, outpu
 # Plot EDF showing Nanog and troponin time courses for each cell line
 ####################################################################
 output_file <- paste0(visualize_total_expression_dir, "edf_troponin_nanog_time_course.png")
-make_edf_troponin_nanog_time_course(sample_info, quant_expr, output_file)
+#make_edf_troponin_nanog_time_course(sample_info, quant_expr, output_file)
 
 
 
@@ -2594,7 +2461,7 @@ make_edf_troponin_nanog_time_course(sample_info, quant_expr, output_file)
 ################
 # Make barplot showing library sizes of each sample
 library_size_output_file <- paste0(visualize_total_expression_dir, "library_size.pdf")
-plot_library_size(sample_info, library_size_output_file)
+#plot_library_size(sample_info, library_size_output_file)
 
 
 
@@ -2605,7 +2472,7 @@ plot_library_size(sample_info, library_size_output_file)
 ##################
 #  Perform PCA. Plot first 2 pcs as a function of time step 
 pca_plot_time_step_output_file <- paste0(visualize_total_expression_dir, "pca_plot_1_2_time_step.png")
-plot_pca_time_step(sample_info, quant_expr, pca_plot_time_step_output_file)
+#plot_pca_time_step(sample_info, quant_expr, pca_plot_time_step_output_file)
 
 
 
@@ -2620,7 +2487,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 pc_num1 <- 1
@@ -2628,7 +2495,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000181449"
 gene_name <- "sox2"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 pc_num1 <- 1
@@ -2636,7 +2503,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000111704"
 gene_name <- "nanog"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 
@@ -2650,7 +2517,7 @@ time_step <- 15
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 cell_line_pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "cell_line_ignore_missing_pca_plot_",pc_num1,"_",pc_num2,"_time_",time_step,"_",gene_name,"_gene_filled.png")
-plot_cell_line_pca_real_valued_gene_filled(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,cell_line_pca_plot_gene_filled_output_file, time_step)
+#plot_cell_line_pca_real_valued_gene_filled(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,cell_line_pca_plot_gene_filled_output_file, time_step)
 
 
 
@@ -2669,13 +2536,21 @@ pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_pl
 plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(paste0("NA",sample_info$cell_line)), "Cell Line", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_rna_extraction_persion.png")
-plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_person), "rna_extraction_person", pc_num1,pc_num2)
+#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_person), "rna_extraction_person", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_rna_extraction_round.png")
-plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_round), "rna_extraction_round", pc_num1,pc_num2)
+#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_round), "rna_extraction_round", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_differentiation_batch.png")
-plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$differentiation_batch), "differentiation_batch", pc_num1,pc_num2)
+#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$differentiation_batch), "differentiation_batch", pc_num1,pc_num2)
+
+
+#################
+# Perform PCA. Make seperate plot for each cell line:
+pc_num1<-1
+pc_num2<-2
+pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_seperate_cell_lines.png")
+plot_pca_seperate_cell_lines(sample_info, quant_expr, pca_plot_cell_line_output_file,pc_num1,pc_num2)
 
 
 
@@ -2684,10 +2559,10 @@ plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_outpu
 # Plot eigenvectors
 ################################
 eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_eigenvector_viz.pdf")
-plot_pca_eigenvectors(sample_info, quant_expr, eigenvectors_output_file)
+#plot_pca_eigenvectors(sample_info, quant_expr, eigenvectors_output_file)
 
 eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_eigenvector_viz_by_line.pdf")
-plot_pca_eigenvectors_by_line(sample_info, quant_expr, eigenvectors_output_file)
+#plot_pca_eigenvectors_by_line(sample_info, quant_expr, eigenvectors_output_file)
 
 
 ####################################################################
@@ -2704,11 +2579,11 @@ cell_line_pc_pve <- plot_pca_variance_explained(colnames(cell_line_expression_ig
 # Perform PCA on full quantile normalized matrix. Plot variance explained of the first n PCs:
 n <- 20
 pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "pca_plot_variance_explained", n, ".png")
-plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file)
+#plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file)
 
 n <- 10
 pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "pca_plot_variance_explained", n, ".png")
-pc_pve <- plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file, "PC number")
+#pc_pve <- plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file, "PC number")
 
 
 
@@ -2720,18 +2595,18 @@ pc_pve <- plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_varia
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 ensamble_id <- "ENSG00000181449"
 gene_name <- "sox2"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 
 ensamble_id <- "ENSG00000111704"
 gene_name <- "nanog"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 
 
@@ -2745,11 +2620,11 @@ gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensambl
 pc_file <- paste0(covariate_dir,"principal_components_10.txt")
 covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
 output_file <- paste0(visualize_total_expression_dir, "pc_covariate_pve_heatmap.png")
-heatmap <- covariate_pc_pve_heatmap(pc_file, covariate_file,output_file, "PCA")
+#heatmap <- covariate_pc_pve_heatmap(pc_file, covariate_file,output_file, "PCA")
 
 combined_output_file <- paste0(visualize_total_expression_dir, "pc_covariate_pve_heatmap_joint.png")
 combined <- plot_grid(pc_pve, heatmap, labels = c("A", "B"), ncol=1,rel_heights = c(.7, 1.2))
-ggsave(combined, file=combined_output_file, width=7.2, height=5.5,units="in")
+#ggsave(combined, file=combined_output_file, width=7.2, height=5.5,units="in")
 
 
 
@@ -2778,23 +2653,23 @@ flow_file <- paste0(mixutre_hmm_cell_line_grouping_dir, "flow_results.txt")
 
 # avg10-15 troponin expression
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_troponin_expression.png")
-cell_line_pc_colored_by_avg_troponin(cell_pc_file, covariates, output_file)
+#cell_line_pc_colored_by_avg_troponin(cell_pc_file, covariates, output_file)
 
 # bi-clustering model
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_gp_mixture_model.png")
-cell_line_pc_scatter_model_xx <- cell_line_pc_colored_by_state_model(cell_pc_file, bi_clustering_state_file, output_file)
+#cell_line_pc_scatter_model_xx <- cell_line_pc_colored_by_state_model(cell_pc_file, bi_clustering_state_file, output_file)
 
 # FLow results
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_flow_results.png")
-cell_line_pc_scatter_flow <- cell_line_pc_colored_by_state_model_real_valued(cell_pc_file, flow_file, output_file)
+#cell_line_pc_scatter_flow <- cell_line_pc_colored_by_state_model_real_valued(cell_pc_file, flow_file, output_file)
 
 
 
 # Make cowplot combined plot of cell_line_pc_scatter_model_xx and cell_line_pc_scatter_flow
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_model_xx_and_flow_and_pve_joint.png")
-combined <- plot_grid(cell_line_pc_scatter_flow+ theme(legend.position='bottom'), cell_line_pc_scatter_model_xx+ theme(legend.position='bottom'), labels = c("B", "C"), align = "h")
-combined2 <- plot_grid(cell_line_pc_pve, combined, labels=c("A", ""), ncol=1, rel_heights = c(.9, 1.2))
-ggsave(combined2, file=output_file, width=7.2, height=5.5,units="in")
+#combined <- plot_grid(cell_line_pc_scatter_flow+ theme(legend.position='bottom'), cell_line_pc_scatter_model_xx+ theme(legend.position='bottom'), labels = c("B", "C"), align = "h")
+#combined2 <- plot_grid(cell_line_pc_pve, combined, labels=c("A", ""), ncol=1, rel_heights = c(.9, 1.2))
+#ggsave(combined2, file=output_file, width=7.2, height=5.5,units="in")
 
 print("done")
 
@@ -2802,11 +2677,11 @@ print("done")
 # Correlate flow results with PC results, as well as avg troponin
 ####################################################################
 output_file <- paste0(visualize_total_expression_dir, "flow_avg_10_15_troponin_scatter.png")
-scatter_of_avg_troponin_and_flow(flow_file, covariates, output_file)
+#scatter_of_avg_troponin_and_flow(flow_file, covariates, output_file)
 
 pc_num <- 2
 output_file <- paste0(visualize_total_expression_dir, "flow_pc",pc_num,"_troponin_scatter.png")
-scatter_of_pc_and_flow(flow_file, cell_pc_file, pc_num, output_file)
+#scatter_of_pc_and_flow(flow_file, cell_pc_file, pc_num, output_file)
 
 
 
@@ -2822,24 +2697,24 @@ output_file <- paste0(visualize_total_expression_dir,"split_gpm_concordance.png"
 
 l <- 10
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-l10_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+#l10_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
 l <- 20
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-l20_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+#l20_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
 l <- 50
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-l50_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+#l50_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
 l <- 100
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-l100_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+#l100_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
 
-combined <- plot_grid(l10_concordance_heatmap, l20_concordance_heatmap, l50_concordance_heatmap, l100_concordance_heatmap, labels = c("A", "B", "C", "D"), ncol=2)
+#combined <- plot_grid(l10_concordance_heatmap, l20_concordance_heatmap, l50_concordance_heatmap, l100_concordance_heatmap, labels = c("A", "B", "C", "D"), ncol=2)
 
-ggsave(combined, file=output_file,width=7.2,height=5.5,units="in")
+#ggsave(combined, file=output_file,width=7.2,height=5.5,units="in")
 
 
 
