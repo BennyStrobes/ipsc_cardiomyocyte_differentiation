@@ -1020,14 +1020,14 @@ pc_pve_line_plot <- per_time_step_pcs_pve_line_plot(input_stem, output_file, n)
 
 ###############################################
 # Merged plot showing num_qtl_violin and num_qtl_bar_plot side by side
-output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_number_of_significant_genes_merged_plot.png")
+output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_number_of_significant_genes_merged_plot.pdf")
 number_of_significant_genes_merge_plots(num_qtl_violin, num_qtl_bar_plot, pc_pve_line_plot, output_file)
 
 
 ###############################################
 # Histogram showing the number of time points each per-time step eqtl is significant in 
 input_file <- paste0(cht_output_dir,parameter_string,"_num_pc_",pc_num,"_fdr_.05_eqtl_sharing.txt")
-output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_eqtl_sharing_histogram.png")
+output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_eqtl_sharing_histogram.pdf")
 eqtl_sharing_plot(input_file, output_file, pc_num)
 
 
@@ -1039,7 +1039,7 @@ eqtl_sharing_plot(input_file, output_file, pc_num)
 ## Each output image has 16 subplots (1 for each time step)
 
 # Output file
-output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_qq_plot_vs_uniform.png")
+output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_qq_plot_vs_uniform.pdf")
 # Input file stems
 input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",pc_num,"_time_")
 null_stem <- paste0(cht_output_dir,"cht_perm1_results_",parameter_string,"_num_pc_",pc_num,"_time_")
@@ -1100,7 +1100,7 @@ ggsave(figure_2c, file=output_file, width=7.2, height=5.3, units="in")
 
 ################################################
 # Make combined plot for figure 2
-output_file <- paste0(cht_visualization_dir, "figure2.png")
+output_file <- paste0(cht_visualization_dir, "figure2.pdf")
 make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
 
 
@@ -1110,7 +1110,7 @@ make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
 # Heatmaps will span number of latent factors and sparse prior choice
     
 factor_matrix_root <- paste0(matrix_factorization_dir, parameter_string, "_num_pc_", pc_num,"_fdr_.05_log_pvalue_factorization_alpha_")
-output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_factor_matrices.png")
+output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_factor_matrices.pdf")
 make_grid_of_factor_matrices(factor_matrix_root, output_file)
 
 
