@@ -652,7 +652,7 @@ make_pca_plot <- function(i, cell_lines, pc1, pc2, sample_info) {
     pca_scatter <-  ggplot(df,aes(pc1,pc2)) + geom_point(aes(colour=time_step)) + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8), axis.text.x = element_text(vjust=.5)) 
     pca_scatter <- pca_scatter  + ggtitle(paste0("NA",i_cell_line)) + xlim(min(pc1)-.01,max(pc1)+.01) + ylim(min(pc2)-.01,max(pc2) + .01)
     pca_scatter <- pca_scatter + scale_color_gradient(low="darkgrey",high="firebrick")
-    pca_scatter <- pca_scatter + labs(colour = "Day") + theme(legend.position="left")
+    pca_scatter <- pca_scatter + labs(colour = "Day") + theme(legend.position="bottom")
 
     return(pca_scatter)
 }
@@ -702,7 +702,7 @@ plot_pca_seperate_cell_lines <- function(sample_info, quant_expr, output_file,pc
 
     # Merge all cell lines into one plot
     gg <- plot_grid(p1 + theme(legend.position="none"),p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12,p13,p14,p15,p16,p17,p18,p19,nrow=5,ncol=4)
-    combined_gg <- ggdraw() + draw_plot(gg,0,0,1,1) + draw_plot(legend,.83,0,1,.3)
+    combined_gg <- ggdraw() + draw_plot(gg,0,0,1,1) + draw_plot(legend,.78,0,1,.3)
     ggsave(combined_gg, file=output_file, width=7.2, height=7.2,units="in")
 }
 
@@ -1235,16 +1235,13 @@ covariate_pc_pve_heatmap <- function(pc_file, covariate_file, output_file, title
     #  Use factors to represent covariate and pc name
     melted_mat$Covariate <- factor(chartr("_", " ",melted_mat$Covariate), levels = chartr("_", " ",rownames(pve_map)[ord]))
     # melted_mat$Covariate <- factor(melted_mat$Covariate, levels = rownames(pve_map)[ord])
-    melted_mat$PC <- factor(melted_mat$PC)
-    if (dim(pcs)[2] == 10) {
-        levels(melted_mat$PC) <- c(levels(melted_mat$PC)[1],levels(melted_mat$PC)[3:10],levels(melted_mat$PC)[2])
-    }
-    if (dim(pcs)[2] == 21) {
-        levels(melted_mat$PC) <- c(levels(melted_mat$PC)[1],levels(melted_mat$PC)[12],levels(melted_mat$PC)[15:21],levels(melted_mat$PC)[2:11], levels(melted_mat$PC)[13:14])
-    }
+    melted_mat$PC <- substr(as.character(melted_mat$PC),3,5)
+    melted_mat$PC <- factor(melted_mat$PC, levels=paste0("", 1:(length(unique(melted_mat$PC)))))
 
+    
+    #levels(melted_mat$PC) = paste0("PC", 1:(length(levels(melted_mat$PC))))
     #  PLOT!
-    heatmap <- ggplot(data=melted_mat, aes(x=Covariate, y=substr(PC, 3,5))) + geom_tile(aes(fill=PVE)) + scale_fill_gradient2(midpoint=-.05, guide="colorbar")
+    heatmap <- ggplot(data=melted_mat, aes(x=Covariate, y=PC)) + geom_tile(aes(fill=PVE)) + scale_fill_gradient2(midpoint=-.05, guide="colorbar")
     heatmap <- heatmap + labs(y="PC number",fill="VE")
     heatmap <- heatmap + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8),  axis.text.x = element_text(angle = 90,hjust=1, vjust=.5)) 
     # Save File
@@ -2216,7 +2213,7 @@ make_figure_1_alt_e <- function(sample_info, quant_expr, mixutre_hmm_cell_line_g
 
 
 
-banovich_ipsc_heatmap_comparison <- function(day_0_file, day_15_file, output_file) {
+banovich_ipsc_heatmap_comparison <- function(day_0_file, day_15_file) {
     day_15_data <- read.table(day_15_file,header=TRUE)
     day_15_lines <- day_15_data[,1]
     day_15_corr <- day_15_data[,2:(dim(day_15_data)[2])]
@@ -2230,7 +2227,7 @@ banovich_ipsc_heatmap_comparison <- function(day_0_file, day_15_file, output_fil
 
     #  PLOT!
     heatmap_15 <- ggplot(data=melted_mat_15, aes(x=day_15_cell_line, y=ipsc_cell_line)) + geom_tile(aes(fill=pearson_correlation))
-    heatmap_15 <- heatmap_15 + labs(y="iPSC-derived cardiomyocytes cell line", x = "Day 15 cell line",fill=expression(paste("  ",rho)))
+    heatmap_15 <- heatmap_15 + labs(y="iPSC-derived CM cell line", x = "Day 15 cell line",fill=expression(paste("  ",rho)))
     heatmap_15 <- heatmap_15 + scale_fill_distiller(palette = "Blues", direction=1)
     heatmap_15 <- heatmap_15 + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8),  axis.text.x = element_text(angle = 90,hjust=1, vjust=.5)) 
 
@@ -2253,9 +2250,8 @@ banovich_ipsc_heatmap_comparison <- function(day_0_file, day_15_file, output_fil
     heatmap_0 <- heatmap_0 + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8),  axis.text.x = element_text(angle = 90,hjust=1, vjust=.5)) 
 
 
-    combined <- plot_grid(heatmap_0 , heatmap_15 , labels = c("A", "B"), ncol=1)
+    combined <- plot_grid(heatmap_0 + theme(legend.position="top"), heatmap_15 + theme(legend.position="top"), labels = c("A", "B"), ncol=2)
 
-    ggsave(combined,file=output_file, width=7.2, height=7.5, units="in")
 
     return(combined)
 
@@ -2265,7 +2261,7 @@ banovich_ipsc_heatmap_comparison <- function(day_0_file, day_15_file, output_fil
 }
 
 
-banovich_ipsc_boxplot_comparison <- function(day_0_file, day_15_file, output_file) {
+banovich_ipsc_boxplot_comparison <- function(day_0_file, day_15_file) {
     day_15_data <- read.table(day_15_file,header=TRUE)
     day_15_lines <- day_15_data[,1]
     day_15_corr <- day_15_data[,2:(dim(day_15_data)[2])]
@@ -2321,21 +2317,21 @@ banovich_ipsc_boxplot_comparison <- function(day_0_file, day_15_file, output_fil
     df_day_15 <- df[as.character(df$day) == "day_15",]
 
 
-    boxplot_0 <- ggplot(df_day_0, aes(x=replica,y=correlation,fill=replica)) + geom_boxplot() + labs(title="Day 0 cell lines compared to iPSCs (Banovich et al.)",x = "", y = expression(paste("",rho))) 
+    boxplot_0 <- ggplot(df_day_0, aes(x=replica,y=correlation,fill=replica)) + geom_boxplot() + labs(title="Day 0 cell lines compared to iPSCs (Banovich)",x = "", y = expression(paste("",rho))) 
     boxplot_0 <- boxplot_0 + theme(legend.position="none")
     boxplot_0 <- boxplot_0 + scale_fill_manual(values=c("dodgerblue3", "chartreuse4"))
     boxplot_0 <- boxplot_0 + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
     
-    boxplot_15 <- ggplot(df_day_15, aes(x=replica,y=correlation,fill=replica)) + geom_boxplot() + labs(title="Day 15 cell lines compared to iPSC-derived cardiomyocytes (Banovich et al.)",x = "", y = expression(paste("",rho))) 
+    boxplot_15 <- ggplot(df_day_15, aes(x=replica,y=correlation,fill=replica)) + geom_boxplot() + labs(title="Day 15 cell lines compared to iPSC-derived CMs (Banovich)",x = "", y = expression(paste("",rho))) 
     boxplot_15 <- boxplot_15 + scale_fill_manual(values=c("dodgerblue3", "chartreuse4"))
 
     boxplot_15 <- boxplot_15 + theme(legend.position="none")
     boxplot_15 <- boxplot_15 + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
     
 
-    combined <- plot_grid(boxplot_0, boxplot_15 , labels = c("A", "B"), ncol=1)
+    combined <- plot_grid(boxplot_0, boxplot_15 , labels = c("C", "D"), ncol=2)
 
-    ggsave(combined, file=output_file,width = 7.2,height=5.5,units="in")
+    return(combined)
 
 
 }
@@ -2358,42 +2354,8 @@ mixutre_hmm_cell_line_grouping_dir = args[4]  # Directory containing files assig
 banovich_ipsc_comparison_dir = args[5]  # Directory containing results comparing banovich ipsc to time step ipscs
 
 
-# Compare banovich ipscs to per time step ipscs with boxplot of correlations
-day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_regress_out_10_3_pcs.txt")
-day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_regress_out_3_3_pcs.txt")
-output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_regress_out_10_3_3_3_boxplot.png")
-banovich_ipsc_boxplot_comparison(day_0_file, day_15_file, output_file)
-# Compare banovich ipscs to per time step ipscs with heatmap
-day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_regress_out_10_3_pcs.txt")
-day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_regress_out_3_3_pcs.txt")
-output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_regress_out_10_3_3_3_heatmap.png")
-banovich_ipsc_heatmap_comparison(day_0_file, day_15_file, output_file)
 
 
-# Compare banovich ipscs to per time step ipscs with boxplot of correlations
-day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_all_genes.txt")
-day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_all_genes.txt")
-output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_all_genes_boxplot.png")
-banovich_ipsc_boxplot_comparison(day_0_file, day_15_file, output_file)
-# Compare banovich ipscs to per time step ipscs with heatmap
-day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_all_genes.txt")
-day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_all_genes.txt")
-output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_all_genes_heatmap.png")
-banovich_ipsc_heatmap_comparison(day_0_file, day_15_file, output_file)
-
-# Compare banovich ipscs to per time step ipscs with boxplot of correlations
-day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_3_3_1000.txt")
-day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_3_3_1000.txt")
-output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_3_3_1000_boxplot.png")
-banovich_ipsc_boxplot_comparison(day_0_file, day_15_file, output_file)
-# Compare banovich ipscs to per time step ipscs with heatmap
-day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_3_3_1000.txt")
-day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_3_3_1000.txt")
-output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_3_3_1000_heatmap.png")
-banovich_ipsc_heatmap_comparison(day_0_file, day_15_file, output_file)
-
-
-print("done")
 #  Get sample information 
 sample_info_file <- paste0(preprocess_total_expression_dir, "sample_info.txt")
 sample_info <- read.table(sample_info_file, header=TRUE)
@@ -2440,19 +2402,36 @@ colnames(cell_line_expression_ignore_missing) <- substr(colnames(cell_line_expre
 ####################################################################
 # Plot Figure 1
 ####################################################################
-output_file <- paste0(visualize_total_expression_dir, "figure1.png")
+output_file <- paste0(visualize_total_expression_dir, "figure1.pdf")
 fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a_mock.png"
-#make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
+make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
 
 
 
 ####################################################################
 # Plot EDF showing Nanog and troponin time courses for each cell line
 ####################################################################
-output_file <- paste0(visualize_total_expression_dir, "edf_troponin_nanog_time_course.png")
-#make_edf_troponin_nanog_time_course(sample_info, quant_expr, output_file)
+output_file <- paste0(visualize_total_expression_dir, "edf_troponin_nanog_time_course.pdf")
+make_edf_troponin_nanog_time_course(sample_info, quant_expr, output_file)
 
 
+
+
+####################################################################
+# Biological Replication in Banovich plots
+####################################################################
+# Compare banovich ipscs to per time step ipscs with boxplot of correlations
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_regress_out_10_3_pcs.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_regress_out_3_3_pcs.txt")
+boxplot_comparison <- banovich_ipsc_boxplot_comparison(day_0_file, day_15_file)
+# Compare banovich ipscs to per time step ipscs with heatmap
+day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparison_regress_out_10_3_pcs.txt")
+day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_regress_out_3_3_pcs.txt")
+heatmap_comparison <- banovich_ipsc_heatmap_comparison(day_0_file, day_15_file)
+
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_regress_out_10_3_3_3_heatmap_boxplot.pdf")
+combined <- plot_grid(heatmap_comparison, boxplot_comparison, ncol=1)
+ggsave(combined, file=output_file, width=7.2, height=6.5, units="in")
 
 
 ####################################################################
@@ -2461,7 +2440,7 @@ output_file <- paste0(visualize_total_expression_dir, "edf_troponin_nanog_time_c
 ################
 # Make barplot showing library sizes of each sample
 library_size_output_file <- paste0(visualize_total_expression_dir, "library_size.pdf")
-#plot_library_size(sample_info, library_size_output_file)
+plot_library_size(sample_info, library_size_output_file)
 
 
 
@@ -2472,7 +2451,7 @@ library_size_output_file <- paste0(visualize_total_expression_dir, "library_size
 ##################
 #  Perform PCA. Plot first 2 pcs as a function of time step 
 pca_plot_time_step_output_file <- paste0(visualize_total_expression_dir, "pca_plot_1_2_time_step.png")
-#plot_pca_time_step(sample_info, quant_expr, pca_plot_time_step_output_file)
+plot_pca_time_step(sample_info, quant_expr, pca_plot_time_step_output_file)
 
 
 
@@ -2487,7 +2466,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 pc_num1 <- 1
@@ -2495,7 +2474,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000181449"
 gene_name <- "sox2"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 pc_num1 <- 1
@@ -2503,7 +2482,7 @@ pc_num2 <- 2
 ensamble_id <- "ENSG00000111704"
 gene_name <- "nanog"
 pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_",gene_name,"_gene_filled.png")
-#plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
+plot_pca_real_valued_gene_filled(sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,pca_plot_gene_filled_output_file)
 
 
 
@@ -2517,7 +2496,7 @@ time_step <- 15
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 cell_line_pca_plot_gene_filled_output_file <- paste0(visualize_total_expression_dir, "cell_line_ignore_missing_pca_plot_",pc_num1,"_",pc_num2,"_time_",time_step,"_",gene_name,"_gene_filled.png")
-#plot_cell_line_pca_real_valued_gene_filled(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,cell_line_pca_plot_gene_filled_output_file, time_step)
+plot_cell_line_pca_real_valued_gene_filled(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, sample_info, quant_expr, ensamble_id,gene_name,pc_num1,pc_num2,cell_line_pca_plot_gene_filled_output_file, time_step)
 
 
 
@@ -2536,20 +2515,20 @@ pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_pl
 plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(paste0("NA",sample_info$cell_line)), "Cell Line", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_rna_extraction_persion.png")
-#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_person), "rna_extraction_person", pc_num1,pc_num2)
+plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_person), "rna_extraction_person", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_rna_extraction_round.png")
-#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_round), "rna_extraction_round", pc_num1,pc_num2)
+plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_round), "rna_extraction_round", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_differentiation_batch.png")
-#plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$differentiation_batch), "differentiation_batch", pc_num1,pc_num2)
+plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$differentiation_batch), "differentiation_batch", pc_num1,pc_num2)
 
 
 #################
 # Perform PCA. Make seperate plot for each cell line:
 pc_num1<-1
 pc_num2<-2
-pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_seperate_cell_lines.png")
+pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_seperate_cell_lines.pdf")
 plot_pca_seperate_cell_lines(sample_info, quant_expr, pca_plot_cell_line_output_file,pc_num1,pc_num2)
 
 
@@ -2559,10 +2538,10 @@ plot_pca_seperate_cell_lines(sample_info, quant_expr, pca_plot_cell_line_output_
 # Plot eigenvectors
 ################################
 eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_eigenvector_viz.pdf")
-#plot_pca_eigenvectors(sample_info, quant_expr, eigenvectors_output_file)
+plot_pca_eigenvectors(sample_info, quant_expr, eigenvectors_output_file)
 
 eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_eigenvector_viz_by_line.pdf")
-#plot_pca_eigenvectors_by_line(sample_info, quant_expr, eigenvectors_output_file)
+plot_pca_eigenvectors_by_line(sample_info, quant_expr, eigenvectors_output_file)
 
 
 ####################################################################
@@ -2579,11 +2558,11 @@ cell_line_pc_pve <- plot_pca_variance_explained(colnames(cell_line_expression_ig
 # Perform PCA on full quantile normalized matrix. Plot variance explained of the first n PCs:
 n <- 20
 pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "pca_plot_variance_explained", n, ".png")
-#plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file)
+plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file, "PC number")
 
 n <- 10
 pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir, "pca_plot_variance_explained", n, ".png")
-#pc_pve <- plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file, "PC number")
+pc_pve <- plot_pca_variance_explained(sample_info, quant_expr, n, pca_plot_variance_explained_output_file, "PC number")
 
 
 
@@ -2595,18 +2574,18 @@ pca_plot_variance_explained_output_file <- paste0(visualize_total_expression_dir
 ensamble_id <- "ENSG00000118194"
 gene_name <- "Troponin"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 ensamble_id <- "ENSG00000181449"
 gene_name <- "sox2"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 
 ensamble_id <- "ENSG00000111704"
 gene_name <- "nanog"
 line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line.png")
-#gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
+gene_time_course_line_plot_grouped_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
 
 
 
@@ -2620,11 +2599,11 @@ line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course
 pc_file <- paste0(covariate_dir,"principal_components_10.txt")
 covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
 output_file <- paste0(visualize_total_expression_dir, "pc_covariate_pve_heatmap.png")
-#heatmap <- covariate_pc_pve_heatmap(pc_file, covariate_file,output_file, "PCA")
+heatmap <- covariate_pc_pve_heatmap(pc_file, covariate_file,output_file, "PCA")
 
-combined_output_file <- paste0(visualize_total_expression_dir, "pc_covariate_pve_heatmap_joint.png")
+combined_output_file <- paste0(visualize_total_expression_dir, "pc_covariate_pve_heatmap_joint.pdf")
 combined <- plot_grid(pc_pve, heatmap, labels = c("A", "B"), ncol=1,rel_heights = c(.7, 1.2))
-#ggsave(combined, file=combined_output_file, width=7.2, height=5.5,units="in")
+ggsave(combined, file=combined_output_file, width=7.2, height=5.5,units="in")
 
 
 
@@ -2653,35 +2632,34 @@ flow_file <- paste0(mixutre_hmm_cell_line_grouping_dir, "flow_results.txt")
 
 # avg10-15 troponin expression
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_troponin_expression.png")
-#cell_line_pc_colored_by_avg_troponin(cell_pc_file, covariates, output_file)
+cell_line_pc_colored_by_avg_troponin(cell_pc_file, covariates, output_file)
 
 # bi-clustering model
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_gp_mixture_model.png")
-#cell_line_pc_scatter_model_xx <- cell_line_pc_colored_by_state_model(cell_pc_file, bi_clustering_state_file, output_file)
+cell_line_pc_scatter_model_xx <- cell_line_pc_colored_by_state_model(cell_pc_file, bi_clustering_state_file, output_file)
 
 # FLow results
 output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_colored_by_flow_results.png")
-#cell_line_pc_scatter_flow <- cell_line_pc_colored_by_state_model_real_valued(cell_pc_file, flow_file, output_file)
+cell_line_pc_scatter_flow <- cell_line_pc_colored_by_state_model_real_valued(cell_pc_file, flow_file, output_file)
 
 
 
 # Make cowplot combined plot of cell_line_pc_scatter_model_xx and cell_line_pc_scatter_flow
-output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_model_xx_and_flow_and_pve_joint.png")
-#combined <- plot_grid(cell_line_pc_scatter_flow+ theme(legend.position='bottom'), cell_line_pc_scatter_model_xx+ theme(legend.position='bottom'), labels = c("B", "C"), align = "h")
-#combined2 <- plot_grid(cell_line_pc_pve, combined, labels=c("A", ""), ncol=1, rel_heights = c(.9, 1.2))
-#ggsave(combined2, file=output_file, width=7.2, height=5.5,units="in")
+output_file <- paste0(visualize_total_expression_dir, "cell_line_pc1_2_model_xx_and_flow_and_pve_joint.pdf")
+combined <- plot_grid(cell_line_pc_scatter_flow+ theme(legend.position='bottom'), cell_line_pc_scatter_model_xx+ theme(legend.position='bottom'), labels = c("B", "C"), align = "h")
+combined2 <- plot_grid(cell_line_pc_pve, combined, labels=c("A", ""), ncol=1, rel_heights = c(.9, 1.2))
+ggsave(combined2, file=output_file, width=7.2, height=5.5,units="in")
 
-print("done")
 
 ####################################################################
 # Correlate flow results with PC results, as well as avg troponin
 ####################################################################
 output_file <- paste0(visualize_total_expression_dir, "flow_avg_10_15_troponin_scatter.png")
-#scatter_of_avg_troponin_and_flow(flow_file, covariates, output_file)
+scatter_of_avg_troponin_and_flow(flow_file, covariates, output_file)
 
 pc_num <- 2
 output_file <- paste0(visualize_total_expression_dir, "flow_pc",pc_num,"_troponin_scatter.png")
-#scatter_of_pc_and_flow(flow_file, cell_pc_file, pc_num, output_file)
+scatter_of_pc_and_flow(flow_file, cell_pc_file, pc_num, output_file)
 
 
 
@@ -2693,32 +2671,31 @@ output_file <- paste0(visualize_total_expression_dir, "flow_pc",pc_num,"_troponi
 ####################################################################
 # Look at concordance of karls results across different runs
 ####################################################################
-output_file <- paste0(visualize_total_expression_dir,"split_gpm_concordance.png")
+output_file <- paste0(visualize_total_expression_dir,"split_gpm_concordance.pdf")
 
 l <- 10
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-#l10_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+l10_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
 l <- 20
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-#l20_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+l20_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
 l <- 50
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-#l50_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+l50_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
 l <- 100
 input_file <- paste0(mixutre_hmm_cell_line_grouping_dir,"K2L",l,"_incidence")
-#l100_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
+l100_concordance_heatmap <- split_gpm_concordance_heatmap(input_file, l)
 
+combined <- plot_grid(l10_concordance_heatmap, l20_concordance_heatmap, l50_concordance_heatmap, l100_concordance_heatmap, labels = c("A", "B", "C", "D"), ncol=2)
 
-#combined <- plot_grid(l10_concordance_heatmap, l20_concordance_heatmap, l50_concordance_heatmap, l100_concordance_heatmap, labels = c("A", "B", "C", "D"), ncol=2)
-
-#ggsave(combined, file=output_file,width=7.2,height=5.5,units="in")
-
+ggsave(combined, file=output_file,width=7.2,height=5.5,units="in")
 
 
 
+print("DONE")
 
 
 
@@ -2972,7 +2949,7 @@ output_file <- paste0(visualize_total_expression_dir,"pc_num_", pc_num,"_avg_10_
 ####################################################################
 
 # Add old vs new to sample info
-revised_sample_info <- add_old_vs_new(sample_info)
+# revised_sample_info <- add_old_vs_new(sample_info)
 
 
 ##################

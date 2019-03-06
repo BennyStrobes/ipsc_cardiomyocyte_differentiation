@@ -296,7 +296,7 @@ fi
 # Step 4: Perform dynamic qtl power analysis
 ##########################################
 if false; then
-sbatch run_power_analysis.sh $power_analysis_dir
+sh run_power_analysis.sh $power_analysis_dir
 fi
 
 ##########################################

@@ -97,9 +97,9 @@ num_simulations = 1000
 num_time_steps = 16
 
 num_individuals_arr = c(10, 20, 50, 100)
-interaction_effect_size_arr = c(.001,.01,.05, .1,.5)
-sdev_arr = c(.1, .3, .5, .7, .9, 1.1, 1.3, 1.5)
-linear_effects_sdev_arr = c(.01, .05, .1, .5)
+interaction_effect_size_arr = c(.001, .002, .003, .004, .005, .006, .007, .008, .009, .01)
+sdev_arr = c(.1)
+linear_effects_sdev_arr = c(.01)
 counter <- 0
 for (num_individual_iter in 1:length(num_individuals_arr)) {
 	for (interaction_effect_size_iter in 1:length(interaction_effect_size_arr)) {

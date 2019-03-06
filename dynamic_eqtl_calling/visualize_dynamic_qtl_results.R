@@ -877,6 +877,7 @@ precision_recall_simulation_grid <- function(power_analysis_dir, maf, num_simula
     sdev_arr_df <- c()
     fpr_arr_df <- c()
     tpr_arr_df <- c()
+    t_arr_df <- c()
 
     num_individuals <- 100
     interaction_effect_size <- .1
@@ -888,15 +889,19 @@ precision_recall_simulation_grid <- function(power_analysis_dir, maf, num_simula
 
     num_time_steps <- 16
     num_individuals_arr = c(10, 20, 50, 100)
-    interaction_effect_size_arr = c(.001,.01,.05, .1,.5)
-    sdev_arr = c(.1, .3, .5, .7, .9, 1.1, 1.3, 1.5)
+    #interaction_effect_size_arr = c(.001,.01,.05, .1,.5)
+    #sdev_arr = c(.1, .3, .5, .7, .9, 1.1, 1.3, 1.5)
+    interaction_effect_size_arr = c(.001, .002, .003, .004, .005, .006, .007, .008, .009)
+    sdev_arr = c(.1, .1, .1, .1, .1, .1, .1, .1, .1)
+
+
     counter <- 0
     for (num_individual_iter in 1:length(num_individuals_arr)) {
         for (interaction_effect_size_iter in 1:length(interaction_effect_size_arr)) {
-            for (sdev_iter in 1:length(sdev_arr)) {
                 num_individuals <- num_individuals_arr[num_individual_iter]
                 interaction_effect_size <- interaction_effect_size_arr[interaction_effect_size_iter]
-                sdev <- sdev_arr[sdev_iter]
+                sdev <- sdev_arr[interaction_effect_size_iter]
+                t_stat <- interaction_effect_size/sdev
                 counter <- counter + 1
                 # 
 
@@ -912,18 +917,19 @@ precision_recall_simulation_grid <- function(power_analysis_dir, maf, num_simula
                 sdev_arr_df <- c(sdev_arr_df, rep(sdev, num_points))
                 effect_size_arr_df <- c(effect_size_arr_df, rep(interaction_effect_size, num_points))
                 num_individuals_arr_df <- c(num_individuals_arr_df, rep(num_individuals, num_points))
-            }
+                t_arr_df <- c(t_arr_df, rep(t_stat, num_points))
         }
     }
 
-    df <- data.frame(fpr=fpr_arr_df, tpr=tpr_arr_df, sd=factor(sdev_arr_df, levels=sdev_arr), beta=factor(effect_size_arr_df, levels=interaction_effect_size_arr), n=factor(num_individuals_arr_df, levels=num_individuals_arr))
+    df <- data.frame(fpr=fpr_arr_df, tpr=tpr_arr_df,t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), n=factor(num_individuals_arr_df, levels=num_individuals_arr))
 
-    plotter <- ggplot(data=df, aes(x=fpr, y=tpr, colour=sd)) + geom_line() +
-                geom_abline(slope=1) +
+    plotter <- ggplot(data=df, aes(x=fpr, y=tpr,color=n)) + geom_line() +
+                geom_abline(slope=-1,intercept=1) +
                 geom_hline(yintercept=0) + 
                 geom_vline(xintercept=0) + 
-                facet_grid(beta ~ n, scales='free', labeller=label_both) +
-                labs(x="False positive rate", y="True positive rate", colour="Standard Deviation") +
+                #facet_grid(t ~ n, scales='free', labeller=label_both) +
+                facet_wrap(~ t, scales='free', labeller=label_both,ncol=3) +
+                labs(x="False positive rate", y="True positive rate",color="Number of individuals") +
                 scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) + 
                 scale_x_continuous(expand = c(0, 0), limits = c(0, 1)) + 
                 theme(legend.position="bottom") +
