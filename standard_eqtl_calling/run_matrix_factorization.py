@@ -269,16 +269,3 @@ for num_components in np.arange(3, 6):
 
 
 
-
-
-
-
-#########################################
-# Retired scripts (not currently used)
-##########################################
-# Extract list of all egenes found in WASP
-#egenes = extract_list_of_egenes(variant_gene_pairs)
-
-
-
-    #gene_set_enrichment_shell(W, all_genes, egenes, variant_gene_pairs, output_root, cht_visualization_dir, gencode_file, num_genes)

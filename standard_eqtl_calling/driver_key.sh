@@ -205,7 +205,7 @@ fi
 ##################################################################
 
 ###################################################################
-### Step 1: submit_chrom_parallel_cht_test.sh (run in parallel for each time step, chromosome, and number of pcs)
+### Step 6: submit_chrom_parallel_cht_test.sh (run in parallel for each time step, chromosome, and number of pcs)
 ### This script runs cht for both real and permuted data
 ### This will produce MANY parallel jobs (6*16*22=2112)
 ### Each job takes about 5 hours to run (chromosome 1 takes a lot more!)
@@ -224,18 +224,19 @@ done
 fi
 
 ###################################################################
-### Step 2: organize_wasp_cht_test_results.sh (run in parallel for each time step)
+### Step 7: organize_wasp_cht_test_results.sh (run in parallel for each time step)
 ### This script (does the following for each of the 6 possible numbers of PCs):
 ###  A. Concatenates the 22 chromosome WASP output files into 1 file (for both real and permuted data)
 ###  B. Run eFDR correction on data using real and permutation runs of wasp to assess genome wide significance
+if false; then
 for time_step in $(seq 0 15); do 
     sbatch organize_wasp_cht_test_results.sh $parameter_string $cht_input_file_dir $cht_output_dir $target_regions_dir $dosage_genotype_file $gencode_gene_annotation_file $quantile_normalized_expression $time_step $cis_distance
 done
-
+fi
 
 
 ##################################################################
-### Step 3: Run down-stream analysis on WASP-CHT test results
+### Step 8: Run down-stream analysis on WASP-CHT test results
 ### The following script runs three separate down-stream analyses for a range of PCs (0-5):
 ##### 1. `get_best_variant_per_gene.py`: Identify the most signficicant variant per egene (and gene with one significant per time step eQTL in any time step). The most significant variant is selected as the one with the smallest geometric mean pvalue across the 16 time steps.
 ##### 2.  `organize_tests_across_studies.py`: Using the egenes selected in part 1, find the pvalues of those variant gene pairs in Nick Banovich's iPSC and iPSC-CM eqtl data sets
@@ -243,171 +244,6 @@ done
 ### It then runs `cht_visualization.R`: Make visualizations of WASP eqtl results
 fdr=".05"
 if false; then
-sh run_downstream_analysis_on_wasp_results.sh $parameter_string $cht_output_dir $fdr $target_regions_dir $matrix_factorization_dir $cm_eqtl_file $ipsc_eqtl_file $cht_visualization_dir $cht_input_file_dir
-fi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-######################################
-# Old Analysis (not used currently)
-#######################################
-
-
-# CM eqtl egene file
-cm_egene_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/eQTL_WASP_CM_egenes_thresh_1e-05.txt"
-
-# ipsc eqtl egene file
-ipsc_egene_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/permutations.all.RNAseq_run.fixed.txt.gz.bh.txt"
-
-
-
-# Directory containing WASP/CHT summary statistics enriched in other data sets
-cht_enrichment_dir=$wasp_qtl_root"enrichment/"
-
-# File containing necessary information to convert from rsid to snpid and vice-versa
-snp_id_to_rs_id_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/GTEx_Analysis_2016-01-15_v7_WGS_652ind_VarID_Lookup_Table.txt"
-
-
-# File where each row contains information on an eqtl data set we want to compare with
-# File was manually curated by me
-eqtl_data_set_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/eqtl_data_sets_temp.txt"
-
-# File containing egene and all-eqtl files for gtex tissues we are interested in comparing with
-used_gtex_tissues_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/used_gtex_tissues.txt"
-
-# Result of running metasoft on v7 eqtls
-# Downloaded from: https://www.gtexportal.org/home/datasets on December 19, 2017
-mvalue_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/eqtl_data_sets/GTEx_Analysis_v7.metasoft.txt"
-
-# Directory containing chromHMM results
-# Each cell line has its own file with suffix $cell_line_identifier'_15_coreMarks_mnemonics.bed.gz'
-chrom_hmm_input_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/chrom_hmm/"
-
-
-
-if false; then
-python run_gene_set_enrichment_analysis.py $parameter_string $cht_output_dir $cht_visualization_dir $target_regions_dir $gencode_gene_annotation_file $ipsc_egene_file $ipsc_eqtl_file $cm_egene_file $cm_eqtl_file $eqtl_data_set_file
-fi
-
-
-num_permutations="1000"
-efdr=".1"
-if false; then
-for pc_num in $(seq 0 5); do
-    if false; then
-    for time_step in $(seq 0 15); do 
-        sbatch cre_enrichment_analysis.sh $parameter_string $cht_output_dir $cht_visualization_dir $pc_num $chrom_hmm_input_dir $cht_enrichment_dir $num_permutations $efdr $time_step
-    done
-    fi
-    Rscript visualize_cre_enrichment_analysis.R $parameter_string $cht_visualization_dir $pc_num $cht_enrichment_dir $num_permutations $efdr 
-done
-fi
-
-if false; then
-sh banovich_cre_enrichment_analysis.sh $cht_output_dir $chrom_hmm_input_dir $num_permutations $ipsc_egene_file $cm_egene_file $num_permutations $ipsc_eqtl_file $cm_eqtl_file $parameter_string $cht_enrichment_dir $cht_visualization_dir
-fi
-
-
-
-
-
-if false; then
-sbatch cluster_variant_gene_pairs.sh $parameter_string $cht_output_dir $cht_visualization_dir
+sbatch run_downstream_analysis_on_wasp_results.sh $parameter_string $cht_output_dir $fdr $target_regions_dir $matrix_factorization_dir $cm_eqtl_file $ipsc_eqtl_file $cht_visualization_dir $cht_input_file_dir
 fi
 

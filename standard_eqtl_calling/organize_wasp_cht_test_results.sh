@@ -21,8 +21,7 @@ target_region_file=$target_regions_dir"target_regions_"$parameter_string"_merged
 
 
 # Do these for varying number of PCs
-# for pc_num in $(seq 0 5); do
-for pc_num in $(seq 3 3); do
+for pc_num in $(seq 0 5); do
 
     ###################################################
     # Concatenate all 22 chromosome's results file into one output
@@ -31,11 +30,11 @@ for pc_num in $(seq 3 3); do
     # Concatenate all 22 chromosomes of real data
     # Also, modify/subset some of the columns from WASP output to make the output easier to handle
     wasp_results_stem=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_"
-    # python organize_wasp_output.py $time_step $cht_output_dir $dosage_genotype_file $corrected_quantile_normalized_expression $gencode_gene_annotation_file $target_region_file $wasp_results_stem
+    python organize_wasp_output.py $time_step $cht_output_dir $dosage_genotype_file $corrected_quantile_normalized_expression $gencode_gene_annotation_file $target_region_file $wasp_results_stem
     # Concatenate all 22 chromosomes of permuted data
     # Also, modify/subset some of the columns from WASP output to make the output easier to handle    
     wasp_results_stem=$cht_output_dir"cht_perm1_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_"
-    # python organize_wasp_output.py $time_step $cht_output_dir $dosage_genotype_file $corrected_quantile_normalized_expression $gencode_gene_annotation_file $target_region_file $wasp_results_stem
+    python organize_wasp_output.py $time_step $cht_output_dir $dosage_genotype_file $corrected_quantile_normalized_expression $gencode_gene_annotation_file $target_region_file $wasp_results_stem
 
 
     # Result files from concatenation
@@ -53,20 +52,20 @@ for pc_num in $(seq 3 3); do
     # Assess genome wide significance of actual data based on the eFDR approach with FDR <= $fdr_thresh
     significant_efdr_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_efdr_thresh_"$fdr_thresh"_significant.txt"
     significant_efdr_gene_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_efdr_thresh_"$fdr_thresh"_significant_egenes.txt"
-    # python assess_wasp_significance_efdr_approach.py $efdr_file $real_file $significant_efdr_results $significant_efdr_gene_results $fdr_thresh
+    python assess_wasp_significance_efdr_approach.py $efdr_file $real_file $significant_efdr_results $significant_efdr_gene_results $fdr_thresh
 
 
     fdr_thresh=".1"
     # Assess genome wide significance of actual data based on the eFDR approach with FDR <= $fdr_thresh
     significant_efdr_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_efdr_thresh_"$fdr_thresh"_significant.txt"
     significant_efdr_gene_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_efdr_thresh_"$fdr_thresh"_significant_egenes.txt"
-    # python assess_wasp_significance_efdr_approach.py $efdr_file $real_file $significant_efdr_results $significant_efdr_gene_results $fdr_thresh
+    python assess_wasp_significance_efdr_approach.py $efdr_file $real_file $significant_efdr_results $significant_efdr_gene_results $fdr_thresh
 
 
     fdr_thresh=".2"
     # Assess genome wide significance of actual data based on the eFDR approach with FDR <= $fdr_thresh
     significant_efdr_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_efdr_thresh_"$fdr_thresh"_significant.txt"
     significant_efdr_gene_results=$cht_output_dir"cht_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_efdr_thresh_"$fdr_thresh"_significant_egenes.txt"
-    # python assess_wasp_significance_efdr_approach.py $efdr_file $real_file $significant_efdr_results $significant_efdr_gene_results $fdr_thresh
+    python assess_wasp_significance_efdr_approach.py $efdr_file $real_file $significant_efdr_results $significant_efdr_gene_results $fdr_thresh
 
 done

@@ -51,14 +51,3 @@ python combined_test_parrallel_chromosome.py --min_as_counts 0 \
 
 date
 
-if false; then
-CHT_OUT_FILE=$cht_output_pc_opti_dir"cht_perm2_results_"$parameter_string"_num_pc_"$pc_num"_time_"$time_step"_"$chrom_num".txt"
-python combined_test_parrallel_chromosome.py --min_as_counts 0 \
-       --bnb_disp $BNB_COEF_OUT_FILE \
-       --as_disp $AS_COEF_OUT_FILE \
-       --num_pcs $pc_num --pc_file $PC_output_file \
-       --chrom_num $chrom_num \
-       --shuffle \
-       $CHT_IN_FILE $CHT_OUT_FILE
-fi
-echo "DONE"

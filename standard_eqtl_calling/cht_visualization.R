@@ -1084,14 +1084,14 @@ pc_num <- 3
 # Violinplot of number of egenes as a function of number of pcs
 #  Each point in violin is a time step
 output_file <- paste0(cht_visualization_dir, parameter_string, "egenes_as_function_of_pcs_violinplot.png")
-#num_qtl_violin <- egenes_as_function_of_pcs_violinplot(cht_output_dir, parameter_string, output_file)
+num_qtl_violin <- egenes_as_function_of_pcs_violinplot(cht_output_dir, parameter_string, output_file)
 
 ###############################################
 # Bar plot showing number of genome wide significant egenes at each of the 16 time steps
 # Do this for each of the pc_nums in dependently
 output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_number_of_significant_egenes_per_time_step_bar_plot.png")
 input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",pc_num,"_time_")
-#num_qtl_bar_plot <- visualize_number_of_genome_wide_significant_egenes(input_stem, output_file)
+num_qtl_bar_plot <- visualize_number_of_genome_wide_significant_egenes(input_stem, output_file)
 
 
 ###############################################
@@ -1099,20 +1099,20 @@ input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",
 n <- 10
 output_file <- paste0(cht_visualization_dir, parameter_string,"_per_time_step_pcs_pve_line_plot.png")
 input_stem <- paste0(cht_input_file_dir, "pcs_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_time_")
-#pc_pve_line_plot <- per_time_step_pcs_pve_line_plot(input_stem, output_file, n)
+pc_pve_line_plot <- per_time_step_pcs_pve_line_plot(input_stem, output_file, n)
 
 
 ###############################################
 # Merged plot showing num_qtl_violin and num_qtl_bar_plot side by side
 output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_number_of_significant_genes_merged_plot.pdf")
-#number_of_significant_genes_merge_plots(num_qtl_violin, num_qtl_bar_plot, pc_pve_line_plot, output_file)
+number_of_significant_genes_merge_plots(num_qtl_violin, num_qtl_bar_plot, pc_pve_line_plot, output_file)
 
 
 ###############################################
 # Histogram showing the number of time points each per-time step eqtl is significant in 
 input_file <- paste0(cht_output_dir,parameter_string,"_num_pc_",pc_num,"_fdr_.05_eqtl_sharing.txt")
 output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_eqtl_sharing_histogram.pdf")
-#eqtl_sharing_plot(input_file, output_file, pc_num)
+eqtl_sharing_plot(input_file, output_file, pc_num)
 
 
 ###############################################
@@ -1127,7 +1127,7 @@ output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,
 # Input file stems
 input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",pc_num,"_time_")
 null_stem <- paste0(cht_output_dir,"cht_perm1_results_",parameter_string,"_num_pc_",pc_num,"_time_")
-#qq_plot_vs_uniform(input_stem,null_stem,output_file)
+qq_plot_vs_uniform(input_stem,null_stem,output_file)
 
 
 ###############################################
@@ -1149,9 +1149,9 @@ null_stem <- paste0(cht_output_dir,"cht_perm1_results_",parameter_string,"_num_p
 ###############################################
 # Line plot showing spearman correlation between banovich ipsc/cm results (two colors) and each of the 16 time points (x-axis)
 
-#figure_2a <- line_plot_of_spearman_correlation_with_banovich_results_across_time(parameter_string, pc_num, cht_output_dir)
+figure_2a <- line_plot_of_spearman_correlation_with_banovich_results_across_time(parameter_string, pc_num, cht_output_dir)
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_spearman_correlation_with_banovich_results_line_plot.png")
-#ggsave(figure_2a, file=output_file, width=7.2, height=3.0, units="in")
+ggsave(figure_2a, file=output_file, width=7.2, height=3.0, units="in")
 
 
 
@@ -1161,9 +1161,9 @@ output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_nu
 # Ie. heatmap is of dimension number of time steps by number of time steps
 # Do independently for each number of PCs
 
-#figure_2b <- summary_statistic_correlation_heatmap(parameter_string, pc_num, cht_output_dir, cht_visualization_dir)
+figure_2b <- summary_statistic_correlation_heatmap(parameter_string, pc_num, cht_output_dir, cht_visualization_dir)
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_correlation_heatmap.png")
-#ggsave(figure_2b, file=output_file, width=7.2, height=5.3, units="in")
+ggsave(figure_2b, file=output_file, width=7.2, height=5.3, units="in")
 
 
 
@@ -1174,9 +1174,9 @@ output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_nu
 sparsity_parameter = "0.5"
 num_factors = "3"
 factor_matrix_file <- paste0(matrix_factorization_dir,parameter_string,"_num_pc_", pc_num, "_fdr_.05_log_pvalue_factorization_alpha_", sparsity_parameter, "_", num_factors,"_loading_matrix.txt")
-#figure_2c <- factor_matrix_heatmap(factor_matrix_file)
+figure_2c <- factor_matrix_heatmap(factor_matrix_file)
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_factor_matrix_",sparsity_parameter,"_",num_factors,".png")
-#ggsave(figure_2c, file=output_file, width=7.2, height=5.3, units="in")
+ggsave(figure_2c, file=output_file, width=7.2, height=5.3, units="in")
 
 
 
@@ -1185,7 +1185,7 @@ output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_nu
 ################################################
 # Make combined plot for figure 2
 output_file <- paste0(cht_visualization_dir, "figure2.pdf")
-#make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
+make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
 
 
 
@@ -1219,79 +1219,6 @@ make_grid_of_factor_matrices(factor_matrix_root, output_file)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-###########################################
-# Old (retired scripts)
-###########################################
-
-###############################################
-# Heatmap of correlation of summary statistics between time steps and between gtex tissues
-# Ie. heatmap is of dimension number of time steps+num_gtex_tissues by number of time steps+num_gtex_tissues
-# Do independently for each number of PCs
-for (pc_num in 0:5) {
-    #summary_statistic_correlation_heatmap_include_gtex(parameter_string, pc_num, cht_output_dir, cht_visualization_dir)
-}
-
-
-
-###############################################
-# Boxplot taking significant top n variant gene pairs in each time step, and plotting -log10 pvalue of those variant gene pairs for banovich ipscs and ipsc-cms
-num_genes <- 100
-for (pc_num in 3:3) {
-    input_file <- paste0(cht_output_dir, parameter_string, "_num_pc_", pc_num, "_top_", num_genes, "_eqtls_in_time_steps_for_banovich_results.txt")
-    output_file <- paste0(cht_visualization_dir, parameter_string, "_top_", num_genes, "_eqtls_in_time_steps_for_banovich_results_boxplot.pdf")
-    #boxplot_showing_top_n_variant_gene_pairs_per_time_step_with_banovich_results(input_file, output_file, num_genes, pc_num)
-}
-
-
-
-###############################################
-# Boxplot of number of egenes as a function of number of pcs
-#  Each point in boxplot is a time step
-# output_file <- paste0(cht_visualization_dir, parameter_string, "egenes_as_function_of_pcs_boxplot.png")
-# egenes_as_function_of_pcs_boxplot(cht_output_dir, parameter_string, output_file)
-
-
-###############################################
-# Boxplot showing pvalues found in our data for only the eqtls in a specific data set
-# 1 plot per data set
-# 1 plot for pc
-for (pc_num in 0:3) {
-    #eqtl_comparison_to_background_shell(pc_num, cht_visualization_dir, parameter_string, cht_enrichment_dir, eqtl_data_set_file)
-}
-
-###############################################
-# Boxplot showing pvalues found in our data for only the eqtls in a specific data set
-# 1 plot per data set
-# 1 plot for pc
-for (pc_num in 0:3) {
-    #eqtl_comparison_reference_shell(pc_num, cht_visualization_dir, parameter_string, cht_enrichment_dir, eqtl_data_set_file)
-}
-
-
-
-###############################################
-# Boxplot showing pvalues found in our data based on eqtls found in GTEx v7:
-## 1. HLV
-## 2. skin_not_sun_exposed
-## 3. stomach
-## 4. Breast
-# 1 plot for pc
-for (pc_num in 0:3) {
-    tissue_comparison_plot_file <- paste0(cht_visualization_dir,parameter_string,"_num_pc_",pc_num, "_gtex_tissue_beta_filter_comparison.png")
-    #gtex_tissue_comparison_bar_plot(tissue_comparison_plot_file, pc_num, parameter_string, cht_enrichment_dir)
-}
 
 
 
