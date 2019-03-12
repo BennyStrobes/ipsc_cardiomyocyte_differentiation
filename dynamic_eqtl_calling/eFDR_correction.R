@@ -82,6 +82,6 @@ null_data1 <- read.table(null_file1, header=FALSE)
 real_pvalues <- real_data$V4
 null_pvalues <- null_data1$V4
 
-final <- eFDR(sort(real_pvalues), as.matrix(null_pvalues),nmax=110000)
+final <- eFDR(sort(real_pvalues), as.matrix(null_pvalues),nmax=length(real_pvalues))
 
 write.table(final, file = output_file, quote = FALSE, sep = "\t")

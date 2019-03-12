@@ -220,9 +220,7 @@ factor_matrix_heatmap <- function(factor_matrix_file) {
 
 
 }
-
-
-make_grid_of_factor_matrices <- function(factor_matrix_root, output_file) {
+make_grid_of_factor_matrices_old <- function(factor_matrix_root, output_file) {
     ###########
     alpha <- "0"
     num_factor <- "3"
@@ -243,6 +241,24 @@ make_grid_of_factor_matrices <- function(factor_matrix_root, output_file) {
     heatmap_1_3_legend <- get_legend(heatmap_1_3)
     ###########
     alpha <- "0"
+    num_factor <- "4"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_0_4 <- factor_matrix_heatmap(factor_matrix_file) + theme(legend.position="bottom") + theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_0_4_legend <- get_legend(heatmap_0_4)
+    ###########
+    alpha <- "0.5"
+    num_factor <- "4"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_.5_4 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="bottom")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8)) + theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_.5_4_legend <- get_legend(heatmap_.5_4)
+    ###########
+    alpha <- "1"
+    num_factor <- "4"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_1_4 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="bottom")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_1_4_legend <- get_legend(heatmap_1_4)
+    ###########
+    alpha <- "0"
     num_factor <- "5"
     factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
     heatmap_0_5 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="bottom")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
@@ -260,7 +276,7 @@ make_grid_of_factor_matrices <- function(factor_matrix_root, output_file) {
     heatmap_1_5 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="bottom")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
     heatmap_1_5_legend <- get_legend(heatmap_1_5)
 
-    combined_heatmap <- plot_grid(heatmap_0_3, heatmap_.5_3, heatmap_1_3, heatmap_0_5, heatmap_.5_5, heatmap_1_5, labels = c("A","B","C","D","E","F"), ncol=3)
+    combined_heatmap <- plot_grid(heatmap_0_3, heatmap_.5_3, heatmap_1_3, heatmap_0_4, heatmap_.5_4,heatmap_1_4, heatmap_0_5, heatmap_.5_5, heatmap_1_5, labels = c("A","B","C","D","E","F", "G","H",""), ncol=3)
     
     combined_heatmap2 <- ggdraw() + 
                 draw_plot(combined_heatmap, 0,0,1,.97) +
@@ -268,6 +284,74 @@ make_grid_of_factor_matrices <- function(factor_matrix_root, output_file) {
 
 
     ggsave(combined_heatmap2,file=output_file, width=7.2, height=5,units="in")
+
+}
+
+
+make_grid_of_factor_matrices <- function(factor_matrix_root, output_file) {
+    ###########
+    alpha <- "0"
+    num_factor <- "3"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_0_3 <- factor_matrix_heatmap(factor_matrix_file) + theme(legend.position="top") + theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_0_3_legend <- get_legend(heatmap_0_3)
+    ###########
+    alpha <- "0.5"
+    num_factor <- "3"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_.5_3 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="top")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8)) + theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_.5_3_legend <- get_legend(heatmap_.5_3)
+    ###########
+    alpha <- "1"
+    num_factor <- "3"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_1_3 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="top")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_1_3_legend <- get_legend(heatmap_1_3)
+    ###########
+    alpha <- "0"
+    num_factor <- "4"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_0_4 <- factor_matrix_heatmap(factor_matrix_file) + theme(legend.position="top") + theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_0_4_legend <- get_legend(heatmap_0_4)
+    ###########
+    alpha <- "0.5"
+    num_factor <- "4"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_.5_4 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="top")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8)) + theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_.5_4_legend <- get_legend(heatmap_.5_4)
+    ###########
+    alpha <- "1"
+    num_factor <- "4"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_1_4 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="top")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_1_4_legend <- get_legend(heatmap_1_4)
+    ###########
+    alpha <- "0"
+    num_factor <- "5"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_0_5 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="top")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_0_5_legend <- get_legend(heatmap_0_5)
+    ###########
+    alpha <- "0.5"
+    num_factor <- "5"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_.5_5 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="top")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_.5_5_legend <- get_legend(heatmap_.5_5)
+    ###########
+    alpha <- "1"
+    num_factor <- "5"
+    factor_matrix_file <- paste0(factor_matrix_root, alpha,"_",num_factor, "_loading_matrix.txt")
+    heatmap_1_5 <- factor_matrix_heatmap(factor_matrix_file)+ theme(legend.position="top")+ theme(legend.text = element_text(size=7)) + theme(legend.title = element_text(size=8))+ theme(legend.key.size =  unit(0.25, "in"))
+    heatmap_1_5_legend <- get_legend(heatmap_1_5)
+
+    combined_heatmap <- plot_grid(heatmap_0_3, heatmap_.5_3, heatmap_1_3, heatmap_0_4, heatmap_.5_4,heatmap_1_4, heatmap_0_5, heatmap_.5_5, heatmap_1_5, labels = c("A","B","C","D","E","F", "G","H","I"), ncol=3)
+    
+    combined_heatmap2 <- ggdraw() + 
+                draw_plot(combined_heatmap, 0,0,1,.97) +
+                draw_plot_label(c("alpha=0","alpha=.5","alpha=1"),c(.13,.46,.8),c(.98,.98,.98),size=8,fontface="plain")
+
+
+    ggsave(combined_heatmap2,file=output_file, width=7.2, height=7,units="in")
 
 }
 
@@ -1000,14 +1084,14 @@ pc_num <- 3
 # Violinplot of number of egenes as a function of number of pcs
 #  Each point in violin is a time step
 output_file <- paste0(cht_visualization_dir, parameter_string, "egenes_as_function_of_pcs_violinplot.png")
-num_qtl_violin <- egenes_as_function_of_pcs_violinplot(cht_output_dir, parameter_string, output_file)
+#num_qtl_violin <- egenes_as_function_of_pcs_violinplot(cht_output_dir, parameter_string, output_file)
 
 ###############################################
 # Bar plot showing number of genome wide significant egenes at each of the 16 time steps
 # Do this for each of the pc_nums in dependently
 output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_number_of_significant_egenes_per_time_step_bar_plot.png")
 input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",pc_num,"_time_")
-num_qtl_bar_plot <- visualize_number_of_genome_wide_significant_egenes(input_stem, output_file)
+#num_qtl_bar_plot <- visualize_number_of_genome_wide_significant_egenes(input_stem, output_file)
 
 
 ###############################################
@@ -1015,20 +1099,20 @@ num_qtl_bar_plot <- visualize_number_of_genome_wide_significant_egenes(input_ste
 n <- 10
 output_file <- paste0(cht_visualization_dir, parameter_string,"_per_time_step_pcs_pve_line_plot.png")
 input_stem <- paste0(cht_input_file_dir, "pcs_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_time_")
-pc_pve_line_plot <- per_time_step_pcs_pve_line_plot(input_stem, output_file, n)
+#pc_pve_line_plot <- per_time_step_pcs_pve_line_plot(input_stem, output_file, n)
 
 
 ###############################################
 # Merged plot showing num_qtl_violin and num_qtl_bar_plot side by side
 output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_number_of_significant_genes_merged_plot.pdf")
-number_of_significant_genes_merge_plots(num_qtl_violin, num_qtl_bar_plot, pc_pve_line_plot, output_file)
+#number_of_significant_genes_merge_plots(num_qtl_violin, num_qtl_bar_plot, pc_pve_line_plot, output_file)
 
 
 ###############################################
 # Histogram showing the number of time points each per-time step eqtl is significant in 
 input_file <- paste0(cht_output_dir,parameter_string,"_num_pc_",pc_num,"_fdr_.05_eqtl_sharing.txt")
 output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,"_eqtl_sharing_histogram.pdf")
-eqtl_sharing_plot(input_file, output_file, pc_num)
+#eqtl_sharing_plot(input_file, output_file, pc_num)
 
 
 ###############################################
@@ -1043,7 +1127,7 @@ output_file <- paste0(cht_visualization_dir, parameter_string,"_num_pc_",pc_num,
 # Input file stems
 input_stem <- paste0(cht_output_dir, "cht_results_",parameter_string,"_num_pc_",pc_num,"_time_")
 null_stem <- paste0(cht_output_dir,"cht_perm1_results_",parameter_string,"_num_pc_",pc_num,"_time_")
-qq_plot_vs_uniform(input_stem,null_stem,output_file)
+#qq_plot_vs_uniform(input_stem,null_stem,output_file)
 
 
 ###############################################
@@ -1065,9 +1149,9 @@ null_stem <- paste0(cht_output_dir,"cht_perm1_results_",parameter_string,"_num_p
 ###############################################
 # Line plot showing spearman correlation between banovich ipsc/cm results (two colors) and each of the 16 time points (x-axis)
 
-figure_2a <- line_plot_of_spearman_correlation_with_banovich_results_across_time(parameter_string, pc_num, cht_output_dir)
+#figure_2a <- line_plot_of_spearman_correlation_with_banovich_results_across_time(parameter_string, pc_num, cht_output_dir)
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_spearman_correlation_with_banovich_results_line_plot.png")
-ggsave(figure_2a, file=output_file, width=7.2, height=3.0, units="in")
+#ggsave(figure_2a, file=output_file, width=7.2, height=3.0, units="in")
 
 
 
@@ -1077,9 +1161,9 @@ ggsave(figure_2a, file=output_file, width=7.2, height=3.0, units="in")
 # Ie. heatmap is of dimension number of time steps by number of time steps
 # Do independently for each number of PCs
 
-figure_2b <- summary_statistic_correlation_heatmap(parameter_string, pc_num, cht_output_dir, cht_visualization_dir)
+#figure_2b <- summary_statistic_correlation_heatmap(parameter_string, pc_num, cht_output_dir, cht_visualization_dir)
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_correlation_heatmap.png")
-ggsave(figure_2b, file=output_file, width=7.2, height=5.3, units="in")
+#ggsave(figure_2b, file=output_file, width=7.2, height=5.3, units="in")
 
 
 
@@ -1090,9 +1174,9 @@ ggsave(figure_2b, file=output_file, width=7.2, height=5.3, units="in")
 sparsity_parameter = "0.5"
 num_factors = "3"
 factor_matrix_file <- paste0(matrix_factorization_dir,parameter_string,"_num_pc_", pc_num, "_fdr_.05_log_pvalue_factorization_alpha_", sparsity_parameter, "_", num_factors,"_loading_matrix.txt")
-figure_2c <- factor_matrix_heatmap(factor_matrix_file)
+#figure_2c <- factor_matrix_heatmap(factor_matrix_file)
 output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_factor_matrix_",sparsity_parameter,"_",num_factors,".png")
-ggsave(figure_2c, file=output_file, width=7.2, height=5.3, units="in")
+#ggsave(figure_2c, file=output_file, width=7.2, height=5.3, units="in")
 
 
 
@@ -1101,7 +1185,7 @@ ggsave(figure_2c, file=output_file, width=7.2, height=5.3, units="in")
 ################################################
 # Make combined plot for figure 2
 output_file <- paste0(cht_visualization_dir, "figure2.pdf")
-make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
+#make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
 
 
 
@@ -1110,12 +1194,18 @@ make_figure_2(figure_2a, figure_2b, figure_2c, output_file)
 # Heatmaps will span number of latent factors and sparse prior choice
     
 factor_matrix_root <- paste0(matrix_factorization_dir, parameter_string, "_num_pc_", pc_num,"_fdr_.05_log_pvalue_factorization_alpha_")
-output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_pvalue_factor_matrices.pdf")
+output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_log_pvalue_factor_matrices.pdf")
 make_grid_of_factor_matrices(factor_matrix_root, output_file)
 
 
 
-
+###############################################
+# Grid of heatmap showing factor matrix from sparse matrix factor analysis
+# Heatmaps will span number of latent factors and sparse prior choice
+    
+factor_matrix_root <- paste0(matrix_factorization_dir, parameter_string, "_num_pc_", pc_num,"_fdr_.05_allelic_fraction_factorization_alpha_")
+output_file <- paste0(cht_visualization_dir, parameter_string, "_num_pc_", pc_num,"_allelic_fraction_factor_matrices.pdf")
+make_grid_of_factor_matrices(factor_matrix_root, output_file)
 
 
 

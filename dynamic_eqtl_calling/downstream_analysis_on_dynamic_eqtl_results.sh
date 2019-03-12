@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --time=10:00:00 --partition=broadwl --mem=5GB
+#SBATCH --time=24:00:00 --partition=broadwl --mem=5GB
 
 model_version="$1"
 covariate_method="$2"
@@ -35,7 +35,7 @@ date
 ### Merges results from parallelization runs and computes significance after multiple testing correction
 real_eqtl_results_file=$qtl_results_dir$parameter_string"_permute_False_results.txt"
 perm_eqtl_results_file=$qtl_results_dir$parameter_string"_permute_True_results.txt"
-#sh multiple_testing_correction.sh $parameter_string $qtl_results_dir $real_eqtl_results_file $perm_eqtl_results_file $num_jobs
+sh multiple_testing_correction.sh $parameter_string $qtl_results_dir $real_eqtl_results_file $perm_eqtl_results_file $num_jobs
 significant_egene_file=$qtl_results_dir$parameter_string"_efdr_.05_significant_egenes.txt"
 significant_qtl_file=$qtl_results_dir$parameter_string"_efdr_.05_significant.txt"
 
@@ -112,4 +112,4 @@ threshold="5e-6"
 ########################################
 ### Part K: Compare dynamic eqtls to existing data sets
 threshold="1.0"
-python compare_dynamic_eqtls_to_existing_data_sets.py $parameter_string $significant_egene_file $real_eqtl_results_file $model_version $threshold $eqtl_data_set_comparison_dir $ipsc_eqtl_file $cm_eqtl_file
+# python compare_dynamic_eqtls_to_existing_data_sets.py $parameter_string $significant_egene_file $real_eqtl_results_file $model_version $threshold $eqtl_data_set_comparison_dir $ipsc_eqtl_file $cm_eqtl_file

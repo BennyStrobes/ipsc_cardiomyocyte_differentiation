@@ -2,7 +2,7 @@
 
 High-resolution analysis of temporal dynamics of genetic effects on gene expression throughout cardiomyocyte differentiation.
 
-Organization changes underway. Contact Ben Strober (bstrober3@gmail.com) with any questions.
+Contact Ben Strober (bstrober3@gmail.com) with any questions.
 
 ## Running the code
 

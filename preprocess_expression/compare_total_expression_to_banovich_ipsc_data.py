@@ -567,7 +567,6 @@ preprocess_total_expression_dir = sys.argv[3]
 banovich_ipsc_comparison_dir = sys.argv[4]
 
 
-# time_series_read_counts_file = preprocess_total_expression_dir + 'raw_counts_all_genes.txt'
 time_series_read_counts_file = preprocess_total_expression_dir + 'raw_counts.txt'
 
 
@@ -578,8 +577,8 @@ time_series_read_counts_file = preprocess_total_expression_dir + 'raw_counts.txt
 num_pc_banovich = 10
 num_pc_time_series = 3
 output_file = banovich_ipsc_comparison_dir + 'day_0_banovich_ipsc_comparison_regress_out_' + str(num_pc_banovich) + '_' + str(num_pc_time_series) + '_pcs.txt'
-#correlation_mat = correlation_between_time_series_and_banovich_samples_regress_out(ipsc_banovich_read_counts_file, time_series_read_counts_file, 0, 'ipsc', num_pc_banovich, num_pc_time_series, banovich_ipsc_comparison_dir)
-#np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
+correlation_mat = correlation_between_time_series_and_banovich_samples_regress_out(ipsc_banovich_read_counts_file, time_series_read_counts_file, 0, 'ipsc', num_pc_banovich, num_pc_time_series, banovich_ipsc_comparison_dir)
+np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
 
 
 #######################
@@ -587,8 +586,8 @@ output_file = banovich_ipsc_comparison_dir + 'day_0_banovich_ipsc_comparison_reg
 num_pc_banovich = 3
 num_pc_time_series = 3
 output_file = banovich_ipsc_comparison_dir + 'day_15_banovich_ipsc_comparison_regress_out_' + str(num_pc_banovich) + '_' + str(num_pc_time_series) + '_pcs.txt'
-#correlation_mat = correlation_between_time_series_and_banovich_samples_regress_out(ipsc_cm_banovich_read_counts_file, time_series_read_counts_file, 15, 'ipsc_cm', num_pc_banovich, num_pc_time_series, banovich_ipsc_comparison_dir)
-#np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
+correlation_mat = correlation_between_time_series_and_banovich_samples_regress_out(ipsc_cm_banovich_read_counts_file, time_series_read_counts_file, 15, 'ipsc_cm', num_pc_banovich, num_pc_time_series, banovich_ipsc_comparison_dir)
+np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
 
 
 
@@ -601,29 +600,16 @@ num_genes = 1000
 num_pc_banovich = 3
 num_pc_time_series=3
 output_file = banovich_ipsc_comparison_dir + 'day_0_banovich_ipsc_comparison_' + str(num_pc_banovich) + '_' + str(num_pc_time_series) + '_' + str(num_genes) + '.txt'
-#correlation_mat = correlation_between_time_series_and_banovich_samples(ipsc_banovich_read_counts_file, time_series_read_counts_file, 0, 'ipsc', num_genes, num_pc_banovich, num_pc_time_series)
-#np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
+correlation_mat = correlation_between_time_series_and_banovich_samples(ipsc_banovich_read_counts_file, time_series_read_counts_file, 0, 'ipsc', num_genes, num_pc_banovich, num_pc_time_series)
+np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
 #######################
 # Part 2: Take correlation between day 0 time step samples and  $ipsc_cm_banovich_read_counts_file samples
 num_genes = 1000
 num_pc_banovich = 3
 num_pc_time_series=3
 output_file = banovich_ipsc_comparison_dir + 'day_15_banovich_ipsc_comparison_' + str(num_pc_banovich) + '_' + str(num_pc_time_series) + '_' + str(num_genes) + '.txt'
-#correlation_mat = correlation_between_time_series_and_banovich_samples(ipsc_cm_banovich_read_counts_file, time_series_read_counts_file, 15, 'ipsc_cm', num_genes, num_pc_banovich, num_pc_time_series)
-#np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
+correlation_mat = correlation_between_time_series_and_banovich_samples(ipsc_cm_banovich_read_counts_file, time_series_read_counts_file, 15, 'ipsc_cm', num_genes, num_pc_banovich, num_pc_time_series)
+np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
 
 
 
-
-
-
-#######################
-# Part 1: Take correlation between day 0 time step samples and  $ipsc_banovich_read_counts_file samples
-output_file = banovich_ipsc_comparison_dir + 'day_0_banovich_ipsc_comparison_all_genes.txt'
-#correlation_mat = correlation_between_time_series_and_banovich_samples_all_genes(ipsc_banovich_read_counts_file, time_series_read_counts_file, 0, 'ipsc')
-#np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')
-#######################
-# Part 2: Take correlation between day 0 time step samples and  $ipsc_cm_banovich_read_counts_file samples
-output_file = banovich_ipsc_comparison_dir + 'day_15_banovich_ipsc_comparison_all_genes.txt'
-#correlation_mat = correlation_between_time_series_and_banovich_samples_all_genes(ipsc_cm_banovich_read_counts_file, time_series_read_counts_file, 15, 'ipsc_cm')
-#np.savetxt(output_file, correlation_mat, fmt="%s",delimiter='\t')

@@ -494,38 +494,3 @@ process_and_save_covariates_categorical(sample_info, raw_covariates, multiqc, co
 
 
 
-
-####################################################################
-# Write loadings to output file
-####################################################################
-#n <- 9
-#loading_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_gene_loadings_", n, ".txt")
-#save_gene_loadings(cell_line_expression_ignore_missing_rownames, cell_line_expression_ignore_missing, n, loading_output_file)
-
-
-#  Ouptut file to save PCA loadings to (for expression data when time steps are treated indpendently)
-# pca_output_stem <- paste0(covariate_dir, "pca_loadings_time_step_independent_")
-# save_time_step_independent_pca(sample_info, quant_expr_time_step_independent, pca_output_stem)
-
-
-
-
-#####################################
-## OLD SCRIPTS. NOT CURRENTLY USED
-#####################################
-# cov_output_file <- paste0(covariate_dir, "processed_covariates_binary_categorical.txt")
-# process_and_save_covariates_binary_categorical(sample_info, raw_covariates, cov_output_file)
-
-
-
-##############################################################################################################################
-# Write surrogate variables via SVA to output file
-##############################################################################################################################
-
-
-#  Ouptut file to save SVA loadings to (for expression data aggregrated across time steps)
-#sva_output_file <- paste0(covariate_dir, "sva_loadings.txt")
-#corrected_expression_sva <- paste0(preprocess_total_expression_dir, "quant_expr_sva_corrected.txt")
-#save_sva(sample_info, quant_expr, sva_output_file, corrected_expression_sva)
-
-

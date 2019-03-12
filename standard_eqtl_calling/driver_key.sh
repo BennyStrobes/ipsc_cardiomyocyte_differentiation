@@ -228,11 +228,10 @@ fi
 ### This script (does the following for each of the 6 possible numbers of PCs):
 ###  A. Concatenates the 22 chromosome WASP output files into 1 file (for both real and permuted data)
 ###  B. Run eFDR correction on data using real and permutation runs of wasp to assess genome wide significance
-if false; then
 for time_step in $(seq 0 15); do 
     sbatch organize_wasp_cht_test_results.sh $parameter_string $cht_input_file_dir $cht_output_dir $target_regions_dir $dosage_genotype_file $gencode_gene_annotation_file $quantile_normalized_expression $time_step $cis_distance
 done
-fi
+
 
 
 ##################################################################
@@ -243,8 +242,9 @@ fi
 ##### 3. 'run_matrix_factorization.py': Run spare non-negative matrix factorization on the matrix of summary statisics (num_eGenesXnum_time_steps) for a range of number of latent factors and sparsity parameters
 ### It then runs `cht_visualization.R`: Make visualizations of WASP eqtl results
 fdr=".05"
+if false; then
 sh run_downstream_analysis_on_wasp_results.sh $parameter_string $cht_output_dir $fdr $target_regions_dir $matrix_factorization_dir $cm_eqtl_file $ipsc_eqtl_file $cht_visualization_dir $cht_input_file_dir
-
+fi
 
 
 

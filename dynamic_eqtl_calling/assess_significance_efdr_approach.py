@@ -43,8 +43,8 @@ def get_pval_thresh(efdr_file, fdr_thresh):
             return prev_pval
         else:
             prev_pval = nominal_pvalue
-    print('fatal error with efdr: did not include enough top-snps param!')
-    pdb.set_trace()
+    f.close()
+    return nominal_pvalue
 
 def filter_to_significant_results(real_file, significant_results_file, pval_thresh):
     f = open(real_file)

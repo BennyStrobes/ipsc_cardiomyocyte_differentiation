@@ -389,6 +389,55 @@ gene_time_course_line_plot_grouped_by_cell_line <- function(sample_info, quant_e
 
 }
 
+plot_time_versus_pc <- function(sample_info, quant_expr, cell_lines, time, pc_num) {
+    #  Compute singular value decomposition
+    svd1 <- svd(as.matrix(quant_expr))
+
+    #  Scores of first 2 pc's across all samples
+    pc2 <- svd1$v[,pc_num]
+
+    # Put all information into data structure
+    df <- data.frame(time = time, pc2 = pc2, cell_line = cell_lines)
+
+    colourCount = length(unique(df$cell_line))
+    getPalette = colorRampPalette(brewer.pal(9, "Set1"))
+
+    line_plot <- ggplot(df, aes(x=time, y=pc2, group=cell_line)) + geom_line(aes(color=cell_line)) +
+                geom_point(aes(color=cell_line)) +
+                scale_colour_manual(values = getPalette(colourCount)) + theme(plot.title = element_text(size=12)) + 
+                theme(text = element_text(size=12), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+                labs(colour="",x = "Day", y = paste0("PC", pc_num)) +
+                theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+    return(line_plot)
+
+
+}
+
+plot_cell_line_versus_pc <- function(sample_info, quant_expr, cell_lines, time, pc_num) {
+    #  Compute singular value decomposition
+    svd1 <- svd(as.matrix(quant_expr))
+
+    #  Scores of first 2 pc's across all samples
+    pc2 <- svd1$v[,pc_num]
+
+    # Put all information into data structure
+    df <- data.frame(time = time, pc2 = pc2, cell_line = cell_lines)
+
+
+    line_plot <- ggplot(df, aes(x=cell_line, y=pc2)) + 
+                geom_point(aes(color=time),size=.7) +
+                scale_color_gradient(low="darkgrey",high="firebrick") +
+                theme(text = element_text(size=12), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"),  axis.text.x = element_text(angle = 90, vjust=.5)) +
+                labs(colour="Day",x = "Cell Line", y = paste0("PC", pc_num)) +
+                theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+    
+
+    return(line_plot)
+
+
+}
+
+
 gene_time_course_line_plot_grouped_by_cell_line_modular <- function(sample_info, quant_expr, ensamble_id, gene_name, line_plot_file) {
     row_label <- which(rownames(quant_expr) == ensamble_id)
     quant_expr <- as.matrix(quant_expr)
@@ -578,7 +627,7 @@ plot_pca_categorical_covariate <- function(sample_info, quant_expr, output_file,
     pca_scatter <- pca_scatter + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
 
     ggsave(pca_scatter, file=output_file, width=7.2, height=4.5,units="in")
-
+    return(pca_scatter)
 }
 
 #  Plot first two PC's. Color points by cell_line
@@ -648,11 +697,14 @@ make_pca_plot <- function(i, cell_lines, pc1, pc2, sample_info) {
     # Put into compact data frame for plotting
     df <- data.frame(pc1 = i_pc1, pc2 = i_pc2, time_step = i_time)
 
+    pc2_loading_at_time_step_15 <- df$pc2[df$time_step==15]
+
     #PLOT!
     pca_scatter <-  ggplot(df,aes(pc1,pc2)) + geom_point(aes(colour=time_step)) + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8), axis.text.x = element_text(vjust=.5)) 
     pca_scatter <- pca_scatter  + ggtitle(paste0("NA",i_cell_line)) + xlim(min(pc1)-.01,max(pc1)+.01) + ylim(min(pc2)-.01,max(pc2) + .01)
     pca_scatter <- pca_scatter + scale_color_gradient(low="darkgrey",high="firebrick")
     pca_scatter <- pca_scatter + labs(colour = "Day") + theme(legend.position="bottom")
+    pca_scatter <- pca_scatter + geom_hline(yintercept=pc2_loading_at_time_step_15,linetype="dashed")
 
     return(pca_scatter)
 }
@@ -1723,7 +1775,7 @@ plot_karl_gene_cluster <- function(mixutre_hmm_cell_line_grouping_dir, gene_clus
 
 
 
-plot_karl_gene_cluster_grid <- function(mixutre_hmm_cell_line_grouping_dir,ci=FALSE) {
+plot_karl_gene_cluster_grid <- function(mixutre_hmm_cell_line_grouping_dir,num_col,ci=FALSE) {
     fmean <- read.csv(paste0(mixutre_hmm_cell_line_grouping_dir, "mixsvgp_K2_L20_0_29526888_fmean"))
     fvar <- read.csv(paste0(mixutre_hmm_cell_line_grouping_dir, "mixsvgp_K2_L20_0_29526888_fvar"))
     fmean$X <- fmean$X * 15/100
@@ -1743,8 +1795,73 @@ plot_karl_gene_cluster_grid <- function(mixutre_hmm_cell_line_grouping_dir,ci=FA
     melted$lower <- melted$value - 1.96 * melted$sd
     melted$upper <- melted$value + 1.96 * melted$sd
 
+    p <- ggplot(melted, aes(x=X, y=value, color=CellLineCluster)) + geom_line() + facet_wrap(~ L, ncol=num_col) 
+    if (ci){
+        p <- p + geom_ribbon(data=data, aes(ymin=lower,ymax=upper, fill=CellLineCluster),alpha=0.3, colour=NA)
+    }
+    p <- p + labs(x="Day",y = "Expression",fill="",color="") + theme(legend.position = "bottom") + scale_fill_manual(values=c("dodgerblue3","chartreuse4"))+ scale_color_manual(values=c("dodgerblue3","chartreuse4"))
+    p <- p + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+    return(p)
 
-    p <- ggplot(melted, aes(x=X, y=value, color=CellLineCluster)) + geom_line() + facet_wrap(~ L, ncol=10) 
+
+}
+
+plot_karl_gene_cluster_grid_first_10_two_rows <- function(mixutre_hmm_cell_line_grouping_dir,ci=FALSE) {
+    fmean <- read.csv(paste0(mixutre_hmm_cell_line_grouping_dir, "mixsvgp_K2_L20_0_29526888_fmean"))
+    fvar <- read.csv(paste0(mixutre_hmm_cell_line_grouping_dir, "mixsvgp_K2_L20_0_29526888_fvar"))
+    fmean$X <- fmean$X * 15/100
+
+
+
+    L  <- paste('Gene Cluster ', rep(c(paste('0', seq(0, 9), sep=""), seq(10, 19)), 2), sep="")
+    K <- paste('cell line cluster ', c(rep(2, 20), rep(1, 20)), sep="")
+
+    KL <- paste(K, L, sep="")
+
+    colnames(fmean) <- c('X', KL)
+    melted <- melt(fmean, id.vars = 'X')
+    melted$CellLineCluster <- paste0("Inferred ",substr(melted$variable, 1, 19))
+    melted$L <- substr(melted$variable, 20, 100)
+    melted$sd <-sqrt(melt(fvar, id.vars = 'X')$value)
+    melted$lower <- melted$value - 1.96 * melted$sd
+    melted$upper <- melted$value + 1.96 * melted$sd
+
+    good_rows <- melted$L == "Gene Cluster 00" | melted$L == "Gene Cluster 01" | melted$L == "Gene Cluster 02" | melted$L == "Gene Cluster 03" | melted$L == "Gene Cluster 04" | melted$L == "Gene Cluster 05" | melted$L == "Gene Cluster 06" | melted$L == "Gene Cluster 07" | melted$L == "Gene Cluster 08" | melted$L == "Gene Cluster 09"
+
+    p <- ggplot(melted[good_rows,], aes(x=X, y=value, color=CellLineCluster)) + geom_line() + facet_wrap(~ L, ncol=5) 
+    if (ci){
+        p <- p + geom_ribbon(data=data, aes(ymin=lower,ymax=upper, fill=CellLineCluster),alpha=0.3, colour=NA)
+    }
+    p <- p + labs(x="Day",y = "Expression",fill="",color="") + theme(legend.position = "bottom") + scale_fill_manual(values=c("dodgerblue3","chartreuse4"))+ scale_color_manual(values=c("dodgerblue3","chartreuse4"))
+    p <- p + theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+    return(p)
+
+
+}
+
+plot_karl_gene_cluster_grid_second_10_one_rows <- function(mixutre_hmm_cell_line_grouping_dir,ci=FALSE) {
+    fmean <- read.csv(paste0(mixutre_hmm_cell_line_grouping_dir, "mixsvgp_K2_L20_0_29526888_fmean"))
+    fvar <- read.csv(paste0(mixutre_hmm_cell_line_grouping_dir, "mixsvgp_K2_L20_0_29526888_fvar"))
+    fmean$X <- fmean$X * 15/100
+
+
+
+    L  <- paste('Gene Cluster ', rep(c(paste('0', seq(0, 9), sep=""), seq(10, 19)), 2), sep="")
+    K <- paste('cell line cluster ', c(rep(2, 20), rep(1, 20)), sep="")
+
+    KL <- paste(K, L, sep="")
+
+    colnames(fmean) <- c('X', KL)
+    melted <- melt(fmean, id.vars = 'X')
+    melted$CellLineCluster <- paste0("Inferred ",substr(melted$variable, 1, 19))
+    melted$L <- substr(melted$variable, 20, 100)
+    melted$sd <-sqrt(melt(fvar, id.vars = 'X')$value)
+    melted$lower <- melted$value - 1.96 * melted$sd
+    melted$upper <- melted$value + 1.96 * melted$sd
+
+    good_rows <- melted$L == "Gene Cluster 10" | melted$L == "Gene Cluster 11" | melted$L == "Gene Cluster 12" | melted$L == "Gene Cluster 13" | melted$L == "Gene Cluster 14" | melted$L == "Gene Cluster 15" | melted$L == "Gene Cluster 16" | melted$L == "Gene Cluster 17" | melted$L == "Gene Cluster 18" | melted$L == "Gene Cluster 19"
+
+    p <- ggplot(melted[good_rows,], aes(x=X, y=value, color=CellLineCluster)) + geom_line() + facet_wrap(~ L, ncol=10) 
     if (ci){
         p <- p + geom_ribbon(data=data, aes(ymin=lower,ymax=upper, fill=CellLineCluster),alpha=0.3, colour=NA)
     }
@@ -2060,109 +2177,14 @@ heatmap_showing_average_expression_for_all_clusters <- function(cell_line_cluste
 
 }
 
-make_figure_1_alt_a <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir,cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file) {
-    fig1b <- plot_pca_time_step_modular(sample_info, quant_expr)
 
-    #fig1c <- plot_karl_gene_cluster(mixutre_hmm_cell_line_grouping_dir, 'Gene Cluster 01')
-
-    #fig1d <- plot_karl_gene_cluster(mixutre_hmm_cell_line_grouping_dir, 'Gene Cluster 03')
-
-    #cell_line_legend <- get_legend(fig1d)
-
-    fig1c <- heatmap_showing_average_expression_for_gene_cluster(cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file)
-
-    #fig1d <- heatmap_showing_average_expression_for_gene_cluster(cell_line_cluster_average_expression_file, "2")
-
-    pca_legend <- get_legend(fig1b)
-
-    combined <- ggdraw() + 
-                draw_image(fig1a_image_file,0,.56,.4,.4) +
-                draw_plot(fig1b + theme(legend.position='none'), .505,.65,.4,.35) + 
-                draw_plot(pca_legend,.9,.43,.9,.9) + 
-                draw_plot_label(c("a","b"),c(0,.5),c(1,1),size=12)
-    counter <- 1
-    start_y <- .66
-    step_size <- .05
-    for (i in 1:10) {
-        combined <- combined + draw_plot(fig1c[[counter]]+ theme(legend.position='none'), 0,start_y-(i*step_size),.5,.06) 
-        counter <- counter + 1
-        combined <- combined + draw_plot(fig1c[[counter]]+ theme(legend.position='none'), .5,start_y-(i*step_size),.5,.06) 
-        counter <- counter + 1
-    }
-    #counter <- 1
-    #start_y <- .74
-    #for (i in 1:10) {
-    #    combined <- combined + draw_plot_label(paste0("Gene cluster ", counter),c(.17),c(start_y-(i*step_size)),size=6)
-    #    counter <- counter + 1
-    #    combined <- combined + draw_plot_label(paste0("Gene cluster ", counter),c(.67),c(start_y-(i*step_size)),size=6)
-    #    counter <- counter + 1
-   # }
-
-
-    ggsave(combined, file=output_file, width=7.2, height=5.1, units="in")
-}
-
-make_figure_1_alt_b <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir,cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file) {
-    fig1b <- plot_pca_time_step_modular(sample_info, quant_expr)
-
-    #fig1c <- plot_karl_gene_cluster(mixutre_hmm_cell_line_grouping_dir, 'Gene Cluster 01')
-
-    #fig1d <- plot_karl_gene_cluster(mixutre_hmm_cell_line_grouping_dir, 'Gene Cluster 03')
-
-    #cell_line_legend <- get_legend(fig1d)
-
-    #fig1c <- heatmap_showing_average_expression_for_gene_cluster(cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file)
-
-    fig1c <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_1_average_expression_file, "1")
-
-    fig1d <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_2_average_expression_file, "2")
-
-    pca_legend <- get_legend(fig1b)
-
-    combined <- ggdraw() + 
-                draw_image(fig1a_image_file,0,.6,.5,.5) +
-                draw_plot(fig1b + theme(legend.position='none'), .505,.65,.4,.35) + 
-                draw_plot(pca_legend,.9,.43,.9,.9) + 
-                draw_plot_label(c("a","b"),c(0,.5),c(1,1),size=12) + 
-                draw_plot_label("figure 1a not done yet",c(0.12),c(.98),size=7) +
-                draw_plot(fig1c+ theme(legend.position='none'),0,0,.5,.5) +
-                draw_plot(fig1d+ theme(legend.position='none'),.5,0,.5,.5) +
-                draw_plot_label("Cell line cluster 1",c(.16),c(.52),size=8) + 
-                draw_plot_label("Cell line cluster 2",c(.66),c(.52),size=8)
-
-    ggsave(combined, file=output_file, width=7.2, height=5.1, units="in")
-}
-
-make_figure_1_alt_c <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir,cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file) {
-    fig1b <- plot_pca_time_step_modular(sample_info, quant_expr)
-
-
-    fig1c <- heatmap_showing_average_expression_for_all_clusters(cell_line_cluster_1_average_expression_file, cell_line_cluster_average_expression_file)
-
-    pca_legend <- get_legend(fig1b)
-    print("hello")
-
-    combined <- ggdraw() + 
-                draw_image(fig1a_image_file,0,.6,.5,.5) +
-                draw_plot(fig1b + theme(legend.position='none'), .505,.65,.4,.35) + 
-                draw_plot(pca_legend,.9,.43,.9,.9) + 
-                draw_plot_label(c("a","b"),c(0,.5),c(1,1),size=12) + 
-                draw_plot_label("figure 1a not done yet",c(0.12),c(.98),size=7) + 
-                draw_plot(fig1c,0,0,1,.6)
-
-
-    ggsave(combined, file=output_file, width=7.2, height=5.1, units="in")
-}
-
-
-
-make_figure_1 <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file) {
+make_figure_1_old <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file) {
     fig1b <- plot_pca_time_step_modular(sample_info, quant_expr)
     pca_legend <- get_legend(fig1b)
 
 
     fig1c <- plot_karl_gene_cluster_grid(mixutre_hmm_cell_line_grouping_dir) + theme(strip.background = element_blank(),strip.text.x = element_blank())
-    cell_line_cluster_legend <- get_legend(fig1c+ theme(legend.position="bottom")) 
+    cell_line_cluster_legend <- get_legend(fig1c+ theme(legend.position="top")) 
 
 
     combined <- ggdraw() + 
@@ -2172,44 +2194,139 @@ make_figure_1 <- function(sample_info, quant_expr, mixutre_hmm_cell_line_groupin
                 draw_plot_label(c("A","B","C"),c(0,.5,0),c(1,1,.6),size=12) + 
                 draw_plot(fig1c + theme(legend.position="none"),-.02,.05,1.02,.5) + 
                 draw_plot(cell_line_cluster_legend,.32,-.47,1,1)
+
     ggsave(combined, file=output_file, width=7.2, height=4.3, units="in")
 }
 
-
-make_figure_1_alt_e <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file) {
-    fig1b <- plot_pca_time_step_modular(sample_info, quant_expr)
-    pca_legend <- get_legend(fig1b)
+make_figure_1 <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file) {
+    fig1a <- plot_pca_time_step_modular(sample_info, quant_expr)
 
 
-    fig1c_row1 <- plot_karl_gene_cluster_grid_v2(mixutre_hmm_cell_line_grouping_dir, "row1") + theme(strip.background = element_blank(),strip.text.x = element_blank()) + theme(axis.text.x=element_blank()) + labs(x="",y="")
-    fig1c_row2 <- plot_karl_gene_cluster_grid_v2(mixutre_hmm_cell_line_grouping_dir, "row2") + theme(strip.background = element_blank(),strip.text.x = element_blank()) + labs(y="")
-
-    cell_line_cluster_legend <- get_legend(fig1c_row1+ theme(legend.position="bottom")) 
+    fig1b <- plot_karl_gene_cluster_grid(mixutre_hmm_cell_line_grouping_dir,5) + theme(strip.background = element_blank(),strip.text.x = element_blank())
+    cell_line_cluster_legend <- get_legend(fig1b+ theme(legend.position="top")) 
 
 
     combined <- ggdraw() + 
-                draw_image(fig1a_image_file,0,.5,.5,.5) +
-                draw_plot(fig1b + theme(legend.position='none'), .505,.54,.4,.45) + 
-                draw_plot(pca_legend,.9,.39,.9,.9) + 
-                draw_plot_label(c("a","b","c"),c(0,.5,0),c(1,1,.6),size=12) + 
-                draw_plot_label("figure 1a not done yet",c(0.12),c(.98),size=7) + 
-                draw_plot(fig1c_row1 + theme(legend.position="none"),-.02,.27,1.02,.29) + 
-                draw_plot(fig1c_row2 + theme(legend.position="none"),-.02,.03,1.02,.32) + 
-                draw_plot(cell_line_cluster_legend,.32,-.47,1,1) + 
-                draw_plot_label("Expression", c(0),c(.17),size=12, angle=90,fontface="plain")
+                draw_plot(fig1a + theme(legend.position='right'), -.026,.58,1.0,.42) + 
+                draw_plot_label(c("A","B"),c(0,0),c(1,.6),size=12) + 
+                draw_plot(fig1b + theme(legend.position="none"),-.02,0.0,1.025,.6) + 
+                draw_plot(cell_line_cluster_legend,.22,-.486,1,1)
 
-    #start_x <- -.05
-    #scale <- .092
-    #y1 <- .54 
-    #y2 <- .35
-    #for (gene_cluster in 1:10) {
-    #    combined <- combined + draw_plot_label(paste0("Cluster ", gene_cluster), c(start_x + scale*gene_cluster), c(y1), size=8,fontface="plain")
-    #    combined <- combined + draw_plot_label(paste0("Cluster ", 10+ gene_cluster), c(start_x + scale*gene_cluster), c(y2),size=8,fontface="plain")
-    #}
+    gene_cluster_counter <- 1
+    num_row <- 4
+    num_col <- 5
+    row_start <- .59
+    col_start <- .09
+    row_jump <- .121
+    col_jump <- .182
 
+    for (row_iter in 1:num_row) {
+        for (col_iter in 1:num_col) {
+            label_name <- paste0(gene_cluster_counter)
+            if (gene_cluster_counter < 10) {
+                label_name <- paste0(" ", gene_cluster_counter)
+            }
 
-    ggsave(combined, file=output_file, width=7.2, height=4.3, units="in")
+            y_pos <- row_start - row_jump*(row_iter-1)
+            x_pos <- col_start + col_jump*(col_iter-1)
+
+            if (col_iter == 3) {
+                x_pos = x_pos + .005
+            }
+            if (col_iter == 5) {
+                x_pos = x_pos - .005
+            }
+
+            combined <- combined + draw_plot_label(c(label_name), c(x_pos), c(y_pos), size=7,fontface="plain")
+            gene_cluster_counter <- gene_cluster_counter + 1
+        }
+    }
+
+    ggsave(combined, file=output_file, width=4.75, height=4.75, units="in")
 }
+
+make_figure_1_alt_b <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file) {
+    fig1a <- plot_pca_time_step_modular(sample_info, quant_expr) + theme(legend.position="bottom")
+    pca_legend <- get_legend(fig1a + labs(colour=""))
+
+    fig1b <- plot_karl_gene_cluster_grid(mixutre_hmm_cell_line_grouping_dir,5) + theme(strip.background = element_blank(),strip.text.x = element_blank())
+    cell_line_cluster_legend <- get_legend(fig1b+ theme(legend.position="top")) 
+
+
+    combined <- ggdraw() + 
+                draw_plot(fig1a + theme(legend.position='none'), -.026,.58,1.0,.42) + 
+                draw_plot(pca_legend, .4, .4,1,1) +
+                draw_plot_label(c("A","B"),c(0,0),c(1,.6),size=12) + 
+                draw_plot_label(c("Day"), c(.445), c(.965), size=8, fontface="plain") +
+                draw_plot(fig1b + theme(legend.position="none"),-.01,0.0,1.0,.6) + 
+                draw_plot(cell_line_cluster_legend,.22,-.486,1,1)
+
+    gene_cluster_counter <- 1
+    num_row <- 4
+    num_col <- 5
+    row_start <- .58
+    col_start <- .16
+    row_jump <- .12
+    col_jump <- .18
+
+    for (row_iter in 1:num_row) {
+        for (col_iter in 1:num_col) {
+            label_name <- paste0(gene_cluster_counter)
+
+            y_pos <- row_start - row_jump*(row_iter-1)
+            x_pos <- col_start + col_jump*(col_iter-1)
+
+            combined <- combined + draw_plot_label(c(label_name), c(x_pos), c(y_pos), size=7,fontface="plain")
+            gene_cluster_counter <- gene_cluster_counter + 1
+        }
+    }
+
+    ggsave(combined, file=output_file, width=4.75, height=4.75, units="in")
+}
+
+make_figure_1_alt_c <- function(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file) {
+    fig1a <- plot_pca_time_step_modular(sample_info, quant_expr) + theme(legend.position="bottom")
+    pca_legend <- get_legend(fig1a + labs(colour=""))
+
+    fig1b <- plot_karl_gene_cluster_grid(mixutre_hmm_cell_line_grouping_dir,5) + theme(strip.background = element_blank(),strip.text.x = element_blank())
+    cell_line_cluster_legend <- get_legend(fig1b+ theme(legend.position="top")) 
+
+
+    combined <- ggdraw() + 
+                draw_plot(fig1a + theme(legend.position='none'), -.026,.58,1.0,.42) + 
+                draw_plot(pca_legend, .4, .4,1,1) +
+                draw_plot_label(c("A","B"),c(0,0),c(1,.6),size=12) + 
+                draw_plot_label(c("Day"), c(.445), c(.965), size=8, fontface="plain") +
+                draw_plot(fig1b + theme(legend.position="none"),-.01,0.0,1.0,.6) + 
+                draw_plot(cell_line_cluster_legend,.22,-.486,1,1)
+
+    gene_cluster_counter <- 1
+    num_row <- 4
+    num_col <- 5
+    row_start <- .58
+    col_start <- .1
+    row_jump <- .12
+    col_jump <- .176
+
+    for (row_iter in 1:num_row) {
+        for (col_iter in 1:num_col) {
+            label_name <- paste0("cluster ", gene_cluster_counter)
+
+            y_pos <- row_start - row_jump*(row_iter-1)
+            x_pos <- col_start + col_jump*(col_iter-1)
+
+            combined <- combined + draw_plot_label(c(label_name), c(x_pos), c(y_pos), size=7,fontface="plain")
+            gene_cluster_counter <- gene_cluster_counter + 1
+        }
+    }
+
+    ggsave(combined, file=output_file, width=4.75, height=4.75, units="in")
+}
+
+
+
+
+
 
 
 
@@ -2403,9 +2520,7 @@ colnames(cell_line_expression_ignore_missing) <- substr(colnames(cell_line_expre
 # Plot Figure 1
 ####################################################################
 output_file <- paste0(visualize_total_expression_dir, "figure1.pdf")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a_mock.png"
-make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
-
+make_figure_1(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file)
 
 
 ####################################################################
@@ -2511,8 +2626,8 @@ plot_cell_line_pca_real_valued_gene_filled(colnames(cell_line_expression_ignore_
 pc_num1 <- 1
 pc_num2 <- 2
 
-pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_cell_line.png")
-plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(paste0("NA",sample_info$cell_line)), "Cell Line", pc_num1,pc_num2)
+pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_cell_line.pdf")
+cell_line_pca_plot <- plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(paste0("NA",sample_info$cell_line)), "Cell Line", pc_num1,pc_num2)
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_rna_extraction_persion.png")
 plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$RNA_extraction_person), "rna_extraction_person", pc_num1,pc_num2)
@@ -2522,6 +2637,45 @@ plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_outpu
 
 pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_differentiation_batch.png")
 plot_pca_categorical_covariate(sample_info, quant_expr, pca_plot_cell_line_output_file,factor(covariates$differentiation_batch), "differentiation_batch", pc_num1,pc_num2)
+
+
+#######################
+# Line plot where axis is time. Y-axis is PCnum. Points/lines are colored by cell line
+time_versus_pc2 <- plot_time_versus_pc(sample_info, quant_expr, factor(paste0("NA",sample_info$cell_line)), sample_info$time, 2)
+time_versus_pc1 <- plot_time_versus_pc(sample_info, quant_expr, factor(paste0("NA",sample_info$cell_line)), sample_info$time, 1)
+cell_line_legend <- get_legend(time_versus_pc2 + theme(legend.position="bottom"))
+
+#######################
+# Line plot where axis is cell line Y-axis is PCnum. Points/lines are colored by time step 
+cell_line_versus_pc1 <- plot_cell_line_versus_pc(sample_info, quant_expr, factor(paste0("NA",sample_info$cell_line)), sample_info$time, 1)
+cell_line_versus_pc2 <- plot_cell_line_versus_pc(sample_info, quant_expr, factor(paste0("NA",sample_info$cell_line)), sample_info$time, 2)
+time_legend <- get_legend(cell_line_versus_pc2 + theme(legend.position="bottom"))
+
+
+
+
+output_file <- paste0(visualize_total_expression_dir, "cell_line_pca_combined.pdf")
+combined_bc <- plot_grid(time_versus_pc1 + theme(legend.position="none"), time_versus_pc2 + theme(legend.position="none"),ncol=2,labels=c("B","C"))
+combined_abc <- plot_grid(cell_line_pca_plot + theme(legend.position="none"), combined_bc, ncol=1, rel_heights = c(1.0,1.0), labels=c("A","",""))
+
+
+legend_combo <- plot_grid(cell_line_legend, time_legend, ncol=2)
+combined_de_temp <- plot_grid(cell_line_versus_pc1 + theme(legend.position="none"), cell_line_versus_pc2 + theme(legend.position="none"), ncol=2, labels=c("D","E"))
+combined_de <- plot_grid(combined_de_temp, legend_combo, ncol=1, rel_heights=c(1.0,.3))
+combined_abcde <- plot_grid(combined_abc, combined_de, ncol=1, rel_heights=c(.3,.2))
+
+ggsave(combined_abcde, file=output_file, width=7.2,height=8.2, units="in")
+
+
+#######################
+# Line plot where axis is cell line Y-axis is PCnum. Points/lines are colored by time step 
+cell_line_versus_pc1 <- plot_cell_line_versus_pc(sample_info, quant_expr, factor(paste0("NA",sample_info$cell_line)), sample_info$time, 1)
+cell_line_versus_pc2 <- plot_cell_line_versus_pc(sample_info, quant_expr, factor(paste0("NA",sample_info$cell_line)), sample_info$time, 2)
+legend <- get_legend(cell_line_versus_pc2)
+combined <- plot_grid(cell_line_versus_pc1 + theme(legend.position="none"), cell_line_versus_pc2 + theme(legend.position="none"), ncol=1, labels = c("A", "B"))
+combined2 <- plot_grid(combined, legend, ncol=2, rel_widths = c(1.0, .14))
+output_file <- paste0(visualize_total_expression_dir, "cell_line_by_pca_colored_by_time.pdf")
+ggsave(combined2, file=output_file, width=7.2, height=7.2, units="in")
 
 
 #################
@@ -2695,7 +2849,6 @@ ggsave(combined, file=output_file,width=7.2,height=5.5,units="in")
 
 
 
-print("DONE")
 
 
 
@@ -2725,290 +2878,6 @@ print("DONE")
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#####################################
-# Retired scripts
-#####################################
-
-#################
-# Perform PCA. Make seperate plot for each cell line:
-pc_num1<-1
-pc_num2<-2
-pca_plot_cell_line_output_file <- paste0(visualize_total_expression_dir, "pca_plot_",pc_num1,"_",pc_num2,"_seperate_cell_lines.pdf")
-#plot_pca_seperate_cell_lines(sample_info, quant_expr, pca_plot_cell_line_output_file,pc_num1,pc_num2)
-
-
-
-####################################################################
-# Make plot showing average expression in each cell line cluster
-####################################################################
-cell_line_cluster <- "1"
-cell_line_cluster_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster", cell_line_cluster, "_average_expression.txt")
-output_file <- paste0(visualize_total_expression_dir, "cell_line_cluster", cell_line_cluster,"_heatmap.png")
-#heatmap_cluster1 <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_average_expression_file, cell_line_cluster)
-# ggsave(heatmap_cluster1, file=output_file, width=7.2, height=1.5,units="in")
-
-cell_line_cluster <- "2"
-cell_line_cluster_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster", cell_line_cluster, "_average_expression.txt")
-output_file <- paste0(visualize_total_expression_dir, "cell_line_cluster", cell_line_cluster,"_heatmap.png")
-#heatmap_cluster1 <- heatmap_showing_average_expression_for_cell_line_cluster(cell_line_cluster_average_expression_file, cell_line_cluster)
-#ggsave(heatmap_cluster1, file=output_file, width=7.2, height=5.5,units="in")
-
-
-
-
-####################################################################
-# Correlation heatmap between time step independent latent factors and global latent factors
-####################################################################
-
-
-n_independent <- 5
-n_global <- 7
-pca_correlation_heatmap_output_file <- paste0(visualize_total_expression_dir, "pca_correlation_heatmap_time_independent_v_global.pdf")
-# pca_correlation_heatmap_time_independent_v_global(sample_info, quant_expr, time_step_independent_quant_expr, n_global, n_independent, pca_correlation_heatmap_output_file)
-
-
-
-# Perform PCA on time-step independent quantile normalized matrix. Plot variance explained of first n PCs:
-n <- 6
-pca_plot_time_independent_output_file <- paste0(visualize_total_expression_dir, "pca_plot_time_step_independent_variance_explained",n,".png")
-#plot_pca_time_independent_variance_explained(sample_info, time_step_independent_quant_expr, n, pca_plot_time_independent_output_file)
-
-
-
-pc_file <- paste0(covariate_dir,"cell_line_ignore_missing_principal_components_5_time_time_per_sample.txt")
-covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
-output_file <- paste0(visualize_total_expression_dir, "cell_line_pcXtime_covariate_pve_heatmap.png")
-#covariate_pc_pve_heatmap(pc_file, covariate_file,output_file, "cell-line PCA")
-
-
-
-
-# File containing assignment of each cell line to states in the 12 state model
-state_file_12 <- paste0(mixutre_hmm_cell_line_grouping_dir, "12state")
-
-# File containing assignmnets of each cell line to states in the 8 state model
-state_file_8 <- paste0(mixutre_hmm_cell_line_grouping_dir, "8state")
-
-# 8 state model
-output_file <- paste0(visualize_total_expression_dir, "cell_pc1_2_colored_by_8_state_model.png")
-#cell_line_pc_colored_by_state_model_hmm(cell_pc_file, state_file_8, output_file)
-
-# 12 state model
-output_file <- paste0(visualize_total_expression_dir, "cell_pc1_2_colored_by_12_state_model.png")
-#cell_line_pc_colored_by_state_model_hmm(cell_pc_file, state_file_12, output_file)
-
-
-# 0:15
-for (time_step in 0:15) {
-    pc_file <- paste0(covariate_dir, "pca_loadings_time_step_independent_", time_step, ".txt")
-    covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
-    output_file <- paste0(visualize_total_expression_dir, "time_step_", time_step, "_pc_covariate_pve_heatmap.png")
-    #time_step_specific_covariate_pc_pve_heatmap(pc_file, covariate_file, output_file, time_step)
-}
-
-
-
-
-# Make heatmap showing PVE between pcs & (covariates and troponin/sox2 expression)
-pc_file <- paste0(covariate_dir,"principal_components_10.txt")
-covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
-output_file <- paste0(visualize_total_expression_dir, "pc_covariate_troponin_sox2_pve_heatmap.png")
-#covariate_pc_specific_genes_pve_heatmap(pc_file, quant_expr, covariate_file,output_file)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-pc_num <-1
-eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_", pc_num, "_eigenvector_viz_by_line_independent.pdf")
-# plot_pca_eigenvectors_by_line_independent(sample_info, quant_expr, eigenvectors_output_file, pc_num)
-
-
-pc_num <-2
-eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_", pc_num, "_eigenvector_viz_by_line_independent.pdf")
-# plot_pca_eigenvectors_by_line_independent(sample_info, quant_expr, eigenvectors_output_file, pc_num)
-
-
-pc_num <-3
-eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_", pc_num, "_eigenvector_viz_by_line_independent.pdf")
-# plot_pca_eigenvectors_by_line_independent(sample_info, quant_expr, eigenvectors_output_file, pc_num)
-
-
-pc_num <-4
-eigenvectors_output_file <- paste0(visualize_total_expression_dir, "pca_plot_", pc_num, "_eigenvector_viz_by_line_independent.pdf")
-#plot_pca_eigenvectors_by_line_independent(sample_info, quant_expr, eigenvectors_output_file, pc_num)
-
-
-
-###########################################################################################
-# Scatter plot of 2nd (and others) PC loading vs a genes expression levels in t = 15 samples
-###########################################################################################
-ensamble_id <- "ENSG00000118194"
-gene_name <- "Troponin"
-time_step <- 15
-pc_num <- 2
-
-pc_gene_scatter_output_file <- paste0(visualize_total_expression_dir, "pc_num_", pc_num, "_",gene_name,"_time_step_",time_step,"_scatter.pdf")
-#pc_gene_scatter(sample_info, quant_expr, ensamble_id, gene_name, time_step, pc_num, pc_gene_scatter_output_file)
-
-
-ensamble_id <- "ENSG00000181449"
-gene_name <- "sox2"
-time_step <- 15
-pc_num <- 2
-
-pc_gene_scatter_output_file <- paste0(visualize_total_expression_dir, "pc_num_", pc_num, "_",gene_name,"_time_step_",time_step,"_scatter.pdf")
-#pc_gene_scatter(sample_info, quant_expr, ensamble_id, gene_name, time_step, pc_num, pc_gene_scatter_output_file)
-
-
-###########################################################################################
-# Scatter plot of 2nd (and others) PC loading vs a genes expression levels at all time steps
-###########################################################################################
-
-
-ensamble_id <- "ENSG00000118194"
-gene_name <- "Troponin"
-pc_num <- 2
-
-pc_gene_scatter_output_file <- paste0(visualize_total_expression_dir, "pc_num_", pc_num, "_",gene_name,"_colored_by_cell_line_scatter.pdf")
-#pc_gene_scatter_all_time_colored_by_cell_line(sample_info, quant_expr, ensamble_id, gene_name, pc_num, pc_gene_scatter_output_file)
-
-
-pc_gene_scatter_output_file <- paste0(visualize_total_expression_dir, "pc_num_", pc_num, "_",gene_name,"_colored_by_time_scatter.pdf")
-#pc_gene_scatter_all_time_colored_by_time(sample_info, quant_expr, ensamble_id, gene_name, pc_num, pc_gene_scatter_output_file)
-
-###########################################################################################
-# Scatter plot of 2nd (and others) PC loading vs a genes AVERAGE expression
-###########################################################################################
-pc_num <- 2
-covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
-output_file <- paste0(visualize_total_expression_dir,"pc_num_", pc_num,"_avg_10_15_troponin_colored_by_cell_line_scatter.pdf")
-#pc_avg_troponin_scatter_colored_by_cell_line(sample_info, quant_expr, pc_num, covariate_file, output_file)
-pc_num <- 2
-covariate_file <- paste0(covariate_dir, "processed_covariates_categorical.txt")
-output_file <- paste0(visualize_total_expression_dir,"pc_num_", pc_num,"_avg_10_15_troponin_colored_by_time_step_scatter.pdf")
-#pc_avg_troponin_scatter_colored_by_time_step(sample_info, quant_expr, pc_num, covariate_file, output_file)
-
-
-
-####################################################################
-# Comparison of old vs new cell lines (will be removed)
-####################################################################
-
-# Add old vs new to sample info
-# revised_sample_info <- add_old_vs_new(sample_info)
-
-
-##################
-#  Perform PCA. Plot first 2 pcs as a function of time step 
-pca_plot_time_step_output_file <- paste0(visualize_total_expression_dir, "pca_plot_1_2_old_vs_new.png")
-#plot_pca_old_vs_new(revised_sample_info, quant_expr, pca_plot_time_step_output_file)
-
-
-###################
-# Time course of expression of specific genes seperated by cell line (and colored by old vs_new)
-ensamble_id <- "ENSG00000118194"
-gene_name <- "Troponin"
-line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line_old_vs_new.png")
-#gene_time_course_line_plot_grouped_by_cell_line_old_vs_new(revised_sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
-
-ensamble_id <- "ENSG00000181449"
-gene_name <- "sox2"
-line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line_old_vs_new.png")
-#gene_time_course_line_plot_grouped_by_cell_line_old_vs_new(revised_sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
-
-
-ensamble_id <- "ENSG00000111704"
-gene_name <- "nanog"
-line_plot_file <- paste0(visualize_total_expression_dir, gene_name,"_time_course_grouped_by_cell_line_old_vs_new.png")
-#gene_time_course_line_plot_grouped_by_cell_line_old_vs_new(revised_sample_info, quant_expr, ensamble_id, gene_name, line_plot_file)
-
-
-
-
-
-####################################################################
-# Plot Figure 1_alt
-####################################################################
-cell_line_cluster_1_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster1_average_expression.txt")
-cell_line_cluster_2_average_expression_file <- paste0(preprocess_total_expression_dir, "cell_line_cluster2_average_expression.txt")
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_a.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_a(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_b.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_b(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_a.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_a(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_c.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_c(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, cell_line_cluster_1_average_expression_file, cell_line_cluster_2_average_expression_file, output_file,fig1a_image_file)
-
-
-output_file <- paste0(visualize_total_expression_dir, "figure1_alt_e.png")
-fig1a_image_file <- "/project2/gilad/bstrober/ipsc_differentiation_19_lines/preprocess_input_data/fig1a.png"
-#make_figure_1_alt_e(sample_info, quant_expr, mixutre_hmm_cell_line_grouping_dir, output_file,fig1a_image_file)
 
 
 
