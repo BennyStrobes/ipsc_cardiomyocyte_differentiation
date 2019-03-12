@@ -194,6 +194,7 @@ for covariate_method in "${covariate_methods[@]}"; do
     done
 done
 
+# Run for a few more models
 covariate_methods=( "pc1_6" "pc1_7" "pc1_8" "pc1_9" "pc1_10")
 model_versions=( "glm" )
 # Loop through covariate methods
@@ -260,11 +261,9 @@ done
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
 model_versions=( "glm" "glmm" "glm_quadratic")
 
-covariate_methods=( "pc1_5")
-model_versions=( "glm" "glm_quadratic")
-
 
 # Loop through covariate methods
+if false; then
 for covariate_method in "${covariate_methods[@]}"; do
     # Loop through model versions
     for model_version in "${model_versions[@]}"; do
@@ -272,7 +271,7 @@ for covariate_method in "${covariate_methods[@]}"; do
         sbatch downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir $cm_eqtl_file $ipsc_eqtl_file $eqtl_data_set_comparison_dir
     done
 done
-
+fi
 
 covariate_methods=( "pc1_6" "pc1_7" "pc1_8" "pc1_9" "pc1_10")
 model_versions=( "glm" )

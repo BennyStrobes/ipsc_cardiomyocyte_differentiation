@@ -43,7 +43,7 @@ significant_qtl_file=$qtl_results_dir$parameter_string"_efdr_.05_significant.txt
 ########################################
 ### Part B: Visualize dynamic eQTL pvalue distributions
 ### Plot pvalue distributions (qq-plots) for dynamic eqtl run
-#Rscript visualize_dynamic_eqtl_pvalue_distribution.R $real_eqtl_results_file $perm_eqtl_results_file $parameter_string $qtl_pvalue_distribution_visualization_dir
+Rscript visualize_dynamic_eqtl_pvalue_distribution.R $real_eqtl_results_file $perm_eqtl_results_file $parameter_string $qtl_pvalue_distribution_visualization_dir
 
 
 
@@ -55,10 +55,10 @@ significant_qtl_file=$qtl_results_dir$parameter_string"_efdr_.05_significant.txt
 num_genes="200"
 real_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_real_overlap_matrix.txt"
 perm_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_perm_overlap_matrix.txt"
-#python perform_cell_line_overlap_analysis.py $real_eqtl_results_file $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "dynamic_eqtl"
+python perform_cell_line_overlap_analysis.py $real_eqtl_results_file $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "dynamic_eqtl"
 real_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_t0_real_overlap_matrix.txt"
 perm_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_t0_perm_overlap_matrix.txt"
-#python perform_cell_line_overlap_analysis.py $time_step_independent_stem"0_eqtl_results.txt" $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "standard_eqtl"
+python perform_cell_line_overlap_analysis.py $time_step_independent_stem"0_eqtl_results.txt" $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "standard_eqtl"
 
 
 ########################################
@@ -66,7 +66,7 @@ perm_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_gene
 # Compute enrichment of dynamic eQTLs within cell type matched chromHMM enhancer elements
 threshold="1.0"
 num_permutations="1000"
-# sh tissue_specific_chrom_hmm_enrichment_analysis.sh $parameter_string $real_eqtl_results_file $significant_egene_file $num_permutations $threshold $chrom_hmm_input_dir $time_step_independent_stem $model_version $tissue_specific_chrom_hmm_enrichment_dir
+sh tissue_specific_chrom_hmm_enrichment_analysis.sh $parameter_string $real_eqtl_results_file $significant_egene_file $num_permutations $threshold $chrom_hmm_input_dir $time_step_independent_stem $model_version $tissue_specific_chrom_hmm_enrichment_dir
 
 
 
@@ -77,39 +77,39 @@ num_permutations="1000"
 threshold="1.0"
 dynamic_standard_egenes_comparison_file=$time_step_independent_comparison_dir$parameter_string"_"$threshold"_dynamic_standard_egenes_comparison.txt"
 dynamic_standard_egenes_background_comparison_file=$time_step_independent_comparison_dir$parameter_string"_"$threshold"_background_dynamic_standard_egenes_comparison.txt"
-# python time_step_independent_comparison.py $dynamic_standard_egenes_comparison_file $dynamic_standard_egenes_background_comparison_file $time_step_independent_stem $threshold $model_version $real_eqtl_results_file $significant_egene_file
+python time_step_independent_comparison.py $dynamic_standard_egenes_comparison_file $dynamic_standard_egenes_background_comparison_file $time_step_independent_stem $threshold $model_version $real_eqtl_results_file $significant_egene_file
 
 
 
 
 ########################################
 ### Part F: Gene Set enrichment within GSEA
-# python gsea_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $gsea_data_dir $time_step_independent_stem 
+python gsea_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $gsea_data_dir $time_step_independent_stem 
 
 
 ########################################
 ### Part G: Gene Set enrichment within dilated cardiomyopathy gene sets
-# python cardiomyopathy_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $parameter_string $real_eqtl_results_file
+python cardiomyopathy_gene_set_enrichment_analysis.py $parameter_string $significant_egene_file $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $parameter_string $real_eqtl_results_file
 
 
 ########################################
 ### Part H: Enrichment within GTEx GWAS variants
 threshold="5e-8"
-# python gtex_gwas_dynamic_qtl_overlap.py $gtex_gwas_hits_dir $gwas_overlap_dir $significant_qtl_file $parameter_string $threshold
+python gtex_gwas_dynamic_qtl_overlap.py $gtex_gwas_hits_dir $gwas_overlap_dir $significant_qtl_file $parameter_string $threshold
 threshold="5e-6"
-# python gtex_gwas_dynamic_qtl_overlap.py $gtex_gwas_hits_dir $gwas_overlap_dir $significant_qtl_file $parameter_string $threshold
+python gtex_gwas_dynamic_qtl_overlap.py $gtex_gwas_hits_dir $gwas_overlap_dir $significant_qtl_file $parameter_string $threshold
 
 
 ########################################
 ### Part I: Extract GWAS data for Miami plots at a few specific, exemplary positions
-# python extract_specific_gwas_examples_for_miami_plots.py $gtex_gwas_hits_dir $gwas_overlap_dir$parameter_string"_" $real_eqtl_results_file $genotype_file $liftover_directory
+python extract_specific_gwas_examples_for_miami_plots.py $gtex_gwas_hits_dir $gwas_overlap_dir$parameter_string"_" $real_eqtl_results_file $genotype_file $liftover_directory
 
 ########################################
 ### Part J: Organize significant eqtl results for dynamic eqtl visualization
-# python organize_dynamic_qtl_egenes_for_visualization.py $dynamic_eqtl_input_file $significant_qtl_file $visualization_input_dir$parameter_string
+python organize_dynamic_qtl_egenes_for_visualization.py $dynamic_eqtl_input_file $significant_qtl_file $visualization_input_dir$parameter_string
 
 
 ########################################
 ### Part K: Compare dynamic eqtls to existing data sets
 threshold="1.0"
-# python compare_dynamic_eqtls_to_existing_data_sets.py $parameter_string $significant_egene_file $real_eqtl_results_file $model_version $threshold $eqtl_data_set_comparison_dir $ipsc_eqtl_file $cm_eqtl_file
+python compare_dynamic_eqtls_to_existing_data_sets.py $parameter_string $significant_egene_file $real_eqtl_results_file $model_version $threshold $eqtl_data_set_comparison_dir $ipsc_eqtl_file $cm_eqtl_file
