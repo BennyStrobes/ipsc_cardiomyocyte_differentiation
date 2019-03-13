@@ -2446,7 +2446,7 @@ banovich_ipsc_boxplot_comparison <- function(day_0_file, day_15_file) {
     boxplot_15 <- boxplot_15 + theme(plot.title=element_text(size=8,face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
     
 
-    combined <- plot_grid(boxplot_0, boxplot_15 , labels = c("C", "D"), ncol=2)
+    combined <- plot_grid(boxplot_0, boxplot_15 , labels = c("A", "B"), ncol=2)
 
     return(combined)
 
@@ -2544,9 +2544,9 @@ day_0_file <- paste0(banovich_ipsc_comparison_dir, "day_0_banovich_ipsc_comparis
 day_15_file <- paste0(banovich_ipsc_comparison_dir, "day_15_banovich_ipsc_comparison_regress_out_3_3_pcs.txt")
 heatmap_comparison <- banovich_ipsc_heatmap_comparison(day_0_file, day_15_file)
 
-output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_regress_out_10_3_3_3_heatmap_boxplot.pdf")
-combined <- plot_grid(heatmap_comparison, boxplot_comparison, ncol=1)
-ggsave(combined, file=output_file, width=7.2, height=6.5, units="in")
+output_file <- paste0(visualize_total_expression_dir, "banovich_ipsc_regress_out_10_3_3_3_boxplot.pdf")
+
+ggsave(boxplot_comparison, file=output_file, width=7.2, height=3.5, units="in")
 
 
 ####################################################################
