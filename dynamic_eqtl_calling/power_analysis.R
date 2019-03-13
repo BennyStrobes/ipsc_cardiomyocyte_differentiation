@@ -103,7 +103,8 @@ num_time_steps = 16
 
 num_individuals_arr = c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
 
-interaction_effect_size_arr = c(.002, .005, .0075, .01)
+interaction_effect_size_arr = c(.002, .003, .005, .0075, .01)
+
 sdev_arr = c(.1)
 linear_effects_sdev_arr = c(.1)
 fraction_of_positives_arr = c(.1, .2, .3)

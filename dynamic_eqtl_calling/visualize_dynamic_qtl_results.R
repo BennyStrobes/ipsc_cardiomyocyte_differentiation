@@ -946,7 +946,7 @@ make_power_plot <- function(df, title,num_individuals_arr) {
                 labs(x="Sample Size", y="Power", colour="t-statistic", title=title) +
                 #scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) + 
                 scale_x_continuous(breaks=num_individuals_arr) + 
-                scale_colour_manual(values=c("dodgerblue3", "tomato1", "chartreuse4")) +
+                scale_colour_manual(values=c("dodgerblue3", "firebrick3", "chartreuse4", "goldenrod3", "darkorchid")) +
                 theme(legend.position="bottom") +
                 theme(panel.spacing = unit(2, "lines")) +
                 theme(plot.title = element_text(size=8, face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
@@ -973,10 +973,11 @@ power_analysis_simulation_grid <- function(power_analysis_dir, maf, num_simulati
 
     num_time_steps <- 16
     num_individuals_arr = c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
-    interaction_effect_size_arr = c(.002, .005, .0075, .01)
-    interaction_effect_size_arr = c(.005, .0075, .01)
 
-    sdev_arr = c(.1, .1, .1)
+    interaction_effect_size_arr = c(.002, .003, .005, .0075, .01)
+
+
+    sdev_arr = c(.1, .1, .1, .1, .1)
     fraction_of_positives_arr = c(.1, .2, .3)
 
 
@@ -1072,8 +1073,7 @@ linear_effects_sdev = .1
 output_file <- paste0(visualization_dir, "simulation_power_analysis_curves_", linear_effects_sdev, "_linear_effects_sdev_", maf, "_maf_", num_simulations, "_simulations.pdf")
 power_analysis_simulation_grid(power_analysis_dir, maf, num_simulations, linear_effects_sdev, output_file)
 
-print("DONE")
-if (FALSE) {
+
 ###############################################################################
 # Make Plot comparing dynamic eQTLs with Banovich eqtl results
 #################################################################################
@@ -1168,4 +1168,3 @@ boxplot_comparing_time_steps_grouped_by_two_dynamic_qtl_classes(time_step_indepe
 ############################################################################
 output_file <- paste0(visualization_dir, "joint_miami_plot_rs28818910_ENSG00000167173.pdf")
 make_miami_plot(gwas_overlap_dir, output_file)
-}
