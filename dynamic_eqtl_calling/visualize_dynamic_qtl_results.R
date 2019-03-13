@@ -265,7 +265,7 @@ make_joint_miami_plot_one_phen <- function(dynamic_qtl_file_name, gwas_file_name
 
     combined <- ggdraw() + 
         draw_plot(dynamic_qtl_plot+ theme(legend.position="none") ,.05,.43,.95,.787) + 
-        draw_plot(gwas_qtl_plot + theme(legend.position="none") ,.05,0,.95,.77) 
+        draw_plot(gwas_qtl_plot + theme(legend.position="none") ,.05,.07,.95,.77) 
     return(combined)
 
 }
@@ -474,8 +474,8 @@ produce_figure_3 <- function(qtl_results_dir, time_step_comparison_dir, tissue_s
         draw_plot(fig3d + theme(legend.position='none'),.565,0,.434,.4) +
         draw_plot_label(c("A","B","C", "D"),c(.01,.58,.01,.58),c(1,1.0,.5,.5),size=12) + 
         draw_plot_label("Dynamic eQTL for C15orf39", c(.63),c(.47),size=8,fontface="plain") +
-        draw_plot_label("GWAS: body mass index", c(.65),c(.05),size=8,fontface="plain") +
-        draw_plot_label("Mb",c(.65),c(.258),size=7,fontface="plain")
+        draw_plot_label("GWAS: body mass index", c(.65),c(.083),size=8,fontface="plain") +
+        draw_plot_label("Mb",c(.65),c(.277),size=7,fontface="plain")
     ggsave(combined, file=output_file, width=7.2, height=4.5,units="in")
 
 
@@ -1061,7 +1061,6 @@ eqtl_data_set_comparison_dir = args[6]
 visualization_input_dir = args[7]
 visualization_dir = args[8]
 power_analysis_dir = args[9]
-
 
 
 ##############################################################################
