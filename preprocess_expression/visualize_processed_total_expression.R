@@ -1154,6 +1154,7 @@ time_step_specific_covariate_pc_pve_heatmap <- function(pc_file, covariate_file,
     # Remove unimportant columns
     pcs <- as.matrix(pcs[,2:dim(pcs)[2]])
     covs <- data.frame(as.matrix(covs[,3:dim(covs)[2]]))
+    
     # Get covariates into propper class (only necessary for numeric)
     covs$time <- as.numeric(as.character(covs$time))
     covs$library_size <- as.numeric(as.character(covs$library_size))
@@ -1164,13 +1165,13 @@ time_step_specific_covariate_pc_pve_heatmap <- function(pc_file, covariate_file,
     covs$beating <- as.numeric(as.character(covs$beating))
     covs$line_beating <- as.numeric(as.character(covs$line_beating))
     covs$flash_freezing <- as.numeric(as.character(covs$flash_freezing))
-    covs$fastq_percent_duplicates <- as.numeric(as.character(covs$fastq_percent_duplicates))
+    covs$percent_duplicates <- as.numeric(as.character(covs$percent_duplicates))
     covs$percent_gc <- as.numeric(as.character(covs$percent_gc))
     covs$average_sequence_length <- as.numeric(as.character(covs$average_sequence_length))
     covs$total_sequences <- as.numeric(as.character(covs$total_sequences))
     covs$percent_fails <- as.numeric(as.character(covs$percent_fails))
-    covs$avg_10_15_troponin_mRNA_expr <- abs(as.numeric(as.character(covs$avg_10_15_troponin_mRNA_expr)))
-    covs$avg_10_15_nanog_mRNA_expr <- abs(as.numeric(as.character(covs$avg_10_15_nanog_mRNA_expr)))
+    covs$avg_10_15_troponin_mRNA_expr <- (as.numeric(as.character(covs$avg_10_15_troponin_mRNA_expr)))
+    covs$avg_10_15_nanog_mRNA_expr <- (as.numeric(as.character(covs$avg_10_15_nanog_mRNA_expr)))
 
     keep_cols <- c()
 

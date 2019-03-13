@@ -183,9 +183,8 @@ fi
 #    4. Also does some exploratory visualization analysis of the expression data  (visualize_processed_total_expression.R)
 #  Takes about 4 hours to run
 exon_file=$genome_dir"exons.saf"
-if false; then
 sh preprocess_total_expression.sh $preprocess_total_expression_dir $exon_file $bam_dir $visualize_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir $mixture_hmm_cell_line_grouping_dir $ipsc_banovich_read_counts_file $ipsc_cm_banovich_read_counts_file $banovich_ipsc_comparison_dir
-fi
+
 
 
 #############################################################################################################################
