@@ -958,7 +958,7 @@ make_power_plot <- function(df, title,num_individuals_arr) {
 ##############################################################################
 #  Make grid of precision-recall curves for a range of simulation model parameters
 ##############################################################################
-power_analysis_simulation_grid <- function(power_analysis_dir, maf, num_simulations, linear_effects_sdev, output_file) {
+power_analysis_simulation_grid <- function(power_analysis_dir, num_simulations, linear_effects_sdev, pvalue_threshold, model, output_file) {
     num_time_steps <- 16
     # Initialize output arrays
     num_individuals_arr_df <- c()
@@ -966,7 +966,7 @@ power_analysis_simulation_grid <- function(power_analysis_dir, maf, num_simulati
     fraction_of_positives_arr_df <- c()
     t_arr_df <- c()
     fdr_arr_df <- c()
-
+    maf_arr_df <- c()
     
 
 
@@ -979,72 +979,88 @@ power_analysis_simulation_grid <- function(power_analysis_dir, maf, num_simulati
 
     sdev_arr = c(.1, .1, .1, .1, .1)
     fraction_of_positives_arr = c(.1, .2, .3)
+    maf_arr = c(.1, .4)
 
 
     counter <- 0
     for (num_individual_iter in 1:length(num_individuals_arr)) {
         for (interaction_effect_size_iter in 1:length(interaction_effect_size_arr)) {
             for (fraction_of_positives_iter in 1:length(fraction_of_positives_arr)) {
-                num_individuals <- num_individuals_arr[num_individual_iter]
-                interaction_effect_size <- interaction_effect_size_arr[interaction_effect_size_iter]
-                sdev <- sdev_arr[interaction_effect_size_iter]
-                t_stat <- interaction_effect_size/sdev
-                fraction_of_positives <- fraction_of_positives_arr[fraction_of_positives_iter]
-                counter <- counter + 1 
+                for (maf_iter in 1:length(maf_arr)) { 
+                    num_individuals <- num_individuals_arr[num_individual_iter]
+                    interaction_effect_size <- interaction_effect_size_arr[interaction_effect_size_iter]
+                    sdev <- sdev_arr[interaction_effect_size_iter]
+                    t_stat <- interaction_effect_size/sdev
+                    maf <- maf_arr[maf_iter]
+                    fraction_of_positives <- fraction_of_positives_arr[fraction_of_positives_iter]
+                    counter <- counter + 1 
 
-                file_name <- paste0(power_analysis_dir, "simulation_results_", fraction_of_positives, "_fraction_positives_", num_individuals, "_individuals_", interaction_effect_size, "_interaction_beta_", sdev, "_sdev_", linear_effects_sdev, "_linear_effects_sd_", num_simulations, "_simulations_", num_time_steps, "_time_steps_", maf, "_maf.txt")
-                temp_data <- read.table(file_name, header=TRUE)
-                labels  <- temp_data$alternate_model
-                pvalues <- temp_data$pvalue
-                fdr <- p.adjust(pvalues, method="BH")
+                    file_name <- paste0(power_analysis_dir, "simulation_results_", fraction_of_positives, "_fraction_positives_", num_individuals, "_individuals_", interaction_effect_size, "_interaction_beta_", sdev, "_sdev_", linear_effects_sdev, "_linear_effects_sd_", num_simulations, "_simulations_", num_time_steps, "_time_steps_", maf, "_maf.txt")
+                    temp_data <- read.table(file_name, header=TRUE)
+                    labels  <- temp_data$alternate_model
+                    if (model == "anova") {
+                        pvalues <- temp_data$anova_pvalue 
+                    } else if (model == "lm") {
+                        pvalues <- temp_data$lm_pvalue
+                    }
+                    # fdr <- p.adjust(pvalues, method="BH")
 
-                num_true_positives <- length(pvalues[labels==1.0])
-                power_05 <- sum(fdr[labels==1.0] <= .05)/num_true_positives
-                power_01 <- sum(fdr[labels==1.0] <= .01)/num_true_positives
+                    num_true_positives <- length(pvalues[labels==1.0])
+                    power <- sum(pvalues[labels==1.0] <= pvalue_threshold)/num_true_positives
+                    #power_05 <- sum(fdr[labels==1.0] <= .05)/num_true_positives
+                    #power_01 <- sum(fdr[labels==1.0] <= .01)/num_true_positives
 
-                num_individuals_arr_df <- c(num_individuals_arr_df, num_individuals)
-                power_arr_df <- c(power_arr_df, power_05)
-                fraction_of_positives_arr_df <- c(fraction_of_positives_arr_df, fraction_of_positives)
-                t_arr_df <- c(t_arr_df, t_stat)
-
+                    num_individuals_arr_df <- c(num_individuals_arr_df, num_individuals)
+                    power_arr_df <- c(power_arr_df, power)
+                    fraction_of_positives_arr_df <- c(fraction_of_positives_arr_df, fraction_of_positives)
+                    t_arr_df <- c(t_arr_df, t_stat)
+                    maf_arr_df <- c(maf_arr_df, maf)
+                }   
 
             }
         }
     }
 
     #df <- data.frame(fpr=fpr_arr_df, tpr=tpr_arr_df,t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), n=factor(num_individuals_arr_df, levels=num_individuals_arr))
-    df <- data.frame(power=power_arr_df, n=num_individuals_arr_df, t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), fraction_positive=fraction_of_positives_arr_df)
+    df <- data.frame(power=power_arr_df, n=num_individuals_arr_df, t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), fraction_positive=fraction_of_positives_arr_df, maf=factor(maf_arr_df))
    
     
     pos_frac <- .1
-    power_plot_1 <- make_power_plot(df[df$fraction_positive==pos_frac,], "10% simulated positives", num_individuals_arr)
+    maf_temp <- .1
+    power_plot_1_1 <- make_power_plot(df[df$fraction_positive==pos_frac & df$maf==maf_temp,], paste0("10% simulated positives / ", maf_temp, " MAF"), num_individuals_arr)
 
     pos_frac <- .2
-    power_plot_2 <- make_power_plot(df[df$fraction_positive==pos_frac,], "20% simulated positives", num_individuals_arr)
+    maf_temp <- .1
+    power_plot_2_1 <- make_power_plot(df[df$fraction_positive==pos_frac & df$maf==maf_temp,], paste0("20% simulated positives / ", maf_temp, " MAF"), num_individuals_arr)
 
 
     pos_frac <- .3
-    power_plot_3 <- make_power_plot(df[df$fraction_positive==pos_frac,], "30% simulated positives", num_individuals_arr)
-    legend <- get_legend(power_plot_3)
+    maf_temp <- .1
+    power_plot_3_1 <- make_power_plot(df[df$fraction_positive==pos_frac & df$maf==maf_temp,], paste0("30% simulated positives / ", maf_temp, " MAF"), num_individuals_arr)
+    legend <- get_legend(power_plot_3_1)
+
+    pos_frac <- .1
+    maf_temp <- .4
+    power_plot_1_4 <- make_power_plot(df[df$fraction_positive==pos_frac & df$maf==maf_temp,], paste0("10% simulated positives / ", maf_temp, " MAF"), num_individuals_arr)
+
+    pos_frac <- .2
+    maf_temp <- .4
+    power_plot_2_4 <- make_power_plot(df[df$fraction_positive==pos_frac & df$maf==maf_temp,], paste0("20% simulated positives / ", maf_temp, " MAF"), num_individuals_arr)
+
+
+    pos_frac <- .3
+    maf_temp <- .4
+    power_plot_3_4 <- make_power_plot(df[df$fraction_positive==pos_frac & df$maf==maf_temp,], paste0("30% simulated positives / ", maf_temp, " MAF"), num_individuals_arr)
+
+
 
     #combined <- plot_grid(plot_0, plot_1, plot_2, plot_3, plot_4, plot_5, plot_6, plot_7, plot_8, plot_9, plot_10, legend, labels = c('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', ''), ncol = 3)
-    combined <- plot_grid(power_plot_1 + theme(legend.position="none"), power_plot_2 + theme(legend.position="none"), power_plot_3 + theme(legend.position="none"), legend, ncol=1, rel_heights=c(1,1,1,.05),labels=c("A","B","C"))
-    ggsave(combined, file=output_file, width=7.2,height=7.7,units="in")
+    #combined <- plot_grid(power_plot_1_1 + theme(legend.position="none"), power_plot_2_1 + theme(legend.position="none"), power_plot_3_1 + theme(legend.position="none"), legend, ncol=1, rel_heights=c(1,1,1,.05),labels=c("A","B","C"))
+    combined <- plot_grid(power_plot_1_1 + theme(legend.position="none"), power_plot_1_4 + theme(legend.position="none"), power_plot_2_1 + theme(legend.position="none"), power_plot_2_4 + theme(legend.position="none"), power_plot_3_1 + theme(legend.position="none"),power_plot_3_4 + theme(legend.position="none"), ncol=2, labels=c("A","B","C", "D","E","F"))
 
-    if (FALSE) {
-    plotter <- ggplot(data=df, aes(x=n, y=power)) + geom_line(colour="dodgerblue3") +
-                geom_hline(yintercept=0) + 
-                facet_grid(t ~ fraction_positive, scales='free', labeller=label_both) +
-                labs(x="Sample Size", y="Power") +
-                scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) + 
-                scale_x_continuous(breaks=num_individuals_arr) + 
-                theme(legend.position="bottom") +
-                theme(panel.spacing = unit(2, "lines")) +
-                theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
-                #theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
 
-    ggsave(plotter, file=output_file, width=7.2, height=7.2,units="in")
-    }
+    ggsave(plot_grid(combined, legend, ncol=1,rel_heights=c(1,.03)), file=output_file, width=7.2,height=7.7,units="in")
+
 }
 
 
@@ -1066,12 +1082,17 @@ power_analysis_dir = args[9]
 ##############################################################################
 #  Make grid of precision-recall curves for a range of simulation model parameters
 ##############################################################################
-maf = .2
 num_simulations = 10000
 linear_effects_sdev = .1
-output_file <- paste0(visualization_dir, "simulation_power_analysis_curves_", linear_effects_sdev, "_linear_effects_sdev_", maf, "_maf_", num_simulations, "_simulations.pdf")
-power_analysis_simulation_grid(power_analysis_dir, maf, num_simulations, linear_effects_sdev, output_file)
+pvalue_threshold = 0.00017
 
+model="lm"
+output_file <- paste0(visualization_dir, "simulation_power_analysis_curves_", linear_effects_sdev, "_linear_effects_sdev_", pvalue_threshold, "_pvalue_threshold_", num_simulations, "_simulations_", model, ".pdf")
+power_analysis_simulation_grid(power_analysis_dir, num_simulations, linear_effects_sdev, pvalue_threshold, model, output_file)
+
+model="anova"
+output_file <- paste0(visualization_dir, "simulation_power_analysis_curves_", linear_effects_sdev, "_linear_effects_sdev_", pvalue_threshold, "_pvalue_threshold_", num_simulations, "_simulations_", model, ".pdf")
+power_analysis_simulation_grid(power_analysis_dir, num_simulations, linear_effects_sdev, pvalue_threshold, model, output_file)
 
 ###############################################################################
 # Make Plot comparing dynamic eQTLs with Banovich eqtl results

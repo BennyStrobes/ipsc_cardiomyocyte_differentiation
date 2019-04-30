@@ -1,6 +1,6 @@
 args = commandArgs(trailingOnly=TRUE)
-library(lme4)
-library(lmtest)
+#library(lme4)
+#library(lmtest)
 
 
 
@@ -187,6 +187,19 @@ run_linear_model_five_cov <- function(model_version, expr, genotype, genotype_in
 
         obj <- lrtest(fit_null, fit_full)
         pvalue <- obj[[5]][2]
+
+    } else if (model_version == "anova") {
+        genotype <- factor(genotype)
+        time_steps <- factor(time_steps)
+
+        genotype <- factor(genotype)
+        genotype_interaction <- factor(genotype_interaction)
+        time_steps_factor <- factor(time_steps)
+        time_steps_interaction <- factor(time_steps_interaction)
+
+        fit <- aov(expr ~ genotype + time_steps_factor + genotype_interaction:time_steps_interaction)
+        coef <- summary(fit)[[1]][["F value"]][3]
+        pvalue <- summary(fit)[[1]][["Pr(>F)"]][3]
 
     }
 
@@ -378,7 +391,7 @@ f = file(input_data_file, "r")
 
 next_line = readLines(f, n = 1)
 
-sink(output_file)
+#sink(output_file)
 
 while(!stop) {
     # Only consider lines between start_num and end_num (for parallelization purposes)
@@ -457,4 +470,4 @@ while(!stop) {
 
 }
 # close output file handle
-sink()
+#sink()

@@ -222,7 +222,6 @@ done
 
 
 
-
 ##########################################
 # Step 3: Run Downstream analysis on eQTL results
 ##########################################
@@ -292,7 +291,7 @@ fi
 # Step 4: Perform dynamic qtl power analysis
 ##########################################
 if false; then
-sh run_power_analysis.sh $power_analysis_dir
+sbatch run_power_analysis.sh $power_analysis_dir
 fi
 
 ##########################################

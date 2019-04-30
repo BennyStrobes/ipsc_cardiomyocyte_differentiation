@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --time=10:00:00 --partition=broadwl --mem=5GB
+#SBATCH --time=24:00:00 --partition=broadwl --mem=5GB
 
 power_analysis_dir="$1"
 
