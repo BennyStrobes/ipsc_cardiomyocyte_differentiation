@@ -254,7 +254,9 @@ done
 ########################################
 ### Part J: Organize significant eqtl results for dynamic eqtl visualization
 ########################################
-### Part K: Compare dynamic eqtls to existing data sets
+### Part K: Extract variances explained of coefficients for significant dynamic eqtl hits
+########################################
+### Part L: Compare dynamic eqtls to existing data sets
 
 
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
@@ -272,7 +274,9 @@ for covariate_method in "${covariate_methods[@]}"; do
 done
 fi
 
+
 covariate_methods=( "pc1_6" "pc1_7" "pc1_8" "pc1_9" "pc1_10")
+
 model_versions=( "glm" )
 if false; then
 for covariate_method in "${covariate_methods[@]}"; do
@@ -286,7 +290,6 @@ fi
 
 
 
-
 ##########################################
 # Step 4: Perform dynamic qtl power analysis
 ##########################################
@@ -297,11 +300,7 @@ fi
 ##########################################
 # Step 5: Visualize results from dynamic qtl analysis
 ##########################################
-if false; then
 sh visualize_dynamic_qtl_results.sh $qtl_results_dir $cell_line_overlap_analysis_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gwas_overlap_dir $eqtl_data_set_comparison_dir $visualization_input_dir $visualization_dir $power_analysis_dir
-fi
-
-
 
 
 

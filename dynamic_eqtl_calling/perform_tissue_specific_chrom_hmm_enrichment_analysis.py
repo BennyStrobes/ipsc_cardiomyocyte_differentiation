@@ -542,6 +542,7 @@ variant_gene_pair_info = extract_variant_gene_pair_info(time_step_independent_fi
 
 # Extract number of significant genes
 num_genes = extract_number_of_genes(sig_egene_file)
+num_genes = 200
 # First create dictionary list of the significant variant gene pairs where each key is of form $variantID"_"$geneID
 sig_variant_gene_pairs = extract_significant_variant_gene_pairs(variant_gene_pairs_file, variant_gene_pair_time_step_info, hits_version, num_genes)
 

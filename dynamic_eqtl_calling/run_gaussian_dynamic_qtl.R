@@ -391,7 +391,7 @@ f = file(input_data_file, "r")
 
 next_line = readLines(f, n = 1)
 
-#sink(output_file)
+sink(output_file)
 
 while(!stop) {
     # Only consider lines between start_num and end_num (for parallelization purposes)
@@ -470,4 +470,4 @@ while(!stop) {
 
 }
 # close output file handle
-#sink()
+sink()

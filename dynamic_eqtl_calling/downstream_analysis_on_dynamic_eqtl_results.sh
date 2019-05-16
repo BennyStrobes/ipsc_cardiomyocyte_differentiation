@@ -29,13 +29,13 @@ eqtl_data_set_comparison_dir="${24}"
 echo $model_version
 echo $covariate_method
 date
-
 ########################################
 ### Part A: Multiple testing correction
 ### Merges results from parallelization runs and computes significance after multiple testing correction
 real_eqtl_results_file=$qtl_results_dir$parameter_string"_permute_False_results.txt"
 perm_eqtl_results_file=$qtl_results_dir$parameter_string"_permute_True_results.txt"
 sh multiple_testing_correction.sh $parameter_string $qtl_results_dir $real_eqtl_results_file $perm_eqtl_results_file $num_jobs
+
 significant_egene_file=$qtl_results_dir$parameter_string"_efdr_.05_significant_egenes.txt"
 significant_qtl_file=$qtl_results_dir$parameter_string"_efdr_.05_significant.txt"
 
@@ -46,8 +46,6 @@ significant_qtl_file=$qtl_results_dir$parameter_string"_efdr_.05_significant.txt
 Rscript visualize_dynamic_eqtl_pvalue_distribution.R $real_eqtl_results_file $perm_eqtl_results_file $parameter_string $qtl_pvalue_distribution_visualization_dir
 
 
-
-
 ########################################
 ### Part C: Cell Line overlap analysis
 # For each cell line pair, compute fraction of time (across dynamic eQTLs and background variants) that those two cell lines were in the same genotype bin ({0,1,2})
@@ -56,6 +54,7 @@ num_genes="200"
 real_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_real_overlap_matrix.txt"
 perm_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_perm_overlap_matrix.txt"
 python perform_cell_line_overlap_analysis.py $real_eqtl_results_file $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "dynamic_eqtl"
+
 real_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_t0_real_overlap_matrix.txt"
 perm_overlap_matrix=$cell_line_overlap_analysis_dir$parameter_string"_"$num_genes"_genes_t0_perm_overlap_matrix.txt"
 python perform_cell_line_overlap_analysis.py $time_step_independent_stem"0_eqtl_results.txt" $genotype_file $real_overlap_matrix $perm_overlap_matrix $num_genes "standard_eqtl"
@@ -67,7 +66,6 @@ python perform_cell_line_overlap_analysis.py $time_step_independent_stem"0_eqtl_
 threshold="1.0"
 num_permutations="1000"
 sh tissue_specific_chrom_hmm_enrichment_analysis.sh $parameter_string $real_eqtl_results_file $significant_egene_file $num_permutations $threshold $chrom_hmm_input_dir $time_step_independent_stem $model_version $tissue_specific_chrom_hmm_enrichment_dir
-
 
 
 
@@ -106,10 +104,15 @@ python extract_specific_gwas_examples_for_miami_plots.py $gtex_gwas_hits_dir $gw
 
 ########################################
 ### Part J: Organize significant eqtl results for dynamic eqtl visualization
-python organize_dynamic_qtl_egenes_for_visualization.py $dynamic_eqtl_input_file $significant_qtl_file $visualization_input_dir$parameter_string
+python organize_dynamic_qtl_egenes_for_visualization.py $dynamic_eqtl_input_file $significant_qtl_file $significant_egene_file $visualization_input_dir$parameter_string
 
 
 ########################################
-### Part K: Compare dynamic eqtls to existing data sets
+### Part K: Extract variances explained of coefficients for significant dynamic eqtl hits
+Rscript extract_variance_explained_of_dynamic_eqtl_results.R $visualization_input_dir$parameter_string"_dynamic_egene_efdr_05_visualization_input.txt" $visualization_input_dir$parameter_string"_dynamic_qtl_efdr_05_pve.txt" $model_version $covariate_method
+
+
+########################################
+### Part L: Compare dynamic eqtls to existing data sets
 threshold="1.0"
 python compare_dynamic_eqtls_to_existing_data_sets.py $parameter_string $significant_egene_file $real_eqtl_results_file $model_version $threshold $eqtl_data_set_comparison_dir $ipsc_eqtl_file $cm_eqtl_file

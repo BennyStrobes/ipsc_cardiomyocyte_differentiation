@@ -380,7 +380,7 @@ cre_enrichment_over_range_of_pcs_boxplot <- function(tissue_specific_chrom_hmm_e
     cell_lines <- c("ipsc_only", "heart_only")
     hits_versions <- c("early_time_step", "late_time_step")
     cre <- "enhancer"
-    adding_constant <- 1
+    adding_constant <- 1.0
     num_permutations="1000"
     threshold = "1.0"
 
@@ -391,34 +391,34 @@ cre_enrichment_over_range_of_pcs_boxplot <- function(tissue_specific_chrom_hmm_e
     plot_0 <- plot_0 + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_")
-    plot_1 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "1 PC") + theme(legend.position="none")
+    plot_1 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 1 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_2_")
-    plot_2 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "2 PC") + theme(legend.position="none")
+    plot_2 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 2 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_3_")
-    plot_3 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "3 PC") + theme(legend.position="none")
+    plot_3 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 3 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_4_")
-    plot_4 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "4 PC") + theme(legend.position="none")
+    plot_4 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 4 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_")
-    plot_5 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "5 PC") + theme(legend.position="none")
+    plot_5 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 5 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_6_")
-    plot_6 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "6 PC") + theme(legend.position="none")
+    plot_6 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 6 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_7_")
-    plot_7 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "7 PC") + theme(legend.position="none")
+    plot_7 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 7 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_8_")
-    plot_8 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "8 PC") + theme(legend.position="none")
+    plot_8 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 8 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_9_")
-    plot_9 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "9 PC") + theme(legend.position="none")
+    plot_9 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 9 PC") + theme(legend.position="none")
 
     input_root <- paste0(tissue_specific_chrom_hmm_enrichment_dir,"gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_10_")
-    plot_10 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "10 PC") + theme(legend.position="none")
+    plot_10 <- cre_enrichments_boxplot(cre, cell_lines, hits_versions, adding_constant, num_permutations, threshold, input_root, "Top 10 PC") + theme(legend.position="none")
 
 
 
@@ -574,21 +574,44 @@ violin_plot_top_n_genes <- function(cell_line_overlap_analysis_dir, output_file,
 
 
     df <- data.frame(frequency=frequency, covariate_method=factor(methods,levels= c("Day 0 eQTL",used_names)), data_type=factor(data_type,levels=c("eQTL","Background")))
+    #print(summary(df$covariate_method))
+    t0_indices <- as.character(df$covariate_method)=="Day 0 eQTL"
+    pc0_indices <- as.character(df$covariate_method)=="Dynamic eQTL (0 PC)"
+    pc1_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 1 PC)"
+    pc2_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 2 PC)"
+    pc3_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 3 PC)"
+    pc4_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 4 PC)"
+    pc5_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 5 PC)"
+    pc6_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 6 PC)"
+    pc7_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 7 PC)"
+    pc8_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 8 PC)"
+    pc9_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 9 PC)"
+    pc10_indices <- as.character(df$covariate_method)=="Dynamic eQTL (Top 10 PC)"
+    
+    eqtl_indices <- as.character(df$data_type) == "eQTL"
+    background_indices <- as.character(df$data_type) == "Background"
 
-    #t0_indices <- df$covariate_method=="time_step_0"
-    #none_indices <- df$covariate_method=="none_glm"
-    #pc1_glm <- df$covariate_method=="pc1_glm"
-    #pc1_2_glm <- df$covariate_method=="pc1_2_glm"
-    #pc1_3_glm <- df$covariate_method=="pc1_3_glm"
-    #pc1_4_glm <- df$covariate_method=="pc1_4_glm"
-    #pc1_5_glm <- df$covariate_method=="pc1_5_glm"
+    group_a <- c(df$frequency[pc0_indices & eqtl_indices], df$frequency[pc1_indices & eqtl_indices])
+    group_b <- c(df$frequency[pc6_indices & eqtl_indices], df$frequency[pc7_indices & eqtl_indices], df$frequency[pc8_indices & eqtl_indices], df$frequency[pc9_indices & eqtl_indices], df$frequency[pc10_indices & eqtl_indices])
 
-    #print(wilcox.test(df$absolute_difference[t0_indices], df$absolute_difference[none_indices]))
-    #print(wilcox.test(df$absolute_difference[t0_indices], df$absolute_difference[pc1_glm]))
-    #print(wilcox.test(df$absolute_difference[t0_indices], df$absolute_difference[pc1_2_glm]))
-    #print(wilcox.test(df$absolute_difference[t0_indices], df$absolute_difference[pc1_3_glm]))
-    #print(wilcox.test(df$absolute_difference[t0_indices], df$absolute_difference[pc1_4_glm]))
-    #print(wilcox.test(df$absolute_difference[t0_indices], df$absolute_difference[pc1_5_glm]))
+    print(var.test(group_a, group_b))
+
+    #print(fligner.test(df$frequency[t0_indices & eqtl_indices], df$frequency[t0_indices & background_indices]))
+
+    #print(fligner.test(df$frequency[pc0_indices & eqtl_indices], df$frequency[pc0_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc1_indices & eqtl_indices], df$frequency[pc1_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc2_indices & eqtl_indices], df$frequency[pc2_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc3_indices & eqtl_indices], df$frequency[pc3_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc4_indices & eqtl_indices], df$frequency[pc4_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc5_indices & eqtl_indices], df$frequency[pc5_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc6_indices & eqtl_indices], df$frequency[pc6_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc7_indices & eqtl_indices], df$frequency[pc7_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc8_indices & eqtl_indices], df$frequency[pc8_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc9_indices & eqtl_indices], df$frequency[pc9_indices & background_indices]))
+    #print(fligner.test(df$frequency[pc10_indices & eqtl_indices], df$frequency[pc10_indices & background_indices]))
+
+
+
     p <- ggplot(df, aes(x=covariate_method, y=frequency, fill=data_type))
     p <- p + theme(legend.text = element_text(size=10))+ theme(legend.title = element_text(size=10)) + scale_fill_manual(values=c("goldenrod3","steelblue3"))
     p <- p + labs(x = "", y = "Cell line overalap frequency", fill="")
@@ -943,12 +966,13 @@ precision_recall_simulation_grid <- function(power_analysis_dir, maf, num_simula
 
 make_power_plot <- function(df, title,num_individuals_arr) {
     plotter <- ggplot(data=df, aes(x=n, y=power, colour=t)) + geom_line(size=2) +
-                labs(x="Sample Size", y="Power", colour="t-statistic", title=title) +
+                labs(x="Number of cell lines", y="Power", colour="t-statistic", title=title) +
                 #scale_y_continuous(expand = c(0, 0), limits = c(0, 1)) + 
                 scale_x_continuous(breaks=num_individuals_arr) + 
                 scale_colour_manual(values=c("dodgerblue3", "firebrick3", "chartreuse4", "goldenrod3", "darkorchid")) +
                 theme(legend.position="bottom") +
                 theme(panel.spacing = unit(2, "lines")) +
+                ylim(0,1) +
                 theme(plot.title = element_text(size=8, face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
                 #theme(text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8))
 
@@ -1063,6 +1087,232 @@ power_analysis_simulation_grid <- function(power_analysis_dir, num_simulations, 
 
 }
 
+power_analysis_non_linear_simulation_grid <- function(power_analysis_dir, num_simulations, linear_effects_sdev, pvalue_threshold, output_file) {
+    num_time_steps <- 16
+    # Initialize output arrays
+    num_individuals_arr_df <- c()
+    power_arr_df <- c()
+    fraction_of_positives_arr_df <- c()
+    t_arr_df <- c()
+    fdr_arr_df <- c()
+    maf_arr_df <- c()
+    model_arr_df <- c()
+    non_linear_version_arr_df <- c()
+    
+
+
+
+    num_time_steps <- 16
+    num_individuals_arr = c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+
+    interaction_effect_size_arr = c(.002, .003, .005, .0075, .01)
+
+    non_linear_versions_arr = c("linear", "quadratic_ends_equal", "step_function", "sinusoidal","cubic", "quadratic_ends_unequal")
+
+    sdev_arr = c(.1, .1, .1, .1, .1)
+    fraction_of_positives_arr = c(.2)
+    maf_arr = c(.4)
+    model_arr = c("lm", "lm_quad", "anova")
+
+
+    counter <- 0
+    for (num_individual_iter in 1:length(num_individuals_arr)) {
+        for (interaction_effect_size_iter in 1:length(interaction_effect_size_arr)) {
+            for (fraction_of_positives_iter in 1:length(fraction_of_positives_arr)) {
+                for (maf_iter in 1:length(maf_arr)) { 
+                    for (non_linear_version_iter in 1:length(non_linear_versions_arr)) {
+                        for (model_iter in 1:length(model_arr)) {
+                            num_individuals <- num_individuals_arr[num_individual_iter]
+                            interaction_effect_size <- interaction_effect_size_arr[interaction_effect_size_iter]
+                            sdev <- sdev_arr[interaction_effect_size_iter]
+                            t_stat <- interaction_effect_size/sdev
+                            maf <- maf_arr[maf_iter]
+                            fraction_of_positives <- fraction_of_positives_arr[fraction_of_positives_iter]
+                            model <- model_arr[model_iter]
+                            non_linear_version <- non_linear_versions_arr[non_linear_version_iter]
+                            counter <- counter + 1 
+
+                            file_name <- paste0(power_analysis_dir, "non_linear_", non_linear_version, "_simulation_results_", fraction_of_positives, "_fraction_positives_", num_individuals, "_individuals_", interaction_effect_size, "_interaction_beta_", sdev, "_sdev_", linear_effects_sdev, "_linear_effects_sd_", num_simulations, "_simulations_", num_time_steps, "_time_steps_", maf, "_maf.txt")
+                            temp_data <- read.table(file_name, header=TRUE)
+                            labels  <- temp_data$alternate_model
+                            if (model == "anova") {
+                                pvalues <- temp_data$anova_pvalue 
+                            } else if (model == "lm") {
+                                pvalues <- temp_data$lm_pvalue
+                            } else if (model == "lm_quad") {
+                                pvalues <- temp_data$lm_quad_pvalue
+
+                            }
+
+                            num_true_positives <- length(pvalues[labels==1.0])
+                            power <- sum(pvalues[labels==1.0] <= pvalue_threshold)/num_true_positives
+
+                            num_individuals_arr_df <- c(num_individuals_arr_df, num_individuals)
+                            power_arr_df <- c(power_arr_df, power)
+                            fraction_of_positives_arr_df <- c(fraction_of_positives_arr_df, fraction_of_positives)
+                            t_arr_df <- c(t_arr_df, t_stat)
+                            maf_arr_df <- c(maf_arr_df, maf)
+                            model_arr_df <- c(model_arr_df, model)
+                            non_linear_version_arr_df <- c(non_linear_version_arr_df, non_linear_version)
+                        }
+                    }
+                }   
+
+            }
+        }
+    }
+
+    #df <- data.frame(fpr=fpr_arr_df, tpr=tpr_arr_df,t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), n=factor(num_individuals_arr_df, levels=num_individuals_arr))
+    df <- data.frame(power=power_arr_df, n=num_individuals_arr_df, t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), model= factor(model_arr_df), time_transformation=factor(non_linear_version_arr_df))
+
+
+    #    non_linear_versions_arr = c( "quadratic_ends_equal", "step_function", "sinusoidal","cubic", "quadratic_ends_unequal")
+
+   # sdev_arr = c(.1, .1, .1, .1, .1)
+   # fraction_of_positives_arr = c(.2)
+    #maf_arr = c(.4)
+    #model_arr = c("lm", "anova")
+
+
+    time_transform = "linear"
+    model_version = "lm"
+    power_plot_0_1 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t  /  linear model")), num_individuals_arr)
+
+
+    time_transform = "quadratic_ends_equal"
+    model_version = "lm"
+    power_plot_1_1 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-15)  /  linear model")), num_individuals_arr)
+
+
+    time_transform = "quadratic_ends_unequal"
+    model_version = "lm"
+    power_plot_2_1 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-10)  /  linear model")), num_individuals_arr)
+
+
+
+    time_transform = "cubic"
+    model_version = "lm"
+    power_plot_3_1 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-7)(t-15)  /  linear model")), num_individuals_arr)
+
+
+
+    time_transform = "sinusoidal"
+    model_version = "lm"
+    power_plot_4_1 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= sin(pi*t/5)  /  linear model")), num_individuals_arr)
+
+
+    time_transform = "step_function"
+    model_version = "lm"
+    power_plot_5_1 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= I[t > 7]  /  linear model")), num_individuals_arr)
+
+    time_transform = "linear"
+    model_version = "lm_quad"
+    power_plot_0_3 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t  /  Quad. linear model")), num_individuals_arr)
+
+
+    time_transform = "quadratic_ends_equal"
+    model_version = "lm_quad"
+    power_plot_1_3 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-15)  /  Quad. linear model")), num_individuals_arr)
+
+
+    time_transform = "quadratic_ends_unequal"
+    model_version = "lm_quad"
+    power_plot_2_3 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-10)  /  Quad. linear model")), num_individuals_arr)
+
+
+
+    time_transform = "cubic"
+    model_version = "lm_quad"
+    power_plot_3_3 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-7)(t-15)  /  Quad. linear model")), num_individuals_arr)
+
+
+
+    time_transform = "sinusoidal"
+    model_version = "lm_quad"
+    power_plot_4_3 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= sin(pi*t/5)  /  Quad. linear model")), num_individuals_arr)
+
+
+    time_transform = "step_function"
+    model_version = "lm_quad"
+    power_plot_5_3 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= I[t > 7]  /  Quad. linear model")), num_individuals_arr)
+
+
+
+    time_transform = "linear"
+    model_version = "anova"
+    power_plot_0_2 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t  /  anova")), num_individuals_arr)
+
+    time_transform = "quadratic_ends_equal"
+    model_version = "anova"
+    power_plot_1_2 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-15)  /  anova")), num_individuals_arr)
+
+
+    time_transform = "quadratic_ends_unequal"
+    model_version = "anova"
+    power_plot_2_2 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,],expression(paste("t" ["new"], "= t(t-10)  /  anova")), num_individuals_arr)
+
+
+
+    time_transform = "cubic"
+    model_version = "anova"
+    power_plot_3_2 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= t(t-7)(t-15)  /  anova")), num_individuals_arr) #sample_time*(sample_time-7)*(sample_time-15)
+
+
+
+    time_transform = "sinusoidal"
+    model_version = "anova"
+    power_plot_4_2 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= sin(pi*t/5)  /  anova")), num_individuals_arr)
+
+
+    time_transform = "step_function"
+    model_version = "anova"
+    power_plot_5_2 <- make_power_plot(df[as.character(df$time_transformation)==time_transform & as.character(df$model)==model_version,], expression(paste("t" ["new"], "= I[t > 7]  /  anova")), num_individuals_arr)
+
+    legend <- get_legend(power_plot_1_1)
+    # expression(log[10]("odds ratio"))
+
+
+    #combined <- plot_grid(plot_0, plot_1, plot_2, plot_3, plot_4, plot_5, plot_6, plot_7, plot_8, plot_9, plot_10, legend, labels = c('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', ''), ncol = 3)
+    #combined <- plot_grid(power_plot_1_1 + theme(legend.position="none"), power_plot_2_1 + theme(legend.position="none"), power_plot_3_1 + theme(legend.position="none"), legend, ncol=1, rel_heights=c(1,1,1,.05),labels=c("A","B","C"))
+    combined <- plot_grid(power_plot_0_1 + theme(legend.position="none"),power_plot_0_3 + theme(legend.position="none"), power_plot_0_2 + theme(legend.position="none"), power_plot_2_1 + theme(legend.position="none"),power_plot_2_3 + theme(legend.position="none"), power_plot_2_2 + theme(legend.position="none"), power_plot_3_1 + theme(legend.position="none"),power_plot_3_3 + theme(legend.position="none"),power_plot_3_2 + theme(legend.position="none"), power_plot_4_1 + theme(legend.position="none"),power_plot_4_3 + theme(legend.position="none"),power_plot_4_2 + theme(legend.position="none"), power_plot_5_1 + theme(legend.position="none"),power_plot_5_3 + theme(legend.position="none"),power_plot_5_2 + theme(legend.position="none"), ncol=3, labels=c('A','B','C','D','E','F','G','H','I','J', 'K','L', 'M','N','O'))
+
+
+    ggsave(plot_grid(combined, legend, ncol=1,rel_heights=c(1,.03)), file=output_file, width=7.2,height=7.5,units="in")
+
+}
+
+make_linear_dynamic_qtl_pve_distribution_plot <- function(input_file) {
+    # Extract data
+    data <- read.table(input_file, header=TRUE)
+    # Put data into convenient data frame for plotting
+    covariate <- c()
+    pve <- c(data$genotype_pve, data$time_pve, data$interaction_pve)
+    covariate <- c(rep("genotype", length(data$genotype_pve)), rep("day", length(data$time_pve)), rep("genotypeXday", length(data$interaction_pve)))
+
+    df <- data.frame(pve=pve,covariate=factor(covariate,levels=c("genotype","day", "genotypeXday")))
+
+    boxplot <- ggplot(df, aes(x=covariate,y=pve)) + geom_boxplot(fill="gray") + labs(x = "Covariate", y = "PVE", title="Linear dynamic eQTL") 
+    boxplot <- boxplot + theme(plot.title = element_text(size=8, face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+
+    return(boxplot)
+}
+
+make_non_linear_dynamic_qtl_pve_distribution_plot <- function(input_file) {
+    # Extract data
+    data <- read.table(input_file, header=TRUE)
+    # Put data into convenient data frame for plotting
+    covariate <- c()
+    pve <- c(data$genotype_pve, data$time_pve, data$time_squared_pve, data$interaction_pve, data$interaction_squared_pve)
+    covariate <- c(rep("genotype", length(data$genotype_pve)), rep("day", length(data$time_pve)),rep("day^2", length(data$time_squared_pve)), rep("genotypeXday", length(data$interaction_pve)), rep("genotypeXday^2", length(data$interaction_squared_pve)))
+
+    df <- data.frame(pve=pve,covariate=factor(covariate,levels=c("genotype","day", "day^2", "genotypeXday", "genotypeXday^2")))
+
+    boxplot <- ggplot(df, aes(x=covariate,y=pve)) + geom_boxplot(fill="gray") + labs(x = "Covariate", y = "PVE", title="Nonlinear dynamic eQTL") 
+    boxplot <- boxplot + theme(plot.title = element_text(size=8, face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+
+    return(boxplot)
+}
+
 
 
 #############################
@@ -1078,6 +1328,19 @@ visualization_input_dir = args[7]
 visualization_dir = args[8]
 power_analysis_dir = args[9]
 
+if (FALSE) {
+##############################################################################
+#  Make Boxplot showing PVE of coefficients for linear dynamic eqtls and non-linear dynamic eqtls
+##############################################################################
+linear_dynamic_qtl_pve_file <- paste0(visualization_input_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_covariate_method_pc1_5_dynamic_qtl_efdr_05_pve.txt")
+linear_qtl_pve_plot <- make_linear_dynamic_qtl_pve_distribution_plot(linear_dynamic_qtl_pve_file)
+
+non_linear_dynamic_qtl_pve_file <- paste0(visualization_input_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_dynamic_qtl_efdr_05_pve.txt")
+non_linear_qtl_pve_plot <- make_non_linear_dynamic_qtl_pve_distribution_plot(non_linear_dynamic_qtl_pve_file)
+
+combined <- plot_grid(linear_qtl_pve_plot, non_linear_qtl_pve_plot, ncol=1, labels = c('A', 'B'))
+output_file <- paste0(visualization_dir, "pve_boxplot_for_linear_and_nonlinear_qtls.pdf")
+ggsave(combined, file=output_file, width=7.2,height=6,units="in")
 
 ##############################################################################
 #  Make grid of precision-recall curves for a range of simulation model parameters
@@ -1085,6 +1348,9 @@ power_analysis_dir = args[9]
 num_simulations = 10000
 linear_effects_sdev = .1
 pvalue_threshold = 0.00017
+
+output_file <- paste0(visualization_dir, "non_linear_simulation_power_analysis_curves_", linear_effects_sdev, "_linear_effects_sdev_", pvalue_threshold, "_pvalue_threshold_", num_simulations, "_simulations.pdf")
+power_analysis_non_linear_simulation_grid(power_analysis_dir, num_simulations, linear_effects_sdev, pvalue_threshold, output_file)
 
 model="lm"
 output_file <- paste0(visualization_dir, "simulation_power_analysis_curves_", linear_effects_sdev, "_linear_effects_sdev_", pvalue_threshold, "_pvalue_threshold_", num_simulations, "_simulations_", model, ".pdf")
@@ -1099,21 +1365,19 @@ power_analysis_simulation_grid(power_analysis_dir, num_simulations, linear_effec
 #################################################################################
 output_file <- paste0(visualization_dir, "dynamic_eqtl_comparison_to_banovich_eqtls.pdf")
 compare_eqtl_results_to_banovich_eqtls(eqtl_data_set_comparison_dir, output_file)
-
+}
 ###############################################################################
 # Make Manuscript Figure 3
 #################################################################################
 output_file <- paste0(visualization_dir, "figure3.pdf")
 produce_figure_3(qtl_results_dir, time_step_independent_comparison_dir, tissue_specific_chrom_hmm_enrichment_dir, gwas_overlap_dir, visualization_input_dir, output_file)
 
-
 ###############################################################################
 # Make CRE enrichment boxplot over a range of number of PCs
 #################################################################################
 output_file <- paste0(visualization_dir, "cre_enrichment_boxplot_over_a_range_of_pcs.pdf")
 cre_enrichment_over_range_of_pcs_boxplot(tissue_specific_chrom_hmm_enrichment_dir, output_file)
-
-
+if (FALSE) {
 ###############################################################################
 # QQPlot showing both:
 ## 1. Real data pvalues compared to uniform
@@ -1139,16 +1403,16 @@ non_linear_dynamic_qtl_plot <- make_dynamic_qtl_plot(dynamic_qtl_input_file, "rs
 output_file <- paste0(visualization_dir, "rs8107849_ENSG00000166704_nonlinear_viz.pdf")
 ggsave(non_linear_dynamic_qtl_plot + labs(title=""), file=output_file, width=7.2, height=4.5,units="in")
 
-
 ###############################################################################
 # Plot frequency distributions for real and background for each of the covariate methods using top n genes
 ###############################################################################
 num_genes <- "200"
 covariate_methods <- c("none", "pc1", "pc1_2", "pc1_3", "pc1_4", "pc1_5", "pc1_6", "pc1_7", "pc1_8", "pc1_9", "pc1_10")
-covariate_method_names <- c("Dynamic eQTL (0 PC)", "Dynamic eQTL (1 PC)", "Dynamic eQTL (2 PC)", "Dynamic eQTL (3 PC)", "Dynamic eQTL (4 PC)", "Dynamic eQTL (5 PC)", "Dynamic eQTL (6 PC)", "Dynamic eQTL (7 PC)", "Dynamic eQTL (8 PC)", "Dynamic eQTL (9 PC)", "Dynamic eQTL (10 PC)")
+covariate_method_names <- c("Dynamic eQTL (0 PC)", "Dynamic eQTL (Top 1 PC)", "Dynamic eQTL (Top 2 PC)", "Dynamic eQTL (Top 3 PC)", "Dynamic eQTL (Top 4 PC)", "Dynamic eQTL (Top 5 PC)", "Dynamic eQTL (Top 6 PC)", "Dynamic eQTL (Top 7 PC)", "Dynamic eQTL (Top 8 PC)", "Dynamic eQTL (Top 9 PC)", "Dynamic eQTL (Top 10 PC)")
 model_options <- c("glm")
 output_file <- paste0(visualization_dir, "real_and_observed_in_cell_line_overlap_glm_", num_genes,"_violin_plot.pdf")
 violin_plot_top_n_genes(cell_line_overlap_analysis_dir, output_file, num_genes, covariate_methods, model_options, covariate_method_names)
+
 
 ###############################################################################
 # Scatter plot comparing pvalues from glm dynamic QTLs and glmm dynamic qtls
@@ -1182,6 +1446,7 @@ boxplot_comparing_time_steps_grouped_by_dynamic_qtl_classes(time_step_independen
 output_file <- paste0(visualization_dir, "nonlinear_dynamic_egenes_glm_quadratic_pc1_5_boxplot_comparing_per_time_step_qtls.pdf")
 time_step_independent_comparison_file <- paste0(time_step_independent_comparison_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_1.0_dynamic_standard_egenes_comparison.txt")
 boxplot_comparing_time_steps_grouped_by_two_dynamic_qtl_classes(time_step_independent_comparison_file, output_file)
+}
 
 ############################################################################
 # Miami Plot with all three significant phenotypes
