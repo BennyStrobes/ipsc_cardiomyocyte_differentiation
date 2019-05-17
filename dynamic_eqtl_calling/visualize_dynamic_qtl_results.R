@@ -1047,7 +1047,7 @@ power_analysis_simulation_grid <- function(power_analysis_dir, num_simulations, 
 
     #df <- data.frame(fpr=fpr_arr_df, tpr=tpr_arr_df,t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), n=factor(num_individuals_arr_df, levels=num_individuals_arr))
     df <- data.frame(power=power_arr_df, n=num_individuals_arr_df, t=factor(t_arr_df,(levels=interaction_effect_size_arr/sdev_arr)), fraction_positive=fraction_of_positives_arr_df, maf=factor(maf_arr_df))
-   
+    
     
     pos_frac <- .1
     maf_temp <- .1
@@ -1328,7 +1328,6 @@ visualization_input_dir = args[7]
 visualization_dir = args[8]
 power_analysis_dir = args[9]
 
-if (FALSE) {
 ##############################################################################
 #  Make Boxplot showing PVE of coefficients for linear dynamic eqtls and non-linear dynamic eqtls
 ##############################################################################
@@ -1342,9 +1341,11 @@ combined <- plot_grid(linear_qtl_pve_plot, non_linear_qtl_pve_plot, ncol=1, labe
 output_file <- paste0(visualization_dir, "pve_boxplot_for_linear_and_nonlinear_qtls.pdf")
 ggsave(combined, file=output_file, width=7.2,height=6,units="in")
 
+
 ##############################################################################
 #  Make grid of precision-recall curves for a range of simulation model parameters
 ##############################################################################
+
 num_simulations = 10000
 linear_effects_sdev = .1
 pvalue_threshold = 0.00017
@@ -1365,7 +1366,7 @@ power_analysis_simulation_grid(power_analysis_dir, num_simulations, linear_effec
 #################################################################################
 output_file <- paste0(visualization_dir, "dynamic_eqtl_comparison_to_banovich_eqtls.pdf")
 compare_eqtl_results_to_banovich_eqtls(eqtl_data_set_comparison_dir, output_file)
-}
+
 ###############################################################################
 # Make Manuscript Figure 3
 #################################################################################
@@ -1377,7 +1378,7 @@ produce_figure_3(qtl_results_dir, time_step_independent_comparison_dir, tissue_s
 #################################################################################
 output_file <- paste0(visualization_dir, "cre_enrichment_boxplot_over_a_range_of_pcs.pdf")
 cre_enrichment_over_range_of_pcs_boxplot(tissue_specific_chrom_hmm_enrichment_dir, output_file)
-if (FALSE) {
+
 ###############################################################################
 # QQPlot showing both:
 ## 1. Real data pvalues compared to uniform
@@ -1446,7 +1447,6 @@ boxplot_comparing_time_steps_grouped_by_dynamic_qtl_classes(time_step_independen
 output_file <- paste0(visualization_dir, "nonlinear_dynamic_egenes_glm_quadratic_pc1_5_boxplot_comparing_per_time_step_qtls.pdf")
 time_step_independent_comparison_file <- paste0(time_step_independent_comparison_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_1.0_dynamic_standard_egenes_comparison.txt")
 boxplot_comparing_time_steps_grouped_by_two_dynamic_qtl_classes(time_step_independent_comparison_file, output_file)
-}
 
 ############################################################################
 # Miami Plot with all three significant phenotypes

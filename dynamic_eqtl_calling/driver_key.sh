@@ -300,8 +300,9 @@ fi
 ##########################################
 # Step 5: Visualize results from dynamic qtl analysis
 ##########################################
+if false; then
 sh visualize_dynamic_qtl_results.sh $qtl_results_dir $cell_line_overlap_analysis_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gwas_overlap_dir $eqtl_data_set_comparison_dir $visualization_input_dir $visualization_dir $power_analysis_dir
-
+fi
 
 
 
