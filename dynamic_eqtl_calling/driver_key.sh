@@ -23,11 +23,10 @@ standard_eqtl_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/time_s
 target_region_input_file=$standard_eqtl_dir"target_regions/target_regions_cis_distance_50000_maf_cutoff_0.1_min_reads_100_min_as_reads_25_min_het_counts_5_merged.txt"
 
 # cell line specific pcs
-cell_line_specific_pc_file=$preprocess_dir"covariates/cell_line_ignore_missing_principal_components_10.txt"
+cell_line_specific_pc_file=$preprocess_dir"log_space_covariates/cell_line_ignore_missing_principal_components_10.txt"
 
 # Gene expression data for all samples
-
-total_expression_file=$preprocess_dir"processed_total_expression/quantile_normalized_no_projection.txt"
+total_expression_file=$preprocess_dir"processed_log_total_expression/log_quantile_normalized_no_projection.txt"
 
 # Dosage-based genotypes for all samples
 genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"
@@ -75,14 +74,13 @@ ipsc_eqtl_file="/project2/gilad/bstrober/ipsc_differentiation_19_lines/preproces
 ###############################################################################
 
 # Root directory for this of all ipsc data based results
-output_root="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_dynamic_qtl_pipelines_v2/"
+output_root="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_log_dynamic_eqtl_pipelines/"
 
 # Directory containing necessary input files to qtl tests
 input_data_dir=$output_root"input_data/"
 
 # Directory containing text files with results from dynamic qtl analysis
-temp_dir="/project2/gilad/bstrober/ipsc_differentiation_19_lines/gaussian_dynamic_qtl_pipelines/"
-qtl_results_dir=$temp_dir"qtl_results/"
+qtl_results_dir=$output_root"qtl_results/"
 
 # Directory containing visualization of results found in qtl_results_dir
 qtl_pvalue_distribution_visualization_dir=$output_root"qtl_pvalue_distribution_visualization/"
@@ -169,6 +167,10 @@ num_jobs="10"
 # Run Dynamic eQTLs using GLM with sweep over covariate methods and model versions
 covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
 model_versions=( "glm" "glmm" "glm_quadratic")
+
+covariate_methods=("pc1_5")
+model_versions=("glm_quadratic")
+
 ################################
 
 # Loop through covariate methods
@@ -259,9 +261,26 @@ done
 ### Part L: Compare dynamic eqtls to existing data sets
 
 
-covariate_methods=( "none" "pc1" "pc1_2" "pc1_3" "pc1_4" "pc1_5")
-model_versions=( "glm" "glmm" "glm_quadratic")
+covariate_methods=( "pc1_5" "none" "pc1" "pc1_2" "pc1_3" "pc1_4" )
+model_versions=( "glm_quadratic")
+covariate_methods=( "pc1_5" )
 
+
+# Loop through covariate methods
+for covariate_method in "${covariate_methods[@]}"; do
+    # Loop through model versions
+    for model_version in "${model_versions[@]}"; do
+        parameter_string="gaussian_dynamic_qtl_input_file_environmental_variable_"$environmental_variable_form"_genotype_version_"$genotype_version"_model_type_"$model_version"_covariate_method_"$covariate_method
+        sh downstream_analysis_on_dynamic_eqtl_results.sh $model_version $covariate_method $num_jobs $parameter_string $dynamic_eqtl_input_file $qtl_results_dir $qtl_pvalue_distribution_visualization_dir $cell_line_overlap_analysis_dir $genotype_file $time_step_independent_stem $chrom_hmm_input_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gsea_data_dir $gencode_file $gene_set_enrichment_dir $cardiomyopathy_gene_list $gtex_gwas_hits_dir $gwas_overlap_dir $liftover_directory $visualization_input_dir $cm_eqtl_file $ipsc_eqtl_file $eqtl_data_set_comparison_dir
+    done
+done
+
+
+
+
+covariate_methods=( "pc1_5")
+model_versions=( "glmm" "glm_quadratic")
+model_versions=( "glm_quadratic")
 
 # Loop through covariate methods
 if false; then
@@ -290,6 +309,7 @@ fi
 
 
 
+
 ##########################################
 # Step 4: Perform dynamic qtl power analysis
 ##########################################
@@ -303,10 +323,6 @@ fi
 if false; then
 sh visualize_dynamic_qtl_results.sh $qtl_results_dir $cell_line_overlap_analysis_dir $tissue_specific_chrom_hmm_enrichment_dir $time_step_independent_comparison_dir $gwas_overlap_dir $eqtl_data_set_comparison_dir $visualization_input_dir $visualization_dir $power_analysis_dir
 fi
-
-
-
-
 
 
 

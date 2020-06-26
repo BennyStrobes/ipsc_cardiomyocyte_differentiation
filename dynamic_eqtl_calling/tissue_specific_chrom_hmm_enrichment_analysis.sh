@@ -12,7 +12,8 @@ time_step_independent_stem="$7"
 model_version="$8"
 tissue_specific_chrom_hmm_enrichment_dir="$9"
 
-hits_versions=( "early_time_step_hits" "late_time_step_hits" "change_in_sign_hits")
+hits_versions=( "early_time_step_hits" "late_time_step_hits")
+hits_versions=( "middle_time_step_hits" )
 
 for hits_version in "${hits_versions[@]}"; do
 	#######################

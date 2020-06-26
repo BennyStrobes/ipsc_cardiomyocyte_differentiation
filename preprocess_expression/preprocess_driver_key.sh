@@ -103,16 +103,16 @@ genome_dir=$preprocess_data_dir"genome/"
 bam_dir=$preprocess_data_dir"bam/"
 
 #  Directory containing processed counts, quantile normalized expression data
-preprocess_total_expression_dir=$preprocess_data_dir"processed_total_expression/"
+preprocess_total_expression_dir=$preprocess_data_dir"processed_log_total_expression/"
 
 #  Directory containing covariate information (covariates, PCs)
-covariate_dir=$preprocess_data_dir"covariates/"
+covariate_dir=$preprocess_data_dir"log_space_covariates/"
 
 # Directory containing total expression data comparison to banovich et al
 banovich_ipsc_comparison_dir=$preprocess_data_dir"banovich_ipsc_comparison/"
 
 #  Directory containing plots/figures related to exploratory analysis of the total expression data (preprocess_total_expression_dir)
-visualize_total_expression_dir=$preprocess_data_dir"visualize_total_expression/"
+visualize_total_expression_dir=$preprocess_data_dir"visualize_log_total_expression/"
 
 #  Directory containing various changes to $genotype_input so that it is ammendable to the software pipelines used to process allelic counts (ie WASP and GATK ASEReader)
 genotype_dir=$preprocess_data_dir"genotype/"

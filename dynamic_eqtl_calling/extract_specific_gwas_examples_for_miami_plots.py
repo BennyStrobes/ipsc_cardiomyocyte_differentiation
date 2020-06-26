@@ -141,12 +141,14 @@ def get_hg19_coordinates(temporary_hg19_bed_file):
         hg19_coordinates.append(cluster_id)
     return hg19_coordinates
 
-def make_hg38_to_hg19_mapping(temporary_hg38_bed_file, temporary_hg19_bed_file):
+def make_hg38_to_hg19_mapping(temporary_hg38_bed_file, temporary_hg19_bed_file, unmapped_jxns):
 	f = open(temporary_hg38_bed_file)
 	g = open(temporary_hg19_bed_file)
 	dicti = {}
 	for hg38_line in f:
 		hg38_data = hg38_line.rstrip().split()
+		if ':'.join(hg38_data) in unmapped_jxns:
+			continue
 		hg19_data = g.next().rstrip().split()
 		if hg38_data[0] != hg19_data[0]:
 			print('assumptione rororo')
@@ -165,10 +167,8 @@ def run_liftover_shell(gwas_file, gwas_liftover_root,liftover_directory, variant
     #Some jxns were not able to be mapped with liftover (lacked confidence). So first extract those unmapped jxns
     #Create dictionary where keys are jxn ids that were not able to be mapped via liftover
 	unmapped_jxns = get_unmapped_jxns(temporary_missing_file)
-	if len(unmapped_jxns) != 0:
-		print('ASSSUMPTERION ERROROR')
-		pdb.set_trace()
-	hg38_to_hg19_mapping = make_hg38_to_hg19_mapping(temporary_hg38_bed_file, temporary_hg19_bed_file)
+
+	hg38_to_hg19_mapping = make_hg38_to_hg19_mapping(temporary_hg38_bed_file, temporary_hg19_bed_file, unmapped_jxns)
 	os.system('rm ' + temporary_hg38_bed_file)
 	os.system('rm ' + temporary_hg19_bed_file)
 	os.system('rm ' + temporary_missing_file)
@@ -190,9 +190,14 @@ def run_liftover_shell(gwas_file, gwas_liftover_root,liftover_directory, variant
 		if 'chr' + variant_chrom != chromer:
 			continue
 		pos = info[1]
-		hg19_pos = int(hg38_to_hg19_mapping[pos])
-		if hg19_pos >= start and hg19_pos <= end:
-			t.write(data[0] + '\t' + variant_chrom + '\t' + str(hg19_pos) + '\t' + data[7] + '\n')
+		if pos in hg38_to_hg19_mapping:
+			hg19_pos = int(hg38_to_hg19_mapping[pos])
+			if hg19_pos >= start and hg19_pos <= end:
+				t.write(data[0] + '\t' + variant_chrom + '\t' + str(hg19_pos) + '\t' + data[7] + '\n')
+		else:
+			if chromer + ':' + pos + ':' + str(int(pos) + 1) not in unmapped_jxns:
+				print('ASSUMPTION ERROR')
+				pdb.set_trace()
 	print('done')
 	t.close()
 	f.close()
@@ -253,6 +258,7 @@ liftover_directory = sys.argv[5]
 
 hg19_rs_id_mapping = mapping_from_hg19_rsid_to_chrom_and_pos(genotype_file)
 
+'''
 rs_id = 'rs28818910'
 ensamble_id = 'ENSG00000167173'
 variant_chrom = '15'
@@ -279,7 +285,34 @@ variant_pos = 75440669
 phenotype_name = 'UKB_23099_Body_fat_percentage'
 
 get_pvalue_distributions(rs_id, ensamble_id, variant_chrom, variant_pos, phenotype_name, hg19_rs_id_mapping, all_hits_file, gtex_gwas_hits_dir, gwas_overlap_dir, liftover_directory)
+'''
 
+rs_id = 'rs35903022'
+ensamble_id = 'ENSG00000130294'
+variant_chrom = '2'
+variant_pos = 241757751
+phenotype_name = 'UKB_50_Standing_height'
+
+
+get_pvalue_distributions(rs_id, ensamble_id, variant_chrom, variant_pos, phenotype_name, hg19_rs_id_mapping, all_hits_file, gtex_gwas_hits_dir, gwas_overlap_dir, liftover_directory)
+
+
+rs_id = 'rs35903022'
+ensamble_id = 'ENSG00000130294'
+variant_chrom = '2'
+variant_pos = 241757751
+phenotype_name = 'GIANT_HEIGHT'
+
+get_pvalue_distributions(rs_id, ensamble_id, variant_chrom, variant_pos, phenotype_name, hg19_rs_id_mapping, all_hits_file, gtex_gwas_hits_dir, gwas_overlap_dir, liftover_directory)
+
+
+rs_id = 'rs35903022'
+ensamble_id = 'ENSG00000130294'
+variant_chrom = '2'
+variant_pos = 241757751
+phenotype_name = 'UKB_23099_Body_fat_percentage'
+
+get_pvalue_distributions(rs_id, ensamble_id, variant_chrom, variant_pos, phenotype_name, hg19_rs_id_mapping, all_hits_file, gtex_gwas_hits_dir, gwas_overlap_dir, liftover_directory)
 
 
 
@@ -289,6 +322,13 @@ get_pvalue_distributions(rs_id, ensamble_id, variant_chrom, variant_pos, phenoty
 # OLD (RETIRED) SCRIPTS
 #############################
 '''
+UKB_50_Standing_height
+GIANT_HEIGHT
+UKB_23099_Body_fat_percentage
+
+rs35903022_ENSG00000130294
+chrom 2
+pos 241757751 (C-A)
 
 rs_id = 'rs28818910'
 ensamble_id = 'ENSG00000167173'

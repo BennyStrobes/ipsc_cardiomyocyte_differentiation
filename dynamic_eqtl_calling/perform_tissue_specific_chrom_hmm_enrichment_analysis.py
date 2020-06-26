@@ -296,6 +296,8 @@ def count_variant_overlap_specificity(chrom_num, heart_chromosome, ipsc_chromoso
         variant_gene_pair_dict = variant_gene_pair_info[variant_gene]
         if variant_gene_pair_dict['chrom_num'] != chrom_num:
             continue
+        if variant_gene.split('_')[0] == 'rs35903022':
+            pdb.set_trace()
         variant_position = int(variant_gene_pair_dict['variant_position'])
         if cell_line_version == 'heart_and_ipsc_cell_lines':
             if heart_chromosome[variant_position] == 1.0 and ipsc_chromosome[variant_position] == 1.0:
@@ -542,7 +544,7 @@ variant_gene_pair_info = extract_variant_gene_pair_info(time_step_independent_fi
 
 # Extract number of significant genes
 num_genes = extract_number_of_genes(sig_egene_file)
-num_genes = 200
+num_genes = max(400, num_genes)
 # First create dictionary list of the significant variant gene pairs where each key is of form $variantID"_"$geneID
 sig_variant_gene_pairs = extract_significant_variant_gene_pairs(variant_gene_pairs_file, variant_gene_pair_time_step_info, hits_version, num_genes)
 

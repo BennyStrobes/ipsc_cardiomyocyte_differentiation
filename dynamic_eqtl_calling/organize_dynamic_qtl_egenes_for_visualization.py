@@ -16,6 +16,11 @@ def extract_significant_eqtls(significant_qtl_file):
 		ensamble_id = data[1]
 		dicti[ensamble_id + '_' + rs_id] = 1
 	f.close()
+	dicti['ENSG00000115641_rs11124033'] = 1
+	dicti['ENSG00000183873_rs7633988'] = 1
+	dicti['ENSG00000183873_rs6599234'] = 1
+	dicti['ENSG00000166704_rs8107849'] = 1
+	dicti['ENSG00000167173_rs28818910'] = 1
 	return dicti
 
 

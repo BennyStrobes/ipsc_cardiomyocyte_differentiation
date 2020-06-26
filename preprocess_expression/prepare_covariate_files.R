@@ -423,7 +423,7 @@ sample_info_file <- paste0(preprocess_total_expression_dir, "sample_info.txt")
 sample_info <- read.table(sample_info_file, header=TRUE)
 
 #  Get quantile normalized expression data
-quantile_normalized_exp_file <- paste0(preprocess_total_expression_dir, "quantile_normalized.txt")
+quantile_normalized_exp_file <- paste0(preprocess_total_expression_dir, "log_quantile_normalized.txt")
 quant_expr <- read.csv(quantile_normalized_exp_file, header=TRUE, sep=" ")
 
 #  Get quantile normalized expression data (normalization done in eqch time step independently)
@@ -438,8 +438,16 @@ cell_line_expression_ignore_missing_rownames <- cell_line_expression_ignore_miss
 cell_line_expression_ignore_missing <- cell_line_expression_ignore_missing[,2:(dim(cell_line_expression_ignore_missing)[2])]
 colnames(cell_line_expression_ignore_missing) <- substr(colnames(cell_line_expression_ignore_missing), 2, 1000)
 
+
+# Get standardized cell line specific expression
+cell_line_expression_ignore_missing_file_no_qn <- paste0(preprocess_total_expression_dir,"cell_line_expression_ignore_missing_no_quantile_normalize.txt")
+cell_line_expression_ignore_missing_no_qn <- read.csv(cell_line_expression_ignore_missing_file_no_qn, header=TRUE, sep="\t")
+cell_line_expression_ignore_missing_no_qn_rownames <- cell_line_expression_ignore_missing_no_qn[,1]
+cell_line_expression_ignore_missing_no_qn <- cell_line_expression_ignore_missing_no_qn[,2:(dim(cell_line_expression_ignore_missing_no_qn)[2])]
+colnames(cell_line_expression_ignore_missing_no_qn) <- substr(colnames(cell_line_expression_ignore_missing_no_qn), 2, 1000)
+
 #  Get rpkm expression_data
-rpkm_exp_file <- paste0(preprocess_total_expression_dir, "rpkm.txt")
+rpkm_exp_file <- paste0(preprocess_total_expression_dir, "log_rpkm.txt")
 rpkm_expr <- read.csv(rpkm_exp_file, header=TRUE, sep=" ")
 
 # Get multiqc general stats output file
@@ -456,13 +464,25 @@ raw_covariates <- read.csv(metadata_input_file)
 
 ###############################
 # Run Cell line PCA!
-n <- 10  # Number of PCs to save
+n <- 9  # Number of PCs to save
 #  Ouptut file to save PC loadings to 
 pc_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_principal_components_", n, ".txt")
 save_pcs(colnames(cell_line_expression_ignore_missing), cell_line_expression_ignore_missing, n, pc_output_file)
 #  Ouptut file to save Gene loadings to
 pc_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_principal_components_", n, "_gene_weights.txt")
 save_pc_gene_weights(cell_line_expression_ignore_missing_rownames, cell_line_expression_ignore_missing, n, pc_output_file)
+
+
+###############################
+# Run Cell line PCA!
+n <- 9  # Number of PCs to save
+#  Ouptut file to save PC loadings to 
+pc_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_no_qn_principal_components_", n, ".txt")
+save_pcs(colnames(cell_line_expression_ignore_missing_no_qn), cell_line_expression_ignore_missing_no_qn, n, pc_output_file)
+#  Ouptut file to save Gene loadings to
+pc_output_file <- paste0(covariate_dir, "cell_line_ignore_missing_no_qn_principal_components_", n, "_gene_weights.txt")
+save_pc_gene_weights(cell_line_expression_ignore_missing_no_qn_rownames, cell_line_expression_ignore_missing_no_qn, n, pc_output_file)
+
 
 ###############################
 # Run PCA on all 297 RNA-seq samples
