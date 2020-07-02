@@ -156,7 +156,7 @@ check_if_gene_is_protein_coding <- function(biotype) {
 #     1. Genes are protein-coding
 #     2. genes are autosomal 
 #     3. genes have at least 10 samples such that RPKM >= .1 and counts >= 6
-filter_genes <- function(counts, rpkm_data, preprocess_total_expression_dir) {
+filter_genes <- function(counts, rpkm_data, preprocess_total_expression_dir, normalization_method) {
 
     #  Kepp list of indices of genes that pass our three filters
     pass_filters <- NULL
@@ -190,6 +190,10 @@ filter_genes <- function(counts, rpkm_data, preprocess_total_expression_dir) {
     counts <- counts[pass_filters,]
     rpkm_data <- rpkm_data[pass_filters,]
 
+    if (normalization_method == "log_rpkm") {
+        rpkm_data <- log2(rpkm_data + 1)
+    }
+
     #  Write filtered matrices to output files
     count_output_file <- paste0(preprocess_total_expression_dir,"raw_counts.txt")
     save_DGE_matrix(counts, count_output_file)
@@ -201,38 +205,60 @@ filter_genes <- function(counts, rpkm_data, preprocess_total_expression_dir) {
 }
 
 #  Peform quantile normalization, and then standardize each row 
-quantile_normalize_and_standardize <- function(rpkm_data, preprocess_total_expression_dir) {
-    # Quantile normalize (so the samples have equivalent variance)
-    quantile_normalized_samples <- normalize.quantiles(as.matrix(rpkm_data))
+quantile_normalize_and_standardize <- function(rpkm_data, preprocess_total_expression_dir, normalization_method) {
+
+    if (normalization_method == "inverse_gaussian") {
+        # Quantile normalize (so the samples have equivalent variance)
+        quantile_normalized_samples <- normalize.quantiles(as.matrix(rpkm_data))
+
+        # Quantile Normalized without standardization or projection onto gaussian
+        colnames(quantile_normalized_samples) <- colnames(rpkm_data)
+        rownames(quantile_normalized_samples) <- rownames(rpkm_data)
+
+        #  Write results to output file
+        output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized_no_projection.txt")
+        save_DGE_matrix(quantile_normalized_samples, output_file) 
+
+
+        temp_mat <- t(apply(quantile_normalized_samples, 1, rank, ties.method = "average"))
+        quantile_normalized <- qnorm(temp_mat / (ncol(temp_mat)+1));
+
+
+        # Quantile normalization with gaussian projection
+        colnames(quantile_normalized) <- colnames(rpkm_data)
+        rownames(quantile_normalized) <- rownames(rpkm_data)
+
+        #  Write results to output file
+        output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized.txt")
+        save_DGE_matrix(quantile_normalized, output_file)
+    # Applies to "rpkm" and "log_rpkm"
+    } else {
+        # Quantile normalize (so the samples have equivalent variance)
+        quantile_normalized_samples <- normalize.quantiles(as.matrix(rpkm_data))
     
+        # Quantile Normalized without standardization or projection onto gaussian
+        colnames(quantile_normalized_samples) <- colnames(rpkm_data)
+        rownames(quantile_normalized_samples) <- rownames(rpkm_data)
 
-    # Project each gene onto a gaussian
-    # temp_mat <- t(apply(quantile_normalized_samples, 1, rank, ties.method = "average"))
-    # quantile_normalized <- qnorm(temp_mat / (ncol(temp_mat)+1));
-
-    # Quantile Normalized without standardization or projection onto gaussian
-    colnames(quantile_normalized_samples) <- colnames(rpkm_data)
-    rownames(quantile_normalized_samples) <- rownames(rpkm_data)
-
-    #  Write results to output file
-    output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized_no_projection.txt")
-    save_DGE_matrix(quantile_normalized_samples, output_file) 
+        #  Write results to output file
+        output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized_no_projection.txt")
+        save_DGE_matrix(quantile_normalized_samples, output_file) 
 
 
-    quantile_normalized <- quantile_normalized_samples
-    # Standardize row by row (ie gene by gene)
-    for (i in 1:nrow(quantile_normalized)) {
-        quantile_normalized[i,] <- (quantile_normalized[i,] - mean(quantile_normalized[i,]))/sd(quantile_normalized[i,])
+        quantile_normalized <- quantile_normalized_samples
+        # Standardize row by row (ie gene by gene)
+        for (i in 1:nrow(quantile_normalized)) {
+            quantile_normalized[i,] <- (quantile_normalized[i,] - mean(quantile_normalized[i,]))/sd(quantile_normalized[i,])
+        }
+
+        # Quantile normalization with gaussian projection
+        colnames(quantile_normalized) <- colnames(rpkm_data)
+        rownames(quantile_normalized) <- rownames(rpkm_data)
+
+        #  Write results to output file
+        output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized.txt")
+        save_DGE_matrix(quantile_normalized, output_file)
     }
-
-    # Quantile normalization with gaussian projection
-    colnames(quantile_normalized) <- colnames(rpkm_data)
-    rownames(quantile_normalized) <- rownames(rpkm_data)
-
-    #  Write results to output file
-    output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized.txt")
-    save_DGE_matrix(quantile_normalized, output_file)
-
 
 
     return(quantile_normalized)
@@ -276,7 +302,7 @@ quantile_normalize_and_standardize_time_step_independent <- function(rpkm_data, 
 preprocess_total_expression_dir = args[1]
 exon_file = args[2]
 bam_dir = args[3]
-
+normalization_method = args[4]
 
 
 # Load in table regarding exon information
@@ -315,7 +341,7 @@ rpkm_data <- rpkm_transformation(counts, preprocess_total_expression_dir)
 #     1. Genes are protein-coding
 #     2. genes are autosomal 
 #     3. genes have at least 10 samples such that RPKM >= .1 and counts >= 6
-temp_data_struct <- filter_genes(counts, rpkm_data, preprocess_total_expression_dir)
+temp_data_struct <- filter_genes(counts, rpkm_data, preprocess_total_expression_dir, normalization_method)
 counts <- temp_data_struct[[1]]
 rpkm_data <- temp_data_struct[[2]]
 
@@ -325,9 +351,8 @@ rpkm_data <- temp_data_struct[[2]]
 quantile_normalized_time_step_independent_data <- quantile_normalize_and_standardize_time_step_independent(rpkm_data, preprocess_total_expression_dir, counts$samples)
 
 
-
 #  Peform quantile normalization, and then standardize each row 
-quantile_normalized_data <- quantile_normalize_and_standardize(rpkm_data, preprocess_total_expression_dir)
+quantile_normalized_data <- quantile_normalize_and_standardize(rpkm_data, preprocess_total_expression_dir, normalization_method)
 
 
 

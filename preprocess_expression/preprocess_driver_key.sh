@@ -183,8 +183,14 @@ fi
 #    4. Also does some exploratory visualization analysis of the expression data  (visualize_processed_total_expression.R)
 #  Takes about 4 hours to run
 exon_file=$genome_dir"exons.saf"
-sh preprocess_total_expression.sh $preprocess_total_expression_dir $exon_file $bam_dir $visualize_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir $mixture_hmm_cell_line_grouping_dir $ipsc_banovich_read_counts_file $ipsc_cm_banovich_read_counts_file $banovich_ipsc_comparison_dir
-
+# Normalization method is how we choose to normalize RNA-seq read counts. Options are:
+#   1. "rpkm": Generate rpkm data. Quantile normalize RPKM data. Standardize each gene to have mean 0 and standard deviation 1.
+#   2. "log_rpkm": Generate log2(rpkm+1) data. Quantile normalize log2(rpkm+1) data. Standardize each gene to have mean 0 and standard deviation 1.
+#   3. "inverse_gaussian": Generate rpkm data. Quantile normalize rpkm data. Project each gene onto the quantiles of a gaussian distribution.
+normalization_method="rpkm"
+if false; then
+sh preprocess_total_expression.sh $preprocess_total_expression_dir $exon_file $bam_dir $visualize_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir $mixture_hmm_cell_line_grouping_dir $ipsc_banovich_read_counts_file $ipsc_cm_banovich_read_counts_file $banovich_ipsc_comparison_dir $normalization_method
+fi
 
 
 #############################################################################################################################

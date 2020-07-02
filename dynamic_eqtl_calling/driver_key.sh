@@ -25,9 +25,9 @@ target_region_input_file=$standard_eqtl_dir"target_regions/target_regions_cis_di
 # cell line specific pcs
 cell_line_specific_pc_file=$preprocess_dir"covariates/cell_line_ignore_missing_principal_components_10.txt"
 
-# Gene expression data for all samples
 
-total_expression_file=$preprocess_dir"processed_total_expression/quantile_normalized_no_projection.txt"
+# Gene expression data for all samples
+total_expression_file=$preprocess_dir"processed_total_expression/quantile_normalized.txt"
 
 # Dosage-based genotypes for all samples
 genotype_file=$preprocess_dir"genotype/YRI_genotype.vcf"

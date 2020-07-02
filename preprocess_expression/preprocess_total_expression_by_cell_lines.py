@@ -2,6 +2,7 @@ import numpy as np
 import os
 import sys
 import pdb
+import scipy.stats as stats
 
 
 
@@ -29,7 +30,7 @@ def get_unique_cell_lines(quantile_normalized_data):
 
 
 # Print cell line expression to output file
-def create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_lines, ordered_time_steps, quantile_normalized_data, cell_line_expr_ignore_missing_file):
+def create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_lines, ordered_time_steps, quantile_normalized_data, cell_line_expr_ignore_missing_file, normalization_method):
     # create mapping from cell line name to position
     cell_line_mapping = {}
     for i, cell_line in enumerate(unique_cell_lines):
@@ -65,7 +66,11 @@ def create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_l
                 counter = counter + 1
             if counter != len(unique_cell_lines):
                 continue
-            standardized = (time_step_specific_expr - np.mean(time_step_specific_expr))/np.std(time_step_specific_expr)
+            if normalization_method == "inverse_gaussian":
+                ranks = stats.mstats.rankdata(time_step_specific_expr)
+                standardized = stats.norm.ppf(ranks/(len(ranks)+1))
+            else:
+                standardized = (time_step_specific_expr - np.mean(time_step_specific_expr))/np.std(time_step_specific_expr)
             t.write(ensamble_id + '_' + time_step_str + '\t' + '\t'.join(standardized.astype(str)) + '\n')
     t.close()
 
@@ -73,6 +78,8 @@ def create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_l
 
 
 preprocess_total_expression_dir = sys.argv[1]
+normalization_method = sys.argv[2]
+
 
 quantile_normalized_data = preprocess_total_expression_dir + 'quantile_normalized_no_projection.txt'
 
@@ -81,5 +88,5 @@ unique_cell_lines, ordered_cell_lines, ordered_time_steps = get_unique_cell_line
 
 # Output file
 cell_line_expr_ignore_missing_file = preprocess_total_expression_dir + 'cell_line_expression_ignore_missing.txt'
-create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_lines, ordered_time_steps, quantile_normalized_data, cell_line_expr_ignore_missing_file)
+create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_lines, ordered_time_steps, quantile_normalized_data, cell_line_expr_ignore_missing_file, normalization_method)
 

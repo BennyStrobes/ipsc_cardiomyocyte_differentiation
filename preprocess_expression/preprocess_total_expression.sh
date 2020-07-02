@@ -12,24 +12,22 @@ mixutre_hmm_cell_line_grouping_dir="$8"
 ipsc_banovich_read_counts_file="$9"
 ipsc_cm_banovich_read_counts_file="${10}"
 banovich_ipsc_comparison_dir="${11}"
+normalization_method="${12}"
 
-if false; then
-Rscript preprocess_total_expression.R $preprocess_total_expression_dir $exon_file $bam_dir
-date
+Rscript preprocess_total_expression.R $preprocess_total_expression_dir $exon_file $bam_dir $normalization_method
 
 
-python preprocess_total_expression_by_cell_lines.py $preprocess_total_expression_dir
-date
+python preprocess_total_expression_by_cell_lines.py $preprocess_total_expression_dir $normalization_method
+
 
 
 Rscript prepare_covariate_files.R $preprocess_total_expression_dir $metadata_input_file $covariate_dir $fastqc_dir
-date
+
 
 python compare_total_expression_to_banovich_ipsc_data.py $ipsc_banovich_read_counts_file $ipsc_cm_banovich_read_counts_file $preprocess_total_expression_dir $banovich_ipsc_comparison_dir
-fi
+
 
 Rscript visualize_processed_total_expression.R $preprocess_total_expression_dir $visualize_total_expression_dir $covariate_dir $mixutre_hmm_cell_line_grouping_dir $banovich_ipsc_comparison_dir
-date
 
 
 
