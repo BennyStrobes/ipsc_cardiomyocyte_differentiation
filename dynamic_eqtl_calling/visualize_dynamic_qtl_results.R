@@ -1334,6 +1334,21 @@ make_non_linear_dynamic_qtl_pve_distribution_plot <- function(input_file) {
     return(boxplot)
 }
 
+replication_rate_line_plot <- function(input_file, title) {
+    # Extract data
+    data <- read.table(input_file, header=TRUE)
+    df <- data.frame(pvalue_threshold=factor(data$pvalue_threshold, levels=c(0.1, 0.01, 0.001, 0.0001)), transformation=factor(data$transformation_type), replication_rate=data$replication_rate)
+    print(df)
+    p<-ggplot(df, aes(x=pvalue_threshold, y=replication_rate, group=transformation)) +
+        geom_line(aes(color=transformation))+
+        geom_point(aes(color=transformation)) +
+        labs(x = "Nominal p-value replication threshold", y = "Replication Rate", group="Transormation", title=title)  +
+        ylim(.35,1) +
+        theme(plot.title = element_text(size=8, face="plain"),text = element_text(size=8),axis.text=element_text(size=7), panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.background = element_blank(), axis.line = element_line(colour = "black"), legend.text = element_text(size=7), legend.title = element_text(size=8)) 
+
+    return(p)
+}
+
 
 
 #############################
@@ -1359,7 +1374,7 @@ non_linear_dynamic_qtl_pve_file <- paste0(visualization_input_dir, "gaussian_dyn
 #non_linear_qtl_pve_plot <- make_non_linear_dynamic_qtl_pve_distribution_plot(non_linear_dynamic_qtl_pve_file)
 
 #combined <- plot_grid(linear_qtl_pve_plot, non_linear_qtl_pve_plot, ncol=1, labels = c('A', 'B'))
-#output_file <- paste0(visualization_dir, "pve_boxplot_for_linear_and_nonlinear_qtls.pdf")
+output_file <- paste0(visualization_dir, "pve_boxplot_for_linear_and_nonlinear_qtls.pdf")
 #ggsave(combined, file=output_file, width=7.2,height=6,units="in")
 
 
@@ -1392,13 +1407,13 @@ output_file <- paste0(visualization_dir, "dynamic_eqtl_comparison_to_banovich_eq
 # Make Manuscript Figure 3
 #################################################################################
 output_file <- paste0(visualization_dir, "figure3.pdf")
-# produce_figure_3(qtl_results_dir, time_step_independent_comparison_dir, tissue_specific_chrom_hmm_enrichment_dir, gwas_overlap_dir, visualization_input_dir, output_file)
+#produce_figure_3(qtl_results_dir, time_step_independent_comparison_dir, tissue_specific_chrom_hmm_enrichment_dir, gwas_overlap_dir, visualization_input_dir, output_file)
 
 ###############################################################################
 # Make CRE enrichment boxplot over a range of number of PCs
 #################################################################################
 output_file <- paste0(visualization_dir, "cre_enrichment_boxplot_over_a_range_of_pcs.pdf")
-# cre_enrichment_over_range_of_pcs_boxplot(tissue_specific_chrom_hmm_enrichment_dir, output_file)
+cre_enrichment_over_range_of_pcs_boxplot(tissue_specific_chrom_hmm_enrichment_dir, output_file)
 
 ###############################################################################
 # QQPlot showing both:
@@ -1407,7 +1422,7 @@ output_file <- paste0(visualization_dir, "cre_enrichment_boxplot_over_a_range_of
 # One plot for linear dynamic eqtls and 1 plot for nonlinear dynamic qtls
 #################################################################################
 output_file <- paste0(visualization_dir, "linear_and_nonlinear_pc1_5_qq_plots.pdf")
-#qq_plot_for_linear_and_non_linear_dynamic_qtls(qtl_results_dir, output_file)
+# qq_plot_for_linear_and_non_linear_dynamic_qtls(qtl_results_dir, output_file)
 
 ###############################################################################
 # Make plot showing two dynamic QTLs for SCN5A that are known GWAS variants
@@ -1433,7 +1448,7 @@ output_file <- paste0(visualization_dir, "rs8107849_ENSG00000166704_nonlinear_vi
 #################################################################################
 output_file <- paste0(visualization_dir, "rs4503988_ENSG00000130294_nonlinear_viz.png")
 dynamic_qtl_input_file <- paste0(visualization_input_dir, "gaussian_dynamic_qtl_input_file_environmental_variable_time_steps_genotype_version_dosage_model_type_glm_quadratic_covariate_method_pc1_5_dynamic_qtl_efdr_05_visualization_input.txt")
-#non_linear_dynamic_qtl_plot <- make_dynamic_qtl_plot(dynamic_qtl_input_file, "rs4503988", "ENSG00000130294", "KIF1A", "glm_quadratic", "pc1_5", -2.5,4, 'T','C')
+# non_linear_dynamic_qtl_plot <- make_dynamic_qtl_plot(dynamic_qtl_input_file, "rs4503988", "ENSG00000130294", "KIF1A", "glm_quadratic", "pc1_5", -2.5,4, 'T','C')
 #ggsave(non_linear_dynamic_qtl_plot + labs(title=""), file=output_file, width=7.2, height=4.5,units="in")
 
 ###############################################################################
@@ -1502,4 +1517,28 @@ output_file <- paste0(visualization_dir, "joint_miami_plot_rs28818910_ENSG000001
 # Miami Plot-v2 with all three significant phenotypes
 ############################################################################
 output_file <- paste0(visualization_dir, "joint_miami_plot_rs35903022_ENSG00000130294.pdf")
-make_miami_plot_for_height(gwas_overlap_dir, output_file)
+#make_miami_plot_for_height(gwas_overlap_dir, output_file)
+
+
+##############################################################################
+#  Replication rate of egenes across different normalization methods
+##############################################################################
+input_file <- paste0(visualization_input_dir, "replicatation_of_rpkm_linear_dynamic_eqtls_in_other_data_sets.txt")
+title <- "Replication of RPKM linear dynamic eQTL eGenes"
+rpkm_rep_line_plot <- replication_rate_line_plot(input_file, title)
+
+input_file <- paste0(visualization_input_dir, "replicatation_of_log_rpkm_linear_dynamic_eqtls_in_other_data_sets.txt")
+title <- "Replication of log(RPKM) linear dynamic eQTL eGenes"
+log_rpkm_rep_line_plot <- replication_rate_line_plot(input_file, title)
+
+input_file <- paste0(visualization_input_dir, "replicatation_of_inverse_normal_linear_dynamic_eqtls_in_other_data_sets.txt")
+title <- "Replication of Inverse Normal linear dynamic eQTL eGenes"
+inverse_normal_rep_line_plot <- replication_rate_line_plot(input_file, title)
+
+combined_rep <- plot_grid(rpkm_rep_line_plot, log_rpkm_rep_line_plot, inverse_normal_rep_line_plot, ncol=1)
+output_file <- paste0(visualization_dir, "replication_of_egenes_across_normalization_methods.pdf")
+ggsave(combined_rep, file=output_file, width=7.2,height=7.5,units="in")
+
+
+
+

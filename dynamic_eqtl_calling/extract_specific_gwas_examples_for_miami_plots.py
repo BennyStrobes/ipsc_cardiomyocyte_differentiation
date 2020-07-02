@@ -258,7 +258,6 @@ liftover_directory = sys.argv[5]
 
 hg19_rs_id_mapping = mapping_from_hg19_rsid_to_chrom_and_pos(genotype_file)
 
-'''
 rs_id = 'rs28818910'
 ensamble_id = 'ENSG00000167173'
 variant_chrom = '15'
@@ -285,7 +284,6 @@ variant_pos = 75440669
 phenotype_name = 'UKB_23099_Body_fat_percentage'
 
 get_pvalue_distributions(rs_id, ensamble_id, variant_chrom, variant_pos, phenotype_name, hg19_rs_id_mapping, all_hits_file, gtex_gwas_hits_dir, gwas_overlap_dir, liftover_directory)
-'''
 
 rs_id = 'rs35903022'
 ensamble_id = 'ENSG00000130294'

@@ -2,6 +2,7 @@ import numpy as np
 import os
 import sys
 import pdb
+import scipy.stats as stats
 
 
 
@@ -67,7 +68,9 @@ def create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_l
                 continue
             if np.std(time_step_specific_expr) == 0:
                 continue
-            standardized = (time_step_specific_expr - np.mean(time_step_specific_expr))/np.std(time_step_specific_expr)
+            ranks = stats.mstats.rankdata(time_step_specific_expr)
+            standardized = stats.norm.ppf(ranks/(len(ranks)+1))
+            #standardized = (time_step_specific_expr - np.mean(time_step_specific_expr))/np.std(time_step_specific_expr)
             t.write(ensamble_id + '_' + time_step_str + '\t' + '\t'.join(standardized.astype(str)) + '\n')
     t.close()
 
@@ -78,16 +81,8 @@ preprocess_total_expression_dir = sys.argv[1]
 
 
 
-quantile_normalized_data = preprocess_total_expression_dir + 'log_rpkm.txt'
-unique_cell_lines, ordered_cell_lines, ordered_time_steps = get_unique_cell_lines(quantile_normalized_data)
-# Output file
-cell_line_expr_ignore_missing_file = preprocess_total_expression_dir + 'cell_line_expression_ignore_missing_no_quantile_normalize.txt'
-create_cell_line_expression_ignore_missing(unique_cell_lines, ordered_cell_lines, ordered_time_steps, quantile_normalized_data, cell_line_expr_ignore_missing_file)
 
-
-
-
-quantile_normalized_data = preprocess_total_expression_dir + 'log_quantile_normalized_no_projection.txt'
+quantile_normalized_data = preprocess_total_expression_dir + 'quantile_normalized_no_projection.txt'
 unique_cell_lines, ordered_cell_lines, ordered_time_steps = get_unique_cell_lines(quantile_normalized_data)
 # Output file
 cell_line_expr_ignore_missing_file = preprocess_total_expression_dir + 'cell_line_expression_ignore_missing.txt'

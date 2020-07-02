@@ -2478,7 +2478,7 @@ sample_info_file <- paste0(preprocess_total_expression_dir, "sample_info.txt")
 sample_info <- read.table(sample_info_file, header=TRUE)
 
 #  Get quantile normalized expression data
-quantile_normalized_exp_file <- paste0(preprocess_total_expression_dir, "log_quantile_normalized.txt")
+quantile_normalized_exp_file <- paste0(preprocess_total_expression_dir, "quantile_normalized_gaussian_projection.txt")
 quant_expr <- read.csv(quantile_normalized_exp_file, header=TRUE, sep=" ")
 
 
@@ -2496,7 +2496,7 @@ quantile_normalized_time_independent_expression_file <- paste0(preprocess_total_
 time_step_independent_quant_expr <- read.csv(quantile_normalized_time_independent_expression_file, header=TRUE, sep=" ")
 
 #  Get rpkm expression_data
-rpkm_exp_file <- paste0(preprocess_total_expression_dir, "log_rpkm.txt")
+rpkm_exp_file <- paste0(preprocess_total_expression_dir, "rpkm.txt")
 rpkm_expr <- read.csv(rpkm_exp_file, header=TRUE, sep=" ")
 
 #  Get covariate file

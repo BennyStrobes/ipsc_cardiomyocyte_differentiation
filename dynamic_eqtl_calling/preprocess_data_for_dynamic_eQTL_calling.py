@@ -123,7 +123,8 @@ def extract_gene_expression(genes, total_expression_file, sample_names):
         # Extract gene expression measurements
         ordered_data = data[reordered_indices].astype(float)
         # Standardize gene expression measurements
-        standardized_ordered_data = (ordered_data - np.mean(ordered_data))/(np.std(ordered_data))
+        #standardized_ordered_data = (ordered_data - np.mean(ordered_data))/(np.std(ordered_data))
+        standardized_ordered_data = (ordered_data - np.mean(ordered_data))
         # Check if gene is in our dictionary of genes (used genes)
         if ensamble_id in genes:
             # If it is, add gene expression vector

@@ -294,10 +294,10 @@ def count_variant_overlap_specificity(chrom_num, heart_chromosome, ipsc_chromoso
     county = 0
     for variant_gene in sig_variant_gene_pairs.keys():
         variant_gene_pair_dict = variant_gene_pair_info[variant_gene]
+        if chrom_num == 1:
+            pdb.set_trace()
         if variant_gene_pair_dict['chrom_num'] != chrom_num:
             continue
-        if variant_gene.split('_')[0] == 'rs35903022':
-            pdb.set_trace()
         variant_position = int(variant_gene_pair_dict['variant_position'])
         if cell_line_version == 'heart_and_ipsc_cell_lines':
             if heart_chromosome[variant_position] == 1.0 and ipsc_chromosome[variant_position] == 1.0:

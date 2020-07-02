@@ -238,6 +238,48 @@ quantile_normalize_and_standardize <- function(rpkm_data, preprocess_total_expre
     return(quantile_normalized)
 }
 
+#  Peform quantile normalization, and then standardize each row 
+quantile_normalize_and_project_onto_gaussian <- function(rpkm_data, preprocess_total_expression_dir) {
+    # Quantile normalize (so the samples have equivalent variance)
+    quantile_normalized_samples <- normalize.quantiles(as.matrix(rpkm_data))
+    
+
+    # Project each gene onto a gaussian
+    # temp_mat <- t(apply(quantile_normalized_samples, 1, rank, ties.method = "average"))
+    # quantile_normalized <- qnorm(temp_mat / (ncol(temp_mat)+1));
+
+    # Quantile Normalized without standardization or projection onto gaussian
+    colnames(quantile_normalized_samples) <- colnames(rpkm_data)
+    rownames(quantile_normalized_samples) <- rownames(rpkm_data)
+
+    colnames(quantile_normalized_samples)[1] = unlist(strsplit(colnames(quantile_normalized_samples)[1], split="\t"))[2]
+
+    #  Write results to output file
+    output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized_no_projection.txt")
+    save_DGE_matrix(quantile_normalized_samples, output_file) 
+
+
+    temp_mat <- t(apply(quantile_normalized_samples, 1, rank, ties.method = "average"))
+    quantile_normalized <- qnorm(temp_mat / (ncol(temp_mat)+1));
+
+
+    # Quantile normalization with gaussian projection
+    colnames(quantile_normalized) <- colnames(rpkm_data)
+    rownames(quantile_normalized) <- rownames(rpkm_data)
+
+    colnames(quantile_normalized)[1] = unlist(strsplit(colnames(quantile_normalized)[1], split="\t"))[2]
+
+
+    #  Write results to output file
+    output_file <- paste0(preprocess_total_expression_dir,"quantile_normalized_gaussian_projection.txt")
+    save_DGE_matrix(quantile_normalized, output_file)
+
+
+
+    return(quantile_normalized)
+}
+
+
 
 #  Peform quantile normalization, and then standardize each row 
 #  Do this for each time step independently
@@ -381,16 +423,10 @@ save_DGE_matrix2(counts$samples, paste0(preprocess_total_expression_dir, "sample
 rpkm_exp_file <- paste0(preprocess_total_expression_dir, "rpkm.txt")
 rpkm_expr <- read.csv(rpkm_exp_file, header=TRUE, sep=" ", check.names=FALSE)
 
-#  Log-transform rpkm expression_data
-log_rpkm_expr <- log2(rpkm_expr + 1)
-colnames(log_rpkm_expr)[1] = unlist(strsplit(colnames(log_rpkm_expr)[1], split="\t"))[2]
-# Save log-transformed rpkm expression data
-rpkm_output_file <- paste0(preprocess_total_expression_dir,"log_rpkm.txt")
-save_DGE_matrix(log_rpkm_expr, rpkm_output_file)
 
 
 
 #  Peform quantile normalization, and then standardize each row 
-quantile_normalized_data <- quantile_normalize_and_standardize_log_data(log_rpkm_expr, preprocess_total_expression_dir)
+quantile_normalized_data <- quantile_normalize_and_project_onto_gaussian(rpkm_expr, preprocess_total_expression_dir)
 
 
